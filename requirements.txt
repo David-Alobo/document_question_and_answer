@@ -1,0 +1,9 @@
+pypdf2 
+faiss-cpu 
+torch 
+numpy
+streamlit 
+sentence-transformers 
+langchain 
+groq 
+huggingface_hub
