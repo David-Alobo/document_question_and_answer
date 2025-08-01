@@ -46,7 +46,7 @@ GROQ_API_KEY=your_groq_api_key
 # Usage
 1. Activate the virtual environment:
 ```
-uv sunc
+uv sync
 ```
 2. Run the streamlit app
 ```
