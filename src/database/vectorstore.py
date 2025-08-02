@@ -7,6 +7,8 @@ parent_dir = Path(__file__).resolve().parent
 import faiss
 import numpy as np
 
+from langchain.schema import Document
+
 class LocalVectorStore:
     """
     A local vector store using FAISS for similarity search
@@ -41,6 +43,15 @@ class LocalVectorStore:
         Args:
             documents (list): List of LangChain document objects
         """
+
+        # Ensure that we are dealing with a list of Document objects
+        if isinstance(documents, list):
+            # If the list contains strings, wrap them in Document objects
+            if isinstance(documents[0], str):
+                documents = [Document(page_content=doc) for doc in documents]
+            elif not isinstance(documents[0], Document):
+                raise ValueError("documents must be a list of strings or Document objects")
+        
         # Extract text content from LangChain document objects
         self.chunks = [doc.page_content for doc in documents]
         

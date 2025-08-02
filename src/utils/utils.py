@@ -1,34 +1,53 @@
 import streamlit as st
 from groq import Groq
-from langchain.document_loaders import PyPDFLoader
-from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.document_loaders import PyPDFLoader
+from sentence_transformers import SentenceTransformer
+# from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.question_answering import load_qa_chain
-from langchain.llms import HuggingFaceHub
+from langchain_community.llms import HuggingFaceHub
 import faiss
 import numpy as np
 import tempfile
 import os
 
+
 class Utils:
+
+    def __init__(self):
+        pass  
+
     @staticmethod
     def initialize_groq(api_key: str):
         """
-        Initialize the Groq API client.
+            Initialize the Groq API client.
+
+            Parameters:
+            - api_key (str): Your Groq API key.
+
+            Returns:
+            - Groq: An initialized Groq client instance.
         """
         return Groq(api_key=api_key)
 
     @staticmethod
+    @st.cache_data
     def load_and_split_pdf(uploaded_file):
         """
         Load a PDF file and return a list of documents.
+
+        Args:
+            upload_file: Streamlit uploaded file object
+
+        Returns:
+            list: List of text chunks as LangChain document objects
         """
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-            temp_file.write(uploaded_file.read())
+            temp_file.write(uploaded_file.getvalue())
             temp_file_path = temp_file.name
         try:
-            loader = PyPDFLoader(temp_file_path)
+            loader = PyPDFLoader(temp_file_path) # using LangChain's PyPDFLoader to load the PDF
             documents = loader.load()
             text_splitter = RecursiveCharacterTextSplitter(
                 chunk_size=1000,
@@ -36,6 +55,7 @@ class Utils:
                 length_function=len,
             )
             split_docs = text_splitter.split_documents(documents)
+
             os.remove(temp_file_path)  # Clean up temporary file
             return split_docs
         except Exception as e:
@@ -109,7 +129,7 @@ class Utils:
             return f"Error getting response: {str(e)}"
         
     @staticmethod
-    @st.cache_resource
+    @st.cache_resource(key="embedding_model_all-MiniLM-L6-v2", hash_funcs={"sentence_transformers.SentenceTransformer": id})
     def load_embedding_model():
         """
         Load sentence transformer model for creating embeddings locally.
@@ -120,7 +140,7 @@ class Utils:
         Returns:
             SentenceTransformer: Loaded embedding model
         """
-        return SentenceTransformerEmbeddings('all-MiniLM-L6-v2')
+        return SentenceTransformer('all-MiniLM-L6-v2')
     
     @staticmethod
     def manage_conversation_context(conversation_history, max_exchanges=10):
