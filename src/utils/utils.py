@@ -129,7 +129,7 @@ class Utils:
             return f"Error getting response: {str(e)}"
         
     @staticmethod
-    @st.cache_resource(key="embedding_model_all-MiniLM-L6-v2", hash_funcs={"sentence_transformers.SentenceTransformer": id})
+    @st.cache_resource
     def load_embedding_model():
         """
         Load sentence transformer model for creating embeddings locally.

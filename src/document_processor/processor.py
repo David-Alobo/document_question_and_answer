@@ -41,7 +41,7 @@ class DocumentProcessor:
         st.success(f"✅ Document loaded! Found {len(chunks)} chunks")
         
         # Step 2: Create vector store with embeddings
-        with st.spinner("🧮 Creating embeddings (running locally)..."):
+        with st.spinner("🧮 Kindly be patient, setting up..."):
             vector_store = LocalVectorStore(embedding_model)
             vector_store.add_documents(chunks)
         
@@ -92,6 +92,8 @@ class DocumentProcessor:
                 key="user_question",
                 placeholder="Ask anything about the document... I remember our conversation!"
             )
+
+            
             
             # Process question when user enters one
             if question:
@@ -124,6 +126,7 @@ class DocumentProcessor:
                         
                         # Step 5e: Store this Q&A in conversation history
                         st.session_state.conversation_history.append((question, answer))
+
                     
                     # Step 5f: Display results
                     st.write("**🎯 Answer:**")
@@ -141,14 +144,14 @@ class DocumentProcessor:
                                 st.write(f"**A{i+1}:** {display_answer}")
                                 st.write("---")
                     
-                    # Show source chunks for transparency and debugging
-                    with st.expander("📚 View source chunks"):
-                        for i, chunk in enumerate(relevant_chunks):
-                            st.write(f"**Chunk {i+1}:**")
-                            # Truncate long chunks for readability
-                            display_chunk = chunk[:400] + "..." if len(chunk) > 400 else chunk
-                            st.write(display_chunk)
-                            st.write("---")
+                    # # Show source chunks for transparency and debugging
+                    # with st.expander("📚 View source chunks"):
+                    #     for i, chunk in enumerate(relevant_chunks):
+                    #         st.write(f"**Chunk {i+1}:**")
+                    #         # Truncate long chunks for readability
+                    #         display_chunk = chunk[:400] + "..." if len(chunk) > 400 else chunk
+                    #         st.write(display_chunk)
+                    #         st.write("---")
                     
                 except Exception as e:
                     # Handle different types of errors gracefully
@@ -162,3 +165,9 @@ class DocumentProcessor:
                     else:
                         st.error(f"❌ Error: {str(e)}")
                         st.info("💡 Try simplifying your question or check your API key.")
+
+                # footnote
+                st.markdown("""
+                ---
+                <sub>© 2025 Monstrous. All rights reserved. For more information, visit [our website](https://monstrous.com.ng).</sub>
+                """, unsafe_allow_html=True)  
