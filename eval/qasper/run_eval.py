@@ -518,16 +518,23 @@ def judge(args):
     """
     data_dir, out = Path(args.data), Path(args.out)
     questions = {q["question_id"]: q for p in _load_split(data_dir, args.split, args.limit).values() for q in p["qas"]}
-    client = OllamaClient(args.ollama, num_ctx=8192)
+    # A retry gets a larger window and budget: a failed reply was empty because the judge's
+    # reasoning filled the 8192-token window before it gave a verdict
+    client = OllamaClient(args.ollama, num_ctx=20480 if args.retry_errors else 8192)
+    max_tokens = 12000 if args.retry_errors else 6000
 
     for condition in args.conditions:
         path = out / f"judgments_{condition}.jsonl"
-        done = {r["question_id"] for r in _read_jsonl(path)}
+        # The last record per question counts, so a retry is appended after the failure
+        latest = {r["question_id"]: r for r in _read_jsonl(path)}
+        done = {q for q, r in latest.items() if not (args.retry_errors and "error" in r)}
         todo = [r for r in _read_jsonl(out / f"answers_{condition}.jsonl") if r["question_id"] not in done]
 
         def grade(answer, condition=condition):
             q = questions[answer["question_id"]]
             result = {"question_id": answer["question_id"], "condition": condition, "judge": args.judge}
+            if args.retry_errors:
+                result["retry"] = {"num_ctx": client.num_ctx, "max_tokens": max_tokens}
             if answer.get("answer") is None:
                 result.update(verdict=None, explanation="no answer")
                 return result
@@ -549,7 +556,7 @@ def judge(args):
                     messages=[{"role": "user", "content": prompt}],
                     model=args.judge,
                     temperature=0.0,
-                    max_tokens=6000,
+                    max_tokens=max_tokens,
                     format=JUDGE_SCHEMA,
                     think=True,
                 )
@@ -810,6 +817,8 @@ def main():
     parser.add_argument("--chunk-overlap", type=int, default=CHUNK_OVERLAP, help="retrieve stage")
     parser.add_argument("--k", type=int, default=K_APP, help="retrieve stage: chunks sent to the model")
     parser.add_argument("--rerank", action="store_true", help="retrieve stage: rerank with the cross-encoder")
+    parser.add_argument("--retry-errors", action="store_true",
+                        help="judge stage: grade again the answers whose judgement failed, with a larger budget")
     args = parser.parse_args()
     {"prepare": prepare, "retrieve": retrieve, "generate": generate, "judge": judge, "summarize": summarize}[
         args.stage

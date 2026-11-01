@@ -1,0 +1,724 @@
+Running scope as unit: run-r6b34c1864cd14fc1be4e3d25b9209f89.scope
+== prepare 2026-11-01T02:15:56+00:00
+1912.01214 ok
+1810.08699 ok
+1609.00425 ok
+1801.05147 ok
+1811.00383 ok
+1909.09067 ok
+1704.06194 ok
+1909.00512 ok
+2003.03106 ok
+1708.01464 ok
+2002.03407 ok
+1909.11687 ok
+1605.06083 ok
+1804.05918 ok
+1809.04267 ok
+1901.05287 ok
+1612.06685 ok
+1912.04961 ok
+1910.10781 ok
+1603.09631 ok
+1911.06964 ok
+2001.02284 ok
+2002.01664 ok
+1808.09111 ok
+1906.08593 ok
+1809.00540 ok
+2004.03354 ok
+1611.04798 ok
+1912.13337 ok
+1809.01541 ok
+1809.09194 ok
+1604.05372 ok
+2002.08795 ok
+1802.06024 ok
+1809.00530 ok
+1710.07960 ok
+1912.03804 ok
+1912.08960 ok
+2002.11910 ok
+1909.09587 ok
+1802.07862 ok
+2004.01853 ok
+1710.03348 ok
+1612.03226 ok
+1809.02286 ok
+1809.01202 ok
+1909.02027 ok
+1911.02855 ok
+1906.01081 ok
+1812.10479 ok
+1611.01576 ok
+1904.09535 ok
+1911.03059 ok
+1706.08198 ok
+1909.08089 ok
+1910.09982 ok
+1609.00559 ok
+1604.00727 ok
+1612.02482 ok
+1608.01084 ok
+1904.10503 ok
+1912.01772 ok
+1603.01987 ok
+1908.06941 ok
+1702.03856 ok
+1904.01548 ok
+1606.03676 ok
+1802.00396 failed
+1909.04002 ok
+1911.03343 ok
+1712.00991 ok
+1805.08241 ok
+1907.04433 ok
+2003.04642 ok
+2001.09215 ok
+1909.07575 ok
+1701.04056 ok
+1904.07904 ok
+2003.11645 ok
+1909.02304 ok
+1604.03114 ok
+1608.06757 ok
+2001.03131 ok
+1606.02891 ok
+1803.09123 ok
+1910.01863 ok
+1701.08229 ok
+1912.06262 ok
+1709.07814 ok
+1806.00738 ok
+1811.00147 ok
+1806.04330 ok
+1610.09225 ok
+2003.08380 ok
+1811.05711 ok
+1805.04508 ok
+1904.03288 ok
+1909.13714 ok
+1910.05603 ok
+1909.03405 ok
+1801.07887 ok
+1907.03060 ok
+2002.04095 ok
+1710.04203 ok
+1804.00720 ok
+1911.10049 ok
+1812.06864 ok
+1911.01371 ok
+1811.12254 ok
+1909.09551 ok
+1701.02962 ok
+1806.05504 ok
+1908.05828 ok
+1909.13104 ok
+2002.02070 ok
+1611.03599 ok
+1908.10084 ok
+1707.06806 ok
+1806.04511 ok
+1904.04358 ok
+1912.00667 ok
+1912.08904 ok
+1703.10344 ok
+2003.13032 ok
+1910.06592 ok
+1706.01678 ok
+1902.09666 ok
+1604.00400 ok
+1905.12801 ok
+1810.12196 ok
+1707.05236 ok
+1810.04428 ok
+2004.02192 ok
+1909.06200 ok
+1706.06894 ok
+1908.11047 ok
+1908.09246 ok
+1612.08205 ok
+1907.09369 ok
+1911.07555 ok
+1503.00841 ok
+1804.11346 ok
+1611.08661 ok
+1910.07601 ok
+1909.00175 ok
+1910.06036 ok
+2002.01984 ok
+1909.00326 ok
+1910.14599 ok
+1906.00790 ok
+1903.03530 ok
+1712.05608 ok
+1809.03449 ok
+1806.05513 ok
+1903.09722 ok
+1806.11432 ok
+1910.14537 ok
+1808.10245 ok
+1910.12574 ok
+1702.03342 ok
+1805.03710 ok
+1807.07279 ok
+1706.09673 ok
+1906.07662 ok
+2002.12612 ok
+1908.05441 ok
+1811.08603 ok
+1909.03135 ok
+1804.07789 ok
+1905.11268 ok
+1603.01514 ok
+1908.04042 ok
+1610.00956 ok
+1601.02403 ok
+1912.03627 ok
+1810.12085 ok
+1610.07809 ok
+2003.03044 ok
+1610.08815 ok
+1909.00015 ok
+2001.01269 ok
+1708.06185 ok
+1705.01214 ok
+1908.07195 ok
+2001.07786 ok
+1912.00903 ok
+1903.11437 ok
+1703.04001 ok
+1909.10012 ok
+1907.06292 ok
+1703.07090 ok
+1810.04635 ok
+1707.03569 ok
+1903.07406 ok
+1912.10011 ok
+2003.11563 ok
+1909.09534 ok
+1909.00105 ok
+2001.02885 ok
+1801.10293 ok
+1809.06537 ok
+2003.03014 ok
+1908.08345 ok
+1611.02988 ok
+1604.08504 ok
+1802.08636 ok
+2001.07820 ok
+2002.01320 ok
+1605.07333 ok
+2003.08385 ok
+1901.10133 ok
+1911.00841 ok
+1605.03481 ok
+1908.07245 ok
+1901.01010 ok
+1809.02279 ok
+2002.01207 ok
+1803.05223 ok
+1909.06162 ok
+1905.10851 ok
+1906.07701 ok
+2002.07306 ok
+1810.12091 ok
+1810.05241 ok
+1805.01445 ok
+1706.01875 ok
+1909.01362 ok
+2004.01862 ok
+1908.01294 ok
+1906.01040 ok
+1909.01383 ok
+1705.05437 ok
+2003.02249 ok
+1910.03634 ok
+2001.08868 ok
+1910.12795 ok
+1805.10824 ok
+2003.04866 ok
+1704.04452 ok
+2003.11562 ok
+1608.08188 ok
+1906.06849 ok
+1901.08079 ok
+1805.06966 ok
+1806.03125 ok
+1910.14076 ok
+1911.06118 ok
+1908.08717 ok
+1907.03187 ok
+1608.01884 ok
+1705.01265 ok
+1906.10225 ok
+1712.05999 ok
+2001.05865 ok
+1808.03738 ok
+1910.08293 ok
+1909.01296 ok
+1902.09243 ok
+1801.02073 ok
+1801.06482 ok
+1909.05359 ok
+1603.08594 ok
+1703.07476 ok
+1906.00346 ok
+1909.08970 ok
+1805.07133 ok
+1903.11283 ok
+1709.05036 ok
+1706.00139 ok
+1705.04153 ok
+1912.01852 ok
+1808.09029 ok
+2004.04721 ok
+1905.07791 ok
+2002.04181 ok
+1908.06264 ok
+1709.10367 ok
+1909.03582 ok
+1908.06267 ok
+1701.05574 ok
+1907.01468 ok
+== retrieve 2026-11-01T02:31:27+00:00
+/mnt/STORAGE3/alobo/docqa-eval/app/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+1912.01214 49 chunks 4 questions 
+1810.08699 40 chunks 3 questions 
+1609.00425 50 chunks 2 questions 
+1801.05147 55 chunks 2 questions 
+1811.00383 33 chunks 3 questions 
+1909.09067 42 chunks 2 questions 
+1704.06194 68 chunks 4 questions 
+1909.00512 56 chunks 2 questions 
+2003.03106 58 chunks 4 questions 
+1708.01464 40 chunks 4 questions 
+2002.03407 46 chunks 5 questions 
+1909.11687 40 chunks 2 questions 
+1605.06083 28 chunks 4 questions 
+1804.05918 54 chunks 2 questions 
+1809.04267 54 chunks 1 questions 
+1901.05287 22 chunks 1 questions 
+1612.06685 19 chunks 3 questions 
+1912.04961 48 chunks 3 questions 
+1910.10781 35 chunks 2 questions 
+1603.09631 29 chunks 2 questions 
+1911.06964 46 chunks 4 questions 
+2001.02284 75 chunks 3 questions 
+2002.01664 27 chunks 3 questions 
+1808.09111 256 chunks 3 questions 
+1906.08593 28 chunks 3 questions 
+1809.00540 54 chunks 3 questions 
+2004.03354 39 chunks 2 questions 
+1611.04798 49 chunks 4 questions 
+1912.13337 90 chunks 5 questions 
+1809.01541 28 chunks 7 questions 
+1809.09194 27 chunks 3 questions 
+1604.05372 56 chunks 1 questions 
+2002.08795 30 chunks 3 questions 
+1802.06024 68 chunks 6 questions 
+1809.00530 76 chunks 4 questions 
+1710.07960 48 chunks 2 questions 
+1912.03804 44 chunks 5 questions 
+1912.08960 45 chunks 4 questions 
+2002.11910 25 chunks 3 questions 
+1909.09587 37 chunks 4 questions 
+1802.07862 48 chunks 5 questions 
+2004.01853 88 chunks 2 questions 
+1710.03348 42 chunks 3 questions 
+1612.03226 21 chunks 4 questions 
+1809.02286 56 chunks 1 questions 
+1809.01202 51 chunks 2 questions 
+1909.02027 31 chunks 4 questions 
+1911.02855 62 chunks 4 questions 
+1906.01081 64 chunks 3 questions 
+1812.10479 123 chunks 1 questions 
+1611.01576 46 chunks 3 questions 
+1904.09535 32 chunks 3 questions 
+1911.03059 28 chunks 2 questions 
+1706.08198 29 chunks 2 questions 
+1909.08089 60 chunks 2 questions 
+1910.09982 49 chunks 3 questions 
+1609.00559 55 chunks 3 questions 
+1604.00727 48 chunks 2 questions 
+1612.02482 71 chunks 2 questions 
+1608.01084 48 chunks 1 questions 
+1904.10503 38 chunks 3 questions 
+1912.01772 41 chunks 2 questions 
+1603.01987 55 chunks 1 questions 
+1908.06941 28 chunks 4 questions 
+1702.03856 29 chunks 3 questions 
+1904.01548 65 chunks 2 questions 
+1606.03676 54 chunks 2 questions 
+1802.00396 0 chunks 3 questions no PDF
+1909.04002 56 chunks 1 questions 
+1911.03343 45 chunks 1 questions 
+1712.00991 48 chunks 7 questions 
+1805.08241 47 chunks 1 questions 
+1907.04433 26 chunks 1 questions 
+2003.04642 116 chunks 4 questions 
+2001.09215 12 chunks 2 questions 
+1909.07575 50 chunks 2 questions 
+1701.04056 28 chunks 1 questions 
+1904.07904 31 chunks 4 questions 
+2003.11645 38 chunks 4 questions 
+1909.02304 56 chunks 2 questions 
+1604.03114 34 chunks 2 questions 
+1608.06757 52 chunks 2 questions 
+2001.03131 33 chunks 3 questions 
+1606.02891 28 chunks 1 questions 
+1803.09123 42 chunks 2 questions 
+1910.01863 62 chunks 1 questions 
+1701.08229 29 chunks 4 questions 
+1912.06262 39 chunks 2 questions 
+1709.07814 38 chunks 3 questions 
+1806.00738 18 chunks 4 questions 
+1811.00147 54 chunks 2 questions 
+1806.04330 56 chunks 1 questions 
+1610.09225 33 chunks 3 questions 
+2003.08380 16 chunks 1 questions 
+1811.05711 146 chunks 1 questions 
+1805.04508 62 chunks 2 questions 
+1904.03288 30 chunks 2 questions 
+1909.13714 17 chunks 2 questions 
+1910.05603 13 chunks 4 questions 
+1909.03405 51 chunks 3 questions 
+1801.07887 15 chunks 2 questions 
+1907.03060 65 chunks 1 questions 
+2002.04095 36 chunks 1 questions 
+1710.04203 59 chunks 1 questions 
+1804.00720 33 chunks 1 questions 
+1911.10049 47 chunks 2 questions 
+1812.06864 36 chunks 1 questions 
+1911.01371 47 chunks 2 questions 
+1811.12254 36 chunks 1 questions 
+1909.09551 82 chunks 1 questions 
+1701.02962 49 chunks 1 questions 
+1806.05504 57 chunks 1 questions 
+1908.05828 41 chunks 12 questions 
+1909.13104 34 chunks 8 questions 
+2002.02070 18 chunks 7 questions 
+1611.03599 54 chunks 6 questions 
+1908.10084 60 chunks 6 questions 
+1707.06806 31 chunks 6 questions 
+1806.04511 37 chunks 6 questions 
+1904.04358 31 chunks 6 questions 
+1912.00667 53 chunks 6 questions 
+1912.08904 26 chunks 6 questions 
+1703.10344 82 chunks 6 questions 
+2003.13032 36 chunks 6 questions 
+1910.06592 29 chunks 11 questions 
+1706.01678 51 chunks 5 questions 
+1902.09666 30 chunks 10 questions 
+1604.00400 57 chunks 5 questions 
+1905.12801 31 chunks 5 questions 
+1810.12196 44 chunks 5 questions 
+1707.05236 30 chunks 5 questions 
+1810.04428 32 chunks 5 questions 
+2004.02192 54 chunks 5 questions 
+1909.06200 54 chunks 5 questions 
+1706.06894 28 chunks 5 questions 
+1908.11047 38 chunks 5 questions 
+1908.09246 52 chunks 5 questions 
+1612.08205 51 chunks 5 questions 
+1907.09369 36 chunks 5 questions 
+1911.07555 28 chunks 9 questions 
+1503.00841 41 chunks 4 questions 
+1804.11346 28 chunks 4 questions 
+1611.08661 42 chunks 4 questions 
+1910.07601 45 chunks 4 questions 
+1909.00175 36 chunks 4 questions 
+1910.06036 57 chunks 4 questions 
+2002.01984 67 chunks 4 questions 
+1909.00326 57 chunks 4 questions 
+1910.14599 87 chunks 4 questions 
+1906.00790 64 chunks 4 questions 
+1903.03530 43 chunks 4 questions 
+1712.05608 24 chunks 4 questions 
+1809.03449 50 chunks 4 questions 
+1806.05513 32 chunks 4 questions 
+1903.09722 33 chunks 4 questions 
+1806.11432 29 chunks 4 questions 
+1910.14537 60 chunks 4 questions 
+1808.10245 32 chunks 4 questions 
+1910.12574 49 chunks 8 questions 
+1702.03342 96 chunks 4 questions 
+1805.03710 28 chunks 4 questions 
+1807.07279 112 chunks 4 questions 
+1706.09673 36 chunks 4 questions 
+1906.07662 42 chunks 4 questions 
+2002.12612 63 chunks 4 questions 
+1908.05441 89 chunks 4 questions 
+1811.08603 53 chunks 4 questions 
+1909.03135 34 chunks 4 questions 
+1804.07789 61 chunks 4 questions 
+1905.11268 52 chunks 7 questions 
+1603.01514 51 chunks 7 questions 
+1908.04042 41 chunks 6 questions 
+1610.00956 54 chunks 3 questions 
+1601.02403 268 chunks 6 questions 
+1912.03627 45 chunks 6 questions 
+1810.12085 41 chunks 3 questions 
+1610.07809 34 chunks 3 questions 
+2003.03044 33 chunks 3 questions 
+1610.08815 61 chunks 3 questions 
+1909.00015 66 chunks 3 questions 
+2001.01269 43 chunks 6 questions 
+1708.06185 29 chunks 3 questions 
+1705.01214 137 chunks 3 questions 
+1908.07195 57 chunks 3 questions 
+2001.07786 26 chunks 3 questions 
+1912.00903 47 chunks 3 questions 
+1903.11437 59 chunks 6 questions 
+1703.04001 32 chunks 3 questions 
+1909.10012 56 chunks 3 questions 
+1907.06292 53 chunks 3 questions 
+1703.07090 46 chunks 3 questions 
+1810.04635 40 chunks 3 questions 
+1707.03569 33 chunks 3 questions 
+1903.07406 29 chunks 3 questions 
+1912.10011 63 chunks 3 questions 
+2003.11563 52 chunks 3 questions 
+1909.09534 21 chunks 3 questions 
+1909.00105 43 chunks 6 questions 
+2001.02885 32 chunks 6 questions 
+1801.10293 54 chunks 3 questions 
+1809.06537 52 chunks 6 questions 
+2003.03014 174 chunks 3 questions 
+1908.08345 63 chunks 3 questions 
+1611.02988 48 chunks 3 questions 
+1604.08504 28 chunks 3 questions 
+1802.08636 79 chunks 3 questions 
+2001.07820 53 chunks 3 questions 
+2002.01320 39 chunks 8 questions 
+1605.07333 30 chunks 5 questions 
+2003.08385 56 chunks 5 questions 
+1901.10133 15 chunks 5 questions 
+1911.00841 61 chunks 5 questions 
+1605.03481 30 chunks 5 questions 
+1908.07245 31 chunks 5 questions 
+1901.01010 54 chunks 9 questions 
+1809.02279 56 chunks 4 questions 
+2002.01207 73 chunks 4 questions 
+1803.05223 50 chunks 4 questions 
+1909.06162 32 chunks 6 questions 
+1905.10851 42 chunks 4 questions 
+1906.07701 70 chunks 2 questions 
+2002.07306 47 chunks 6 questions 
+1810.12091 60 chunks 2 questions 
+1810.05241 72 chunks 6 questions 
+1805.01445 24 chunks 2 questions 
+1706.01875 38 chunks 4 questions 
+1909.01362 67 chunks 2 questions 
+2004.01862 41 chunks 2 questions 
+1908.01294 83 chunks 2 questions 
+1906.01040 48 chunks 2 questions 
+1909.01383 51 chunks 4 questions 
+1705.05437 40 chunks 2 questions 
+2003.02249 43 chunks 2 questions 
+1910.03634 20 chunks 6 questions 
+2001.08868 64 chunks 4 questions 
+1910.12795 58 chunks 2 questions 
+1805.10824 32 chunks 6 questions 
+2003.04866 215 chunks 2 questions 
+1704.04452 62 chunks 6 questions 
+2003.11562 25 chunks 2 questions 
+1608.08188 66 chunks 2 questions 
+1906.06849 30 chunks 2 questions 
+1901.08079 131 chunks 2 questions 
+1805.06966 55 chunks 2 questions 
+1806.03125 50 chunks 2 questions 
+1910.14076 38 chunks 4 questions 
+1911.06118 34 chunks 2 questions 
+1908.08717 49 chunks 6 questions 
+1907.03187 23 chunks 2 questions 
+1608.01884 23 chunks 4 questions 
+1705.01265 36 chunks 4 questions 
+1906.10225 99 chunks 4 questions 
+1712.05999 41 chunks 6 questions 
+2001.05865 10 chunks 2 questions 
+1808.03738 53 chunks 2 questions 
+1910.08293 71 chunks 4 questions 
+1909.01296 35 chunks 4 questions 
+1902.09243 44 chunks 4 questions 
+1801.02073 28 chunks 4 questions 
+1801.06482 42 chunks 2 questions 
+1909.05359 30 chunks 2 questions 
+1603.08594 25 chunks 2 questions 
+1703.07476 39 chunks 2 questions 
+1906.00346 48 chunks 2 questions 
+1909.08970 34 chunks 2 questions 
+1805.07133 48 chunks 4 questions 
+1903.11283 63 chunks 4 questions 
+1709.05036 27 chunks 2 questions 
+1706.00139 48 chunks 2 questions 
+1705.04153 42 chunks 2 questions 
+1912.01852 26 chunks 2 questions 
+1808.09029 51 chunks 2 questions 
+2004.04721 67 chunks 7 questions 
+1905.07791 55 chunks 5 questions 
+2002.04181 23 chunks 5 questions 
+1908.06264 39 chunks 5 questions 
+1709.10367 58 chunks 5 questions 
+1909.03582 61 chunks 5 questions 
+1908.06267 59 chunks 5 questions 
+1701.05574 56 chunks 5 questions 
+1907.01468 89 chunks 5 questions 
+== generate 2026-11-01T03:00:29+00:00
+shipped 50 / 1005
+shipped 100 / 1005
+shipped 150 / 1005
+shipped 200 / 1005
+shipped 250 / 1005
+shipped 300 / 1005
+shipped 350 / 1005
+shipped 400 / 1005
+shipped 450 / 1005
+shipped 500 / 1005
+shipped 550 / 1005
+shipped 600 / 1005
+shipped 650 / 1005
+shipped 700 / 1005
+shipped 750 / 1005
+shipped 800 / 1005
+shipped 850 / 1005
+shipped 900 / 1005
+shipped 950 / 1005
+shipped 1000 / 1005
+shipped done
+fixed 50 / 1005
+fixed 100 / 1005
+fixed 150 / 1005
+fixed 200 / 1005
+fixed 250 / 1005
+fixed 300 / 1005
+fixed 350 / 1005
+fixed 400 / 1005
+fixed 450 / 1005
+fixed 500 / 1005
+fixed 550 / 1005
+fixed 600 / 1005
+fixed 650 / 1005
+fixed 700 / 1005
+fixed 750 / 1005
+fixed 800 / 1005
+fixed 850 / 1005
+fixed 900 / 1005
+fixed 950 / 1005
+fixed 1000 / 1005
+fixed done
+oracle 50 / 1005
+oracle 100 / 1005
+oracle 150 / 1005
+oracle 200 / 1005
+oracle 250 / 1005
+oracle 300 / 1005
+oracle 350 / 1005
+oracle 400 / 1005
+oracle 450 / 1005
+oracle 500 / 1005
+oracle 550 / 1005
+oracle 600 / 1005
+oracle 650 / 1005
+oracle 700 / 1005
+oracle 750 / 1005
+oracle 800 / 1005
+oracle 850 / 1005
+oracle 900 / 1005
+oracle 950 / 1005
+oracle 1000 / 1005
+oracle done
+== judge 2026-11-01T03:29:01+00:00
+judge shipped 50 / 1005
+judge shipped 100 / 1005
+judge shipped 150 / 1005
+judge shipped 200 / 1005
+judge shipped 250 / 1005
+judge shipped 300 / 1005
+judge shipped 350 / 1005
+judge shipped 400 / 1005
+judge shipped 450 / 1005
+judge shipped 500 / 1005
+judge shipped 550 / 1005
+judge shipped 600 / 1005
+judge shipped 650 / 1005
+judge shipped 700 / 1005
+judge shipped 750 / 1005
+judge shipped 800 / 1005
+judge shipped 850 / 1005
+judge shipped 900 / 1005
+judge shipped 950 / 1005
+judge shipped 1000 / 1005
+judge shipped done
+judge fixed 50 / 1005
+judge fixed 100 / 1005
+judge fixed 150 / 1005
+judge fixed 200 / 1005
+judge fixed 250 / 1005
+judge fixed 300 / 1005
+judge fixed 350 / 1005
+judge fixed 400 / 1005
+judge fixed 450 / 1005
+judge fixed 500 / 1005
+judge fixed 550 / 1005
+judge fixed 600 / 1005
+judge fixed 650 / 1005
+judge fixed 700 / 1005
+judge fixed 750 / 1005
+judge fixed 800 / 1005
+judge fixed 850 / 1005
+judge fixed 900 / 1005
+judge fixed 950 / 1005
+judge fixed 1000 / 1005
+judge fixed done
+judge oracle done
+== summarize 2026-11-01T05:05:23+00:00
+# QASPER dev: 1005 questions, 281 papers (280 PDFs downloaded)
+
+## Retrieval (questions with text evidence)
+
+Evidence present in the PDF's chunks: 91.5% [89.5, 93.1] (815/891)
+
+| k | Evidence in top k (of findable) |
+|---|---|
+| 1 | 19.4% [16.8, 22.2] (158/815) |
+| 2 | 31.5% [28.4, 34.8] (257/815) |
+| 3 | 42.1% [38.7, 45.5] (343/815) |
+| 4 | 48.8% [45.4, 52.3] (398/815) |
+| 5 | 55.2% [51.8, 58.6] (450/815) |
+| 6 | 60.6% [57.2, 63.9] (494/815) |
+| 7 | 65.6% [62.3, 68.8] (535/815) |
+| 8 | 69.9% [66.7, 73.0] (570/815) |
+| 9 | 73.0% [69.9, 75.9] (595/815) |
+| 10 | 75.3% [72.3, 78.2] (614/815) |
+
+## Answers (judged)
+
+| Condition | Questions | Correct | Correct or partial | Answer F1 (official) |
+|---|---|---|---|---|
+| shipped | 1005 | 0.0% [0.0, 0.4] (0/1005) | 0.0% [0.0, 0.4] (0/1005) | 0.0 |
+| fixed | 1002 | 53.5% [50.4, 56.6] (536/1002) | 72.0% [69.1, 74.6] (721/1002) | 11.6 |
+| oracle | 892 | 69.1% [65.9, 72.0] (616/892) | 83.9% [81.3, 86.1] (748/892) | 19.0 |
+
+Fixed app, correct when the top 4 chunks held evidence: 64.8% [60.0, 69.4] (258/398); when they did not: 42.4% [38.1, 46.8] (209/493)
+
+== finished 2026-11-01T05:05:25+00:00
+Traceback (most recent call last):
+  File "/mnt/STORAGE3/alobo/docqa-eval/app/eval/qasper/run_eval.py", line 44, in <module>
+    from src.utils.utils import CHUNK_OVERLAP, CHUNK_SIZE, EMBEDDING_MODEL, RERANKER_MODEL, Utils
+ImportError: cannot import name 'RERANKER_MODEL' from 'src.utils.utils' (/mnt/STORAGE3/alobo/docqa-eval/app/src/utils/utils.py)
+Traceback (most recent call last):
+  File "/mnt/STORAGE3/alobo/docqa-eval/app/eval/qasper/run_eval.py", line 44, in <module>
+    from src.utils.utils import CHUNK_OVERLAP, CHUNK_SIZE, EMBEDDING_MODEL, RERANKER_MODEL, Utils
+ImportError: cannot import name 'RERANKER_MODEL' from 'src.utils.utils' (/mnt/STORAGE3/alobo/docqa-eval/app/src/utils/utils.py)
+== judge --retry-errors (from the cand deployment) 2026-11-01T05:08:48+00:00
+judge fixed done
+judge oracle done
+|---|---|---|---|---|
+| shipped | 1005 | 0.0% [0.0, 0.4] (0/1005) | 0.0% [0.0, 0.4] (0/1005) | 0.0 |
+| fixed | 1002 | 53.6% [50.5, 56.7] (537/1002) | 72.3% [69.4, 74.9] (724/1002) | 11.6 |
+| oracle | 892 | 69.1% [65.9, 72.0] (616/892) | 83.9% [81.3, 86.1] (748/892) | 19.0 |
+
+Fixed app, correct when the top 4 chunks held evidence: 64.8% [60.0, 69.4] (258/398); when they did not: 42.6% [38.3, 47.0] (210/493)
+
