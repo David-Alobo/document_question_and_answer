@@ -52,7 +52,7 @@ def main():
     )
 
     st.title("📄 Document Q&A with Conversation Memory")
-    st.write("Upload a PDF and have a conversation about it. Every answer shows the passages it used.")
+    st.write("Upload one or more PDFs and have a conversation about them. Every answer shows the passages it used.")
 
     with st.sidebar:
         st.header("🔧 Setup")
@@ -81,9 +81,10 @@ def main():
         st.markdown("""
         ### What it does
         - **Document Q&A**: Upload a PDF and ask questions about it
-        - **Sources**: Every answer lists the passages and pages it was based on
+        - **Several documents**: Upload up to 10 PDFs and ask across them, or compare them
+        - **Sources**: Every answer lists the passages, files and pages it was based on
         - **Conversation Memory**: Follow-up questions can refer to earlier answers
-        - **Privacy**: The PDF is split and embedded on this machine; only the passages retrieved for each question, and the conversation, are sent to Groq
+        - **Privacy**: Each PDF is split and embedded on this machine; only the passages retrieved for each question, and the conversation, are sent to Groq
         """)
         st.stop()
 
@@ -93,18 +94,19 @@ def main():
     st.session_state.selected_model = selected_model
     st.session_state.max_history = max_history
 
-    uploaded_file = st.file_uploader(
-        "Choose a PDF file",
+    uploaded_files = st.file_uploader(
+        "Choose PDF files",
         type="pdf",
-        help="Upload a PDF document to start asking questions about it"
+        accept_multiple_files=True,
+        help="Upload one or more PDF documents (up to 10) to start asking questions about them"
     )
 
-    if uploaded_file is not None:
-        doc_processor.process_document(uploaded_file, groq_client, embedding_model)
+    if uploaded_files:
+        doc_processor.process_documents(uploaded_files, groq_client, embedding_model)
     else:
         st.markdown("""
         ### 🚀 Getting Started
-        1. **Upload a PDF document** using the file uploader above
+        1. **Upload one or more PDFs** using the file uploader above
         2. **Ask a question** or pick one of the examples
         3. **Check the sources** under each answer
         4. **Ask follow-ups**: the assistant remembers the conversation
@@ -113,6 +115,7 @@ def main():
         - "What is this document about?"
         - "Who are the main authors?"
         - "Can you elaborate on that?" (references previous answer)
+        - "Compare these documents" (with several PDFs)
         """)
         st.markdown(FOOTNOTE, unsafe_allow_html=True)
 

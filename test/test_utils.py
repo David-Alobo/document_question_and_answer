@@ -27,6 +27,7 @@ def mock_uploaded_file():
     """
     mock_file = MagicMock()
     mock_file.getvalue.return_value = b"Mock PDF content"
+    mock_file.name = "paper.pdf"
     return mock_file
 
 
@@ -49,14 +50,17 @@ def test_load_and_split_pdf(mock_uploaded_file):
          patch("src.utils.utils.RecursiveCharacterTextSplitter") as MockSplitter, \
          patch("src.utils.utils.os.remove") as mock_remove:
         MockLoader.return_value.load.return_value = pages
-        MockSplitter.return_value.split_documents.return_value = ["Chunk 1", "Chunk 2"]
+        chunks = [Document(page_content="Chunk 1", metadata={"source": "/tmp/x.pdf", "page": 0})]
+        MockSplitter.return_value.split_documents.return_value = chunks
 
         result = Utils.load_and_split_pdf(mock_uploaded_file)
 
         MockSplitter.assert_called_once_with(chunk_size=1000, chunk_overlap=200, length_function=len)
         MockSplitter.return_value.split_documents.assert_called_once_with(pages)
         mock_remove.assert_called_once()
-        assert result == ["Chunk 1", "Chunk 2"]
+        assert result == chunks
+        # The source is the uploaded file's name, not the temporary path
+        assert result[0].metadata == {"source": "paper.pdf", "page": 0}
 
 
 def test_load_and_split_pdf_raises_on_unreadable_file(mock_uploaded_file):
@@ -126,6 +130,29 @@ def test_format_context_labels_pages():
         Document(page_content="beta", metadata={}),
     ]
     assert Utils.format_context(docs) == "[p. 1] alpha\n\n[p. ?] beta"
+
+
+def test_format_context_names_files_when_there_are_several():
+    """
+    With chunks from more than one file, each label names its file.
+    """
+    docs = [
+        Document(page_content="alpha", metadata={"source": "a.pdf", "page": 0}),
+        Document(page_content="beta", metadata={"source": "b.pdf", "page": 4}),
+    ]
+    assert Utils.format_context(docs) == "[a.pdf, p. 1] alpha\n\n[b.pdf, p. 5] beta"
+    one_file = [Document(page_content="alpha", metadata={"source": "a.pdf", "page": 0})]
+    assert Utils.format_context(one_file) == "[p. 1] alpha"
+
+
+def test_source_label():
+    """
+    A chunk is described by its file and 1-based page.
+    """
+    doc = Document(page_content="x", metadata={"source": "a.pdf", "page": 2})
+    assert Utils.source_label(doc) == "a.pdf, p. 3"
+    assert Utils.source_label(doc, with_file=False) == "p. 3"
+    assert Utils.source_label(Document(page_content="x")) == "p. ?"
 
 
 def test_load_embedding_model():

@@ -9,6 +9,11 @@ EXAMPLE_QUESTIONS = [
     ("🔍", "What are the key findings or conclusions?"),
     ("📊", "Can you elaborate on that?"),
 ]
+COMPARE_QUESTION = ("⚖️", "Compare these documents: how do their aims, methods and findings differ?")
+
+MAX_DOCUMENTS = 10
+TOP_K = 4            # chunks retrieved by similarity alone
+MAX_CONTEXT = 8      # with several files: up to this many chunks, at least one per file
 
 FOOTNOTE = """
 ---
@@ -33,58 +38,77 @@ class DocumentProcessor:
         """
         return (uploaded_file.name, uploaded_file.size)
 
-    def _prepare(self, uploaded_file, embedding_model):
+    def _load(self, uploaded_file, embedding_model):
         """
-        Split and embed a newly uploaded PDF, and start a fresh conversation.
-
-        Streamlit reruns the script on every interaction; the vector store is kept in
-        session state so the PDF is embedded once per upload, not once per question.
+        Split and embed one PDF.
 
         Args:
             uploaded_file: Streamlit uploaded file object
             embedding_model: Loaded sentence transformer model
 
         Returns:
-            bool: True if the document is ready for questions.
+            dict: The file's name and either its chunks and embeddings, or an error.
         """
-        key = self._file_key(uploaded_file)
-        if st.session_state.get("document_key") == key:
-            return True
-
-        with st.spinner("📖 Reading PDF..."):
-            try:
-                chunks = Utils.load_and_split_pdf(uploaded_file)
-            except ValueError as e:
-                st.error(f"❌ {e}")
-                return False
+        try:
+            chunks = Utils.load_and_split_pdf(uploaded_file)
+        except ValueError as e:
+            return {"name": uploaded_file.name, "error": str(e)}
         if not chunks:
-            st.error("❌ Could not extract text from PDF. Scanned PDFs need OCR first.")
-            return False
+            return {"name": uploaded_file.name, "error": "no text could be extracted (scanned PDFs need OCR first)"}
+        embeddings = LocalVectorStore(embedding_model).encode(chunks)
+        return {"name": uploaded_file.name, "chunks": chunks, "embeddings": embeddings}
 
-        with st.spinner("🧮 Embedding the document..."):
+    def _prepare(self, uploaded_files, embedding_model):
+        """
+        Make the vector store match the uploaded files.
+
+        Streamlit reruns the script on every interaction. Each file is split and embedded
+        once and cached in session state; when files are added or removed, the store is
+        rebuilt from the cache without embedding anything again. The conversation is kept,
+        so a follow-up can compare a new file with what was discussed.
+
+        Args:
+            uploaded_files (list): Streamlit uploaded file objects
+            embedding_model: Loaded sentence transformer model
+
+        Returns:
+            list: The files that could not be read, as (name, error) pairs.
+        """
+        cache = st.session_state.setdefault("file_cache", {})
+        keys = [self._file_key(f) for f in uploaded_files]
+        new = [(k, f) for k, f in zip(keys, uploaded_files, strict=True) if k not in cache]
+        for i, (key, uploaded_file) in enumerate(new, 1):
+            with st.spinner(f"📖 Reading and embedding {uploaded_file.name} ({i} of {len(new)})..."):
+                cache[key] = self._load(uploaded_file, embedding_model)
+        for key in list(cache):
+            if key not in keys:
+                del cache[key]
+
+        st.session_state.setdefault("conversation_history", [])
+        st.session_state.setdefault("conversation_sources", [])
+        if st.session_state.get("document_keys") != keys:
             vector_store = LocalVectorStore(embedding_model)
-            vector_store.add_documents(chunks)
-
-        st.session_state.document_key = key
-        st.session_state.vector_store = vector_store
-        st.session_state.conversation_history = []
-        st.session_state.conversation_sources = []
-        return True
+            for key in keys:
+                if "chunks" in cache[key]:
+                    vector_store.add_documents(cache[key]["chunks"], cache[key]["embeddings"])
+            st.session_state.vector_store = vector_store
+            st.session_state.document_keys = keys
+        return [(cache[k]["name"], cache[k]["error"]) for k in keys if "error" in cache[k]]
 
     @staticmethod
     def _show_sources(sources):
         """
-        Show the passages an answer was based on, with their pages.
+        Show the passages an answer was based on, with their files and pages.
 
         Args:
             sources (list): LangChain Document objects retrieved for the question.
         """
+        several = len({doc.metadata.get("source") for doc in sources}) > 1
         with st.expander(f"📚 Sources ({len(sources)} passages)"):
             for doc in sources:
-                page = doc.metadata.get("page")
-                label = f"Page {page + 1}" if isinstance(page, int) else "Page unknown"
                 text = doc.page_content
-                st.markdown(f"**{label}**")
+                label = Utils.source_label(doc, several).replace("p. ", "page ")
+                st.markdown(f"**{label[0].upper()}{label[1:]}**")
                 st.text(text[:600] + "..." if len(text) > 600 else text)
 
     def _answer(self, question, groq_client):
@@ -95,7 +119,11 @@ class DocumentProcessor:
             question (str): The user's question.
             groq_client: Initialized Groq API client
         """
-        sources = st.session_state.vector_store.similarity_search(question, k=4)
+        store = st.session_state.vector_store
+        several = len(store.sources) > 1
+        sources = store.similarity_search(
+            question, k=TOP_K, per_source=1 if several else 0, max_total=MAX_CONTEXT if several else None
+        )
         if not sources:
             st.warning("🤷 No relevant information found. Try rephrasing your question.")
             return
@@ -127,30 +155,45 @@ class DocumentProcessor:
         st.session_state.conversation_history.append((question, answer))
         st.session_state.conversation_sources.append(sources)
 
-    def process_document(self, uploaded_file, groq_client, embedding_model):
+    def process_documents(self, uploaded_files, groq_client, embedding_model):
         """
         Main document processing pipeline with conversation memory
 
         This function orchestrates the entire RAG pipeline:
-        1. Loads, splits and embeds the PDF (once per upload)
+        1. Loads, splits and embeds each PDF (once per upload)
         2. Shows the conversation so far, with the sources of each answer
         3. Answers a new question with retrieved passages and the recent conversation
 
         Args:
-            uploaded_file: Streamlit uploaded file object
+            uploaded_files (list): Streamlit uploaded file objects
             groq_client: Initialized Groq API client
             embedding_model: Loaded sentence transformer model
         """
-        if not self._prepare(uploaded_file, embedding_model):
+        if len(uploaded_files) > MAX_DOCUMENTS:
+            st.warning(f"⚠️ Only the first {MAX_DOCUMENTS} files are used.")
+            uploaded_files = uploaded_files[:MAX_DOCUMENTS]
+
+        failed = self._prepare(uploaded_files, embedding_model)
+        for name, error in failed:
+            st.error(f"❌ {name}: {error}")
+        store = st.session_state.vector_store
+        if not store.documents:
             return
 
-        n_chunks = len(st.session_state.vector_store.documents)
-        st.success(f"✅ Document ready: {n_chunks} chunks")
+        counts = {}
+        for doc in store.documents:
+            counts[doc.metadata.get("source")] = counts.get(doc.metadata.get("source"), 0) + 1
+        if len(counts) == 1:
+            st.success(f"✅ Document ready: {len(store.documents)} chunks")
+        else:
+            listed = ", ".join(f"{name} ({n} chunks)" for name, n in counts.items())
+            st.success(f"✅ {len(counts)} documents ready: {listed}")
         st.header("💬 Ask Your Questions")
 
         # Example questions to help users get started
+        examples = EXAMPLE_QUESTIONS + ([COMPARE_QUESTION] if len(counts) > 1 else [])
         cols = st.columns(2)
-        for i, (icon, text) in enumerate(EXAMPLE_QUESTIONS):
+        for i, (icon, text) in enumerate(examples):
             if cols[i % 2].button(f"{icon} {text}", key=f"example_{i}"):
                 st.session_state.pending_question = text
 
@@ -159,12 +202,13 @@ class DocumentProcessor:
             st.session_state.conversation_sources = []
             st.rerun()
 
-        question = st.chat_input("Ask anything about the document...")
+        question = st.chat_input("Ask anything about the documents..." if len(counts) > 1 else
+                                 "Ask anything about the document...")
         question = question or st.session_state.pop("pending_question", None)
         if question:
             self._answer(question, groq_client)
 
-        exchanges = zip(st.session_state.conversation_history, st.session_state.conversation_sources)
+        exchanges = zip(st.session_state.conversation_history, st.session_state.conversation_sources, strict=True)
         for (q, a), sources in exchanges:
             with st.chat_message("user"):
                 st.write(q)

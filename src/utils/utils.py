@@ -17,7 +17,7 @@ SYSTEM_PROMPT = """You are a document analysis assistant with conversation memor
 4. CLARITY: If a reference is ambiguous, ask for clarification
 5. ACCURACY: Never make up information not in the document or conversation. If the context does not contain the answer, say that the document does not say.
 
-Each passage in the document context starts with its page number, e.g. [p. 3]. Cite the pages you used.
+Each passage in the document context starts with its page number, e.g. [p. 3], or, when several documents are loaded, its file and page, e.g. [smith2020.pdf, p. 3]. Cite the pages you used, and when several documents are loaded, say which document each point comes from.
 
 You maintain context across the conversation while staying grounded in the document."""
 
@@ -68,8 +68,11 @@ class Utils:
         """
         Load an uploaded PDF and return its chunks.
 
+        Each chunk's metadata["source"] is the uploaded file's name (not the temporary
+        path), so answers over several files can say where a passage came from.
+
         Args:
-            uploaded_file: Streamlit uploaded file object (anything with getvalue()).
+            uploaded_file: Streamlit uploaded file object (anything with getvalue() and name).
 
         Returns:
             list: LangChain Document objects, one per chunk.
@@ -81,7 +84,10 @@ class Utils:
             temp_file.write(uploaded_file.getvalue())
             temp_file_path = temp_file.name
         try:
-            return Utils.split_pdf(temp_file_path)
+            chunks = Utils.split_pdf(temp_file_path)
+            for chunk in chunks:
+                chunk.metadata["source"] = uploaded_file.name
+            return chunks
         except Exception as e:
             raise ValueError(f"Could not read the PDF: {e}") from e
         finally:
@@ -92,18 +98,34 @@ class Utils:
         """
         Join retrieved chunks into one context string, each labelled with its page.
 
+        When the chunks come from more than one file, the label also names the file.
+
         Args:
             documents (list): LangChain Document objects.
 
         Returns:
-            str: The chunks separated by blank lines, each starting with "[p. N]".
+            str: The chunks separated by blank lines, each starting with "[p. N]" or
+                "[file, p. N]".
         """
-        parts = []
-        for doc in documents:
-            page = doc.metadata.get("page")
-            label = f"[p. {page + 1}]" if isinstance(page, int) else "[p. ?]"
-            parts.append(f"{label} {doc.page_content}")
-        return "\n\n".join(parts)
+        several = len({doc.metadata.get("source") for doc in documents}) > 1
+        return "\n\n".join(f"[{Utils.source_label(doc, several)}] {doc.page_content}" for doc in documents)
+
+    @staticmethod
+    def source_label(doc, with_file=True):
+        """
+        Describe where a chunk comes from.
+
+        Args:
+            doc: A LangChain Document object.
+            with_file (bool): Include the file name, if the chunk has one.
+
+        Returns:
+            str: e.g. "p. 3" or "smith2020.pdf, p. 3" ("p. ?" if the page is unknown).
+        """
+        page = doc.metadata.get("page")
+        label = f"p. {page + 1}" if isinstance(page, int) else "p. ?"
+        source = doc.metadata.get("source")
+        return f"{source}, {label}" if with_file and source else label
 
     @staticmethod
     def build_messages(context, question, conversation_history):
