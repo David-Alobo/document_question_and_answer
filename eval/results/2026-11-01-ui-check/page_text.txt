@@ -1,0 +1,42 @@
+🔧 Setup
+
+Get a free Groq API key at: https://console.groq.com
+
+Groq API Key
+
+Choose Model:
+
+Llama 3.1 8B (Fast) - 131k context
+💬 Conversation Settings
+
+Max conversation exchanges to remember:
+
+5
+0
+20
+Deploy
+📄 Document Q&A with Conversation Memory
+
+Upload a PDF and have a conversation about it. Every answer shows the passages it used.
+
+Choose a PDF file
+
+Drag and drop file here
+Limit 200MB per file • PDF
+Browse files
+1912.01214.pdf
+0.7MB
+
+✅ Document ready: 49 chunks
+
+💬 Ask Your Questions
+
+📋 What is this document about?
+
+🔍 What are the key findings or conclusions?
+
+👥 Who are the main authors or people mentioned?
+
+📊 Can you elaborate on that?
+
+© 2025 Monstrous. For more information, visit our website.

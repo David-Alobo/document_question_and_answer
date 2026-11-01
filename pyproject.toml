@@ -32,3 +32,12 @@ testpaths = ["test"]
 [tool.ruff]
 line-length = 120
 extend-exclude = ["src/agents"]
+
+# CPU-only torch: the app runs a small embedding model, so the CUDA build (~3 GB) is not needed
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform != 'darwin'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

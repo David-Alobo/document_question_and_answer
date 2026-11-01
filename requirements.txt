@@ -168,43 +168,6 @@ numpy==2.3.2 ; python_full_version >= '3.11'
     #   scipy
     #   streamlit
     #   transformers
-nvidia-cublas-cu12==12.6.4.1 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via
-    #   nvidia-cudnn-cu12
-    #   nvidia-cusolver-cu12
-    #   torch
-nvidia-cuda-cupti-cu12==12.6.80 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cuda-nvrtc-cu12==12.6.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cuda-runtime-cu12==12.6.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cudnn-cu12==9.5.1.17 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cufft-cu12==11.3.0.4 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cufile-cu12==1.11.1.6 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-curand-cu12==10.3.7.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cusolver-cu12==11.7.1.2 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cusparse-cu12==12.5.4.2 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via
-    #   nvidia-cusolver-cu12
-    #   torch
-nvidia-cusparselt-cu12==0.6.3 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-nccl-cu12==2.26.2 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-nvjitlink-cu12==12.6.85 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via
-    #   nvidia-cufft-cu12
-    #   nvidia-cusolver-cu12
-    #   nvidia-cusparse-cu12
-    #   torch
-nvidia-nvtx-cu12==12.6.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
 orjson==3.11.1 ; platform_python_implementation != 'PyPy'
     # via langsmith
 packaging==25.0
@@ -298,10 +261,8 @@ scipy==1.16.1 ; python_full_version >= '3.11'
     #   sentence-transformers
 sentence-transformers==5.0.0
     # via document-question-and-answer
-setuptools==80.9.0 ; python_full_version >= '3.12' or (platform_machine == 'x86_64' and sys_platform == 'linux')
-    # via
-    #   torch
-    #   triton
+setuptools==80.9.0
+    # via torch
 six==1.17.0
     # via python-dateutil
 smmap==5.0.2
@@ -329,7 +290,19 @@ tokenizers==0.21.4
     # via transformers
 toml==0.10.2
     # via streamlit
-torch==2.7.1
+torch==2.14.1 ; python_full_version < '3.11' and sys_platform == 'darwin'
+    # via
+    #   document-question-and-answer
+    #   sentence-transformers
+torch==2.14.1+cpu ; python_full_version < '3.11' and sys_platform != 'darwin'
+    # via
+    #   document-question-and-answer
+    #   sentence-transformers
+torch==2.15.0 ; python_full_version >= '3.11' and sys_platform == 'darwin'
+    # via
+    #   document-question-and-answer
+    #   sentence-transformers
+torch==2.15.0+cpu ; python_full_version >= '3.11' and sys_platform != 'darwin'
     # via
     #   document-question-and-answer
     #   sentence-transformers
@@ -342,8 +315,6 @@ tqdm==4.67.1
     #   transformers
 transformers==4.54.1
     # via sentence-transformers
-triton==3.3.1 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
 typing-extensions==4.14.1
     # via
     #   aiosignal
