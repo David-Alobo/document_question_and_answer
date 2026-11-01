@@ -1,0 +1,309 @@
+n,question_id,question,references,answer,your_label (correct / partially_correct / incorrect)
+1,dd76130ec5fac477123fe8880472d03fbafddef6,What is the state of the art described in the paper?,"ELIZA,  PARRY, A.L.I.C.E., Cleverbot","The document does not explicitly mention the current state of the art. However, based on the context provided, it appears that the paper discusses the concept of Law-Governed Interaction (LGI) and its application to distributed systems, particularly multi-party conversation systems.
+
+[p. 9] mentions Minsky's work on LGI, which was published in 1987 [22]. The text then describes how Minsky conducted further work and experimentation based on those ideas [23-24]. This suggests that the paper is focused on presenting a conceptual model for understanding interaction laws in distributed systems, rather than providing an overview of current state-of-the-art research.
+
+It's worth noting that the document does not provide any information about recent developments or advancements in this field. If you're looking for more up-to-date information on the state of the art, I would recommend consulting other sources.",
+2,6411622cc8b2fbedbfa468859d453596d3bd2f03,What objective function is used in the GAN?,language modeling objective,"According to [p. 2], the discriminator's objective is ""to score the quality of the creative text."" This implies that the objective function used in the GAN is related to evaluating the quality of the generated text.
+
+However, I'd like to clarify what you mean by ""objective function"" in this context. Are you referring to the specific mathematical formulation or the overall goal of the discriminator?",
+3,c7eb71683f53ab7acffd691a36cad6edc7f5522e,Do they report results only on English data?,Yes || UNANSWERABLE,"Based on the provided document context, I do not see any information that explicitly states whether the reported results are limited to English data or not. However, I can try to provide some insight based on the references.
+
+[p. 15] mentions a paper by Sienˇcnik (2015) [47], which is titled ""Adapting word 2vec to named entity recognition."" The title suggests that the work may be focused on adapting word embeddings for a specific task, but it does not explicitly state that the results are limited to English data.
+
+[p. 15] also mentions another paper by Shi et al. (2017) [48], which is titled ""Jointly learning word embeddings and latent topics."" This paper appears to be related to information retrieval, and while it may involve English text, there is no explicit statement that the results are limited to English data.
+
+To answer your question accurately, I would need more specific information about the dataset or corpora used in these papers. However, based on the provided context, I can only say that the document does not explicitly state whether the reported results are limited to English data or not.
+
+Would you like me to clarify anything else?",
+4,e949b28f6d1f20e18e82742e04d68158415dc61e,What participating systems had better results than ones authors submitted?,"For SLC task : Ituorp, ProperGander and YMJA  teams had better results.
+For FLC task: newspeak and Antiganda teams had better results.","Based on Table 2 [p. 3], our system, MIC-CIS, is ranked at 4th position in FLC task and 3rd in SLC task. However, to answer your question about the participating systems with better results, we can see that ltuorp is ranked higher than our system in both tasks: it's ranked 1st in FLC and 2nd in SLC.
+
+In FLC, ltuorp has a Team F1 score of .6323, which is higher than MIC-CIS' score. In SLC, ltuorp has a Team F1 score of .2488, but ProperGander has an even lower score of .2267, and our system's score is higher than both.
+
+So, to answer your question directly: ltuorp had better results in FLC task, while in SLC task, MIC-CIS (our system) had a better result than ProperGander.",
+5,6c96e910bd98c9fd58ba2050f99b9c9bac69840a,how many training samples do you have for training?,UNANSWERABLE || UNANSWERABLE,"Based on the document context [p. 4], I see that the authors mention performing a 10-fold cross-validation with the SVM classifier and achieving 76.26% accuracy. However, they don't explicitly state the number of training samples used.
+
+But if we look at the previous section [p. 3], it mentions ""Restricting the computation of the features to the observation period only ensures that there is no data leakage."" This implies that the authors are concerned about having a sufficient amount of data for training and testing, but they don't provide an exact number.
+
+It's also worth noting that the authors mention using Quora data as their dataset, which has a large number of questions and answers. However, without more specific information, I couldn't find any direct answer to your question about the number of training samples.
+
+Document does not say.",
+6,0ab3df10f0b7203e859e9b62ffa7d6d79ffbbe50,What evaluation metric is used?,"average classification accuracy || average classification accuracy, execution performance","Based on the document context, it appears that the evaluation metric used is classification accuracy, specifically for classifying text by its specific language label. This can be seen in Table 2: LID Accuracy Results, where various models are compared based on their average classification accuracy results.
+
+[p. 3] states ""The accuracies reported are for classifying a piece of text by its speciﬁc language label.""",
+7,45a5961a4e1d1c22874c4918e5c98bd3c0a670b3,How many question types do they find in the datasets analyzed?,seven  || 7,"According to Figure 1 on page [p. 3], the distributions of question types are shown as a percentage. The graph shows that there are 5 question types: What, How, Who, When, and Where.
+
+However, I don't see any information about the total number of question types found in the datasets analyzed. It only shows the distribution of each type. If you'd like to know more about this, please let me know!",
+8,fd2c6c26fd0ab3c10aae4f2550c5391576a77491,Do they report results only on English data?,Yes || UNANSWERABLE,"Based on the document context, I do not see any information that explicitly states whether the reported results are only on English data or not. However, since the dataset is from Twitter, which is a platform where users can post in multiple languages, it's possible that the results may include non-English data as well.
+
+But to be more precise, the document does mention that ""Twitter is against polishing this many tweets"" and that they retrieved tweets by tweet IDs. This suggests that the dataset might contain tweets in multiple languages. However, without explicit information on language filtering or processing, I cannot confirm whether the reported results are only on English data.
+
+So, my answer would be: The document does not say.",
+9,876700622bd6811d903e65314ac75971bbe23dcc,What dataset did they use?, high-quality datasets  from SemEval-2016 “Sentiment Analysis in Twitter” task ||  SemEval-2016 “Sentiment Analysis in Twitter”,"According to [p. 3], the datasets used are those of Subtasks A and C, available at http://alt.qcri.org/semeval2016/task4/. Additionally, on [p. 2], it mentions that the data is in several styles (tweets, paragraph-sized reviews), but doesn't specify which dataset they're referring to.
+
+However, based on the context of the document, it seems that the primary focus is on Twitter sentiment evaluation, as mentioned on [p. 4] where it talks about the ""Twitter_Sentiment_Evaluation"" and references a URL for downloading data (https://github.com/balikasg/SemEval2016-Twitter_Sentiment_Evaluation).
+
+So, to answer your question, they used datasets related to Twitter sentiment evaluation, specifically Subtasks A and C of the SemEval 2016 task 4.",
+10,7d2f812cb345bb3ab91eb8cbbdeefd4b58f65569,Which two pairs of ERPs from the literature benefit from joint training?,"Answer with content missing: (Whole Method and Results sections) Self-paced reading times widely benefit ERP prediction, while eye-tracking data seems to have more limited benefit to just the ELAN, LAN, and PNP ERP components.
+Select:
+- ELAN, LAN
+- PNP ERP || UNANSWERABLE","According to [p. 1], we find that ""two pairs of ERPs previously identified in the literature as being related to each other beneﬁt from joint training."" However, it does not specify which two pairs.
+
+We also know from [p. 5] that there are relationships between ERP components, and some pairs benefit from joint training. Specifically, we see that ""the LAN is paired with the P600, EPNP, and PNP"" and ""the ELAN with the N400, EPNP, PNP, and P600"". However, it does not explicitly state which two pairs are mentioned in the literature.
+
+To clarify, could you please specify what you mean by ""from the literature""? Are you referring to a specific study or paper that is mentioned in the document?",
+11,6a219d7c58451842aa5d6819a7cdf51c55e9fc0f,What domains are covered in the corpus?,No specific domain is covered in the corpus.,"According to the document, the corpus is based on Common Voice (Ardila et al., 2019), which includes a variety of domains. However, it does not explicitly mention specific domains.
+
+[p. 1] In this paper, we introduce CoV oST, a multilingual ST corpus based on Common V oice (Ardila et al., 2019) for 11 languages into English...
+
+It is mentioned that the corpus includes ""additional out-of-domain test sets"" [p. 1], but it does not specify what these domains are.
+
+If you could provide more context or clarify which aspect of the domain you're interested in, I'd be happy to help further!",
+12,f1e90a553a4185a4b0299bd179f4f156df798bce,What were the baselines?,"CopyRNN (Meng et al., 2017), Multi-Task (Ye and Wang, 2018), and TG-Net (Chen et al., 2018b) || CopyRNN BIBREF0, KEA BIBREF4 and Maui BIBREF8, CopyRNN*","Based on the provided document context, I did not find any information about specific baselines. However, it is mentioned that ""We elaborate the data pre-processing and evaluation protocols used in this work in Appendix E."" This suggests that there might be more information about the baselines in the appendix.
+
+Could you please clarify what you mean by ""baselines""? Are you referring to the existing models compared with in Section 5? If so, I can try to provide more information.",
+13,cee8cfaf26e49d98e7d34fa1b414f8f31d6502ad,What is the architecture of their model?,"follow the architecture in berard2018end, but have 3 decoder layers like that in pino2019harnessing","According to the document, on page [p. 4], it's mentioned that ""Our ASR and ST models follow the architecture in B´erard et al. (2018), but have 3 decoder layers like that in Pino et al. (2019)"". 
+
+For MT, it says they use a Transformer base architecture (Vaswani et al., 2017), but with modifications: ""with 3 encoder layers, 3 decoder layers and 0.3 dropout"".
+
+So, the architecture of their model is a combination of B´erard et al.'s architecture for ASR and ST models, and Vaswani et al.'s Transformer base architecture for MT, with some modifications.",
+14,d9980676a83295dda37c20cfd5d58e574d0a4859,what data simulation techniques were introduced?,"copy, copy-marked, copy-dummies || copy, copy-marked, copy-dummies","According to the document context [p. 1], it states that ""We also introduce new data simulation techniques that are almost as effective, yet much cheaper to implement.""
+
+Additionally, on page [p. 10], it mentions that ""In future work, we plan to investigate other cheap ways to generate artificial data."" However, this is mentioned in the context of future work and not specifically about the techniques introduced in this paper.
+
+Therefore, based on the provided information, I can conclude that the document introduces new data simulation techniques that are almost as effective as back-translation but cheaper to implement.",
+15,511517efc96edcd3e91e7783821c9d6d5a6562af,Which multiple datasets did they train on during joint training?,"BF, BA, SFU and Sherlock || BioScope Abstracts, SFU, and BioScope Full Papers","According to [p. 6], Figure 5 contains the results for speculation detection and scope resolution for models trained jointly on multiple datasets, but it doesn't explicitly mention which datasets were used. However, based on the text in [p. 3] that mentions ""contrary to results observed on benchmark GLUE tasks"", I can infer that they are referring to the same datasets mentioned earlier in the paper.
+
+Unfortunately, the document does not provide a clear answer to your question. It only mentions that training on multiple datasets helps the performance of all models on each dataset, but it doesn't specify which datasets were used for joint training.",
+16,fde700d5134a9ae8f7579bea1f1b75f34d7c1c4c,how was the speech collected?,The speech was collected from respondents using an android application. || Android application,"According to [p. 1], the speech collection process involved a respondent installing an Android application on their personal device and recording several phrases in different sessions. The application performed various checks on each utterance, and if it passed all of them, the respondent was directed to the next phrase. For more information about the data collection scenario, please refer to [5].",
+17,79a44a68bb57b375d8a57a0a7f522d33476d9f33,Which qualitative metric are used for evaluation?," Relation Generation (RG) , Content Selection (CS),  Content Ordering (CO) || Relation Generation (RG), Content Selection (CS), Content Ordering (CO)","According to the document context, on page 7 it is mentioned that ""We evaluate our model through two types of metrics. The second category designed by [39] is more qualitative.""
+
+So, the qualitative metric used for evaluation is the one designed by reference [39]. However, the specific name of this metric is not explicitly stated in the provided snippet.
+
+Would you like me to clarify or expand on this answer?",
+18,5cb610d3d5d7d447b4cd5736d6a7d8262140af58,How do they perform multilingual training?,Multilingual training is performed by randomly alternating between languages for every new minibatch || by randomly alternating between languages for every new minibatch,"According to the document, on page [p. 3], during multilingual training, the parameters of the entire MSD (auxiliary-task) decoder are shared across languages. They also experiment with random groupings of two to three languages and randomly alternate between languages for every new minibatch. Additionally, they do not pass any information to the auxiliary decoder as to the source language of the signal it is receiving, assuming abstract morpho-syntactic features are shared across languages.
+
+They also mention that after 20 epochs of multilingual training, they perform 5 epochs of monolingual finetuning for each language.",
+19,9b7655d39c7a19a23eb8944568eb5618042b9026,Which toolkits do they use?,"BIBREF17, BIBREF18, TensiStrength BIBREF13, TwitterNLP BIBREF6, BIBREF19, CogComp-NLP BIBREF20, Stanford NLP NER BIBREF21 || BIBREF23, BIBREF17, BIBREF18, BIBREF19, BIBREF24, BIBREF25, BIBREF26","According to the document context [p. 2], the authors mention that ""Among commercial NLP toolkits (e.g., AYLIEN; MS Text Analytics; IBM Watson NLU),"". However, it seems like they are just providing examples of commercial NLP toolkits.
+
+Later on [p. 3], the authors specifically mention that they used Rosette Text Analytics, Google Cloud, TensiStrength, and a crowdworker (mTurk) for their sentiment analysis experiments.
+
+So, to answer your question, the tools used by the authors are:
+
+* Rosette Text Analytics
+* Google Cloud
+* TensiStrength
+* mTurk (crowdworkers)
+
+Note that they also mention TwitterNLP [p. 2], but it's not clear if they actually used it in their experiments or just mentioned it as an exception since it was the only one trained on tweets.",
+20,e9cfbfdf30e48cffdeca58d4ac6fdd66a8b27d7a,How were crowd workers instructed to identify important elements in large document collections?,"provide only a description of the document cluster's topic along with the propositions || They break down the task of importance annotation to the level of single propositions and obtain a score for each proposition indicating its importance in a document cluster, such that a ranking according to the score would reveal what is most important and should be included in a summary.","According to the document context [p. 1], the authors mention that their approach ""allows us to efficiently determine important elements in large document collections."" However, they don't explicitly state how crowd workers were instructed to do so.
+
+But, on [p. 3], it is mentioned that the tasks are simple and can be done quickly because workers receive only a description of the document cluster's topic along with the propositions (single sentences or phrases). This suggests that the instructions for identifying important elements likely involved providing this minimal context to the crowd workers.
+
+It doesn't explicitly state how the importance annotation task was performed, but it implies that the workers were given some guidance on what constitutes an important element based on the description of the document cluster's topic.",
+21,ef396a34436072cb3c40b0c9bc9179fee4a168ae,What tasks do they experiment with?,text classification and text semantic matching || text classification and text semantic matching,"According to the document context [p. 5], it is mentioned that ""For some simple tasks such as text classification, meta network will integrate useful semantic information into the generation process of compositional function."" Additionally, on [p. 6], it is stated that ""For more complicated tasks such as semantic matching, a well-grounded understanding of the syntactic structure is crucial.""
+
+Therefore, based on the document context, they experiment with two types of tasks:
+
+1. Text classification
+2. Semantic matching",
+22,37f8c034a14c7b4d0ab2e0ed1b827cc0eaa71ac6,What metrics are used for evaluation?,"translation probabilities, Labeled Attachment Scores (LAS) || accuracy, Labeled Attachment Scores (LAS)","According to the document context, the metrics used for evaluation in Tables 2 and 4 are LAS (Label Accuracy Score) [p. 6] and LAS scores are also mentioned on page [p. 7]. Additionally, Figure 2 shows accuracy and LAS evaluated at each checkpoint [p. 6].
+
+It seems that LAS is a primary metric used for evaluation in this document.",
+23,85590bb26fed01a802241bc537d85ba5ef1c6dc2,How do they control for annotation artificats?," we use several of the MCQA baseline models first introduced in BIBREF0 || Choice-Only model, which is a variant of the well-known hypothesis-only baseline, Choice-to-choice model, tries to single out a given answer choice relative to other choices, Question-to-choice model, in contrast, uses the contextual representations for each question and individual choice and an attention model Att model to get a score","The document doesn't explicitly mention how they control for annotation artifacts. However, it does mention that they perform crowd-sourcing to obtain conservative estimates of human performance on their main evaluation sets (p. 3). This suggests that they are trying to mitigate the potential effects of annotation artifacts by using a conservative estimate of human performance.
+
+It's also worth noting that the document mentions that they use a standard protocol for evaluating model performance, which is based on the work of Nangia and Bowman (2019) (p. 3). This protocol likely includes some measures to control for annotation artifacts, but the specific details are not provided in the document.
+
+To clarify, I would like to ask: Are you referring to the evaluation sets where they estimate human performance by having crowd-workers answer a random sample of test questions?",
+24,2317ca8d475b01f6632537b95895608dc40c4415,"How is a ""chunk of posts"" defined in this work?",chunk consists of a sorted sequence of tweets labeled by the label of its corresponding account || sequence of $s$ tweets,"According to [p. 2], a chunk is defined as a sequence of tweets belonging to one group, where each tweet in the chunk is represented by a vector v ∈I Rd , which is the concatenation of a set of features' vectors.
+
+Additionally, on [p. 3], it's mentioned that the input representation involves sorting tweets by date and splitting them into chunks ck= ⟨ck1,...,ck n⟩, where each cki contains stweets. This suggests that a chunk is a group of tweets that are chronologically close to each other.
+
+It seems that the definition of a ""chunk"" in this work refers to a grouping of tweets based on their temporal proximity, rather than any specific semantic or thematic criteria.",
+25,4c07c33dfaf4f3e6db55e377da6fa69825d0ba15,What is the dimension of the embeddings?,300 || 300,"According to the document context [p. 3], it is stated that ""Word2vec representation is far better, advanced and a recent technique which functions by mapping words to a 300 dimensional vector representations.""
+
+Therefore, the dimension of the Word2vec embeddings is 300 dimensions.",
+26,23b2901264bda91045258b5d4120879ae292e950,What are method improvements of F1 for paraphrase identification?,Using DSC loss improves the F1 score by +0.58 for MRPC and +0.73 for QQP || +0.58,"According to the document [p. 6], it is mentioned that ""We find that replacing the training objective with DSC introduces performance boost for both settings, +0.58 for MRPC and +0.73 for QQP."" This suggests that the method improvement of F1 score for paraphrase identification is achieved by using DSC as the training objective.
+
+Additionally, on [p. 12], it is stated that ""Experiments are conducted on two PI datasets: MRPC11 and QQP12"" which implies that the improvements in F1 scores are observed on these two datasets.
+
+Therefore, I would say that the method improvement of F1 for paraphrase identification is achieved by using DSC as the training objective, resulting in a boost of +0.58 for MRPC and +0.73 for QQP.",
+27,c7486d039304ca9d50d0571236429f4f6fbcfcf7,which non-english language was the had the worst results?,Turkish,"Based on the document context [p. 4], it appears that you are referring to the percentages of misclassifications due to non-English words in each language.
+
+According to the text, Russian reviews had the worst results with only 10.71% of misclassifications caused by non-English words.
+
+However, I would like to clarify what you mean by ""worst results"". Are you referring to the percentage of misclassifications due to non-English words or something else?",
+28,1b1a30e9e68a9ae76af467e60cefb180d135e285,How big is their created dataset?,"353 conversations from 40 speakers (11 nurses, 16 patients, and 13 caregivers), we build templates and expression pools using linguistic analysis","According to [p. 3], the dataset comprises a total of 353 conversations from 40 speakers.
+
+They also mention that they randomly sampled a seed dataset consisting of 1,200 turns for linguistic characterization in [p. 4]. However, it seems that this is not the size of their entire created dataset, but rather a subset used for analysis.",
+29,a5e49cdb91d9fd0ca625cc1ede236d3d4672403c,What is the architecture of the span detector?,adopt a multi-turn answer module for the span detector BIBREF1 || UNANSWERABLE,"Based on the document context [p. 2] and [p. 3], I can answer your question.
+
+The architecture of the span detector is described in detail on page 3. It uses a multi-turn answer module, which is adopted from (Liu et al., 2018b). The state at each time step t is defined by st = GRU(st−1,xt), where xt is computed from the previous state st−1 and memory M.
+
+The span detector also uses a bilinear function to find the begin and end point of answer spans at each reasoning step t∈{0,1,...,T −1}:
+
+Pbegin
+t = softmax(stW2M) (1)
+Pend
+t = softmax(stW3M)4. (2)
+
+The final prediction is the average of each time step: Pbegin = 1
+T
+∑
+t Pbegin
+t ,Pend = 1
+T
+∑
+t Pend
+t .
+
+This information can be found on page 3, specifically in the section ""Span detector"" starting from the first paragraph.",
+30,d3aa0449708cc861a51551b128d73e11d62207d2,What they use in their propsoed framework?,"break the relation names into word sequences,  relation-level and word-level relation representations, bidirectional LSTMs (BiLSTMs),  residual learning method || break the relation names into word sequences for question-relation matching, build both relation-level and word-level relation representations, use deep bidirectional LSTMs (BiLSTMs) to learn different levels of question representations, residual learning method for sequence matching, a simple KBQA implementation composed of two-step relation detection","Based on the document context, it appears that you are referring to the KBQA system proposed by the authors.
+
+[p. 9] mentions that ""our model could be integrated into the decoder in (Liang et al., 2016), to provide better sequence prediction."" This suggests that the authors are proposing to use a combination of their HR-BiLSTM model and the decoder from Liang et al. (2016) as part of their proposed framework.
+
+However, I would like some clarification on what you mean by ""use in their proposed framework"". Are you asking about the specific components or techniques used in the proposed framework?",
+31,435570723b37ee1f5898c1a34ef86a0b2e8701bb,Which translation systems do they compare against?,"hierarchical phrase-based system BIBREF29, appropriate additional baseline would be to mark translation rules with these indicator functions but without the scores, akin to identifying rules with phrases in them (Baseline + SegOn) ||  English-Spanish MT system ","Based on the document context [p. 7], it is mentioned that ""Modern phrase-based translation systems are faced with a large number of possible segmentations of a source-language sentence during decoding, and all segmentations are considered equally likely (Koehn et al., 2003)"". However, there is no explicit mention of which specific translation systems they compare against.
+
+To clarify, I would like to ask: Are you referring to the comparison with the Bayesian model proposed by Hermann et al. (2012) or something else?",
+32,ef7212075e80bf35b7889dc8dd52fcbae0d1400a,Why are current ELS's not sufficiently effective?,"Linked entities may be ambiguous or too common || linked entities extracted from ELS's have issues because of low precision rates BIBREF11 and design challenges in training datasets BIBREF12 . These issues can be summarized into two parts: ambiguity and coarseness., the linked entities may also be too common to be considered an entity.","According to [p. 3], despite its usefulness, linked entities extracted from ELS's have issues because of low precision rates and design challenges in training datasets. Specifically, the document mentions that there are two main problems: ambiguity and coarseness.
+
+Ambiguity is a problem because the extracted entities may be ambiguous, as seen in the example where ""South Korean"" can refer to both a person and a language. In fact, the authors found that 71.0% of the top 100 entities and 53.6% of the entities picked at random have disambiguation pages in Wikipedia.
+
+Coarseness is another issue because the linked entities may be too common to be considered an entity, which can lead to irrelevant information being included in the summary.
+
+So, to answer your question, current ELS's are not sufficiently effective due to these two issues: ambiguity and coarseness.",
+33,8c48c726bb17a17d70ab29db4d65a93030dd5382,How much data is needed to train the task-specific encoder?,"57,505 sentences || 57,505 sentences","The document does not mention a specific amount of data required to train the task-specific encoder. However, it does mention that word embeddings were initialized with 300d GloVe vectors trained on common crawl data (p. 5).
+
+It also mentions that the authors used batch sizes of 16 and fine-tuned the pre-trained sentence encoder parameters during training (p. 6). But there is no explicit information about the amount of data needed to train the task-specific encoder.
+
+I would like to clarify if you are referring to a specific type of data or context in which the task-specific encoder is being trained.",
+34,bc16ce6e9c61ae13d46970ebe6c4728a47f8f425,What is the average length of dialog?,4.49 turns || 4.5 turns per dialog (8533 turns / 1900 dialogs),"To answer your question, I'll need to refer to Section 6. Dataset Properties [p. 3]. According to Table 1 in that section, we have:
+
+* Training dialogs: 950
+* Development dialogs: 285
+* Testing dialogs: 665
+
+We also know the total number of turns for each split:
+* Training dialogs: 4249 turns
+* Development dialogs: 1258 turns
+* Testing dialogs: 3026 turns
+
+To calculate the average length of a dialog, we need to divide the total number of turns by the total number of dialogs. Let's do that:
+
+Total turns = 4249 + 1258 + 3026 = 8523
+Total dialogs = 950 + 285 + 665 = 1900
+
+Now, let's calculate the average length of a dialog:
+Average length = Total turns / Total dialogs ≈ 8523 / 1900 ≈ 4.49 turns per dialog
+
+So, according to our dataset, the average length of a dialog is approximately 4.49 turns.
+
+Please note that this calculation assumes that each dialog has an equal number of turns, which might not be the case in reality. However, based on the provided data, we can estimate the average length of a dialog as approximately 4.49 turns.",
+35,d571e0b0f402a3d36fb30d70cdcd2911df883bc7,Is the system tested on low-resource languages?,Yes || Yes,"According to [p. 1], the abstract mentions that ""the availability of multilingual pretrained models enables zero-shot transfer of NLP tasks from high resource languages to low resource ones."" However, it does not explicitly state whether the system is tested on low-resource languages.
+
+[p. 4] mentions that Hindi (hi) is considered a low-resource language, and [p. 1] states that the goal of the work is to transfer an existing pretrained model from English to other languages, including those with limited computational resources. This suggests that the system may be tested on low-resource languages.
+
+However, I would like to clarify: when you say ""the system"", do you mean the foreign BERT BASE and LARGE models obtained through the proposed approach?",
+36,a15bc19674d48cd9919ad1cf152bf49c88f4417d,what corpus is used to learn behavior?,DSTC2 || The manual transcriptions of the DSTC2 training set ,"According to the document context, [p. 2] states that ""A solution is to transform the static corpus into a dynamic tool: a user simulator. The user simulator (US) is trained on a dialogue corpus to learn what responses a real user would provide in a given dialogue context.""
+
+So, the corpus used to learn behavior is a ""dialogue corpus"".",
+37,eda4869c67fe8bbf83db632275f053e7e0241e8c,Which dataset do they use?,"UNANSWERABLE ||  Paraphrase Database (PPDB) ,  book corpus || UNANSWERABLE","The document does not mention a specific dataset used by the authors. It only mentions that in a weakly supervised setup, a huge labeled dataset can be created for building data-hungry deep learning models [p. 4]. 
+
+However, it is mentioned that Twitter provides a platform for users to interact with other users and that there is no related work on computing unsupervised tweet representation by exploiting user profile attributes like profile picture, user biography, and set of followers, and social interactions [p. 4]. But this does not imply the use of any specific dataset.
+
+It's worth noting that the document mentions several research papers, but it does not mention a specific dataset used in those papers either.",
+38,26126068d72408555bcb52977cd669faf660bdf7,What are the qualitative experiments performed on benchmark datasets?,"Spearman correlation values of GM_KL model evaluated on the benchmark word similarity datasets.
+Evaluation results of GM_KL model on the entailment datasets such as entailment pairs dataset created from WordNet, crowdsourced dataset of 79 semantic relations labelled as entailed or not and annotated distributionally similar nouns dataset. || Given a query word and component id, the set of nearest neighbours along with their respective component ids are listed","According to Table 1 in the document context [p. 3], the qualitative results of GM KL are shown, but it does not explicitly mention what type of experiments these results represent.
+
+However, based on the context and the tables provided later in the document, I can infer that the qualitative experiments performed on benchmark datasets involve evaluating the performance of the proposed GM KL model on various word similarity and entailment tasks. 
+
+The specific details about the qualitative experiments are not explicitly mentioned in Table 1, but we can see the results of the quantitative experiments (Spearman correlation scores) in Table 3 [p. 5] for word similarity datasets and Table 4 [p. 4] for entailment datasets.
+
+If you could provide more context or clarify what specific type of qualitative experiment you are referring to, I would be happy to try and assist further.",
+39,52f8a3e3cd5d42126b5307adc740b71510a6bdf5,What tasks were evaluated?,"ReviewQA's test set || Detection of an aspect in a review, Prediction of the customer general satisfaction, Prediction of the global trend of an aspect in a given review, Prediction of whether the rating of a given aspect is above or under a given value, Prediction of the exact rating of an aspect in a review, Prediction of the list of all the positive/negative aspects mentioned in the review, Comparison between aspects, Prediction of the strengths and weaknesses in a review","According to Table 1 on page [p. 5], the following tasks were evaluated:
+
+1. Detection of an aspect in a review.
+2. Prediction of the customer general satisfaction.
+3. Prediction of the global trend of an aspect in a given review.
+4. Prediction of whether the rating of a given aspect is above or under a given value.
+5. Question measures the capability of a model to filter positive and negative information (this one is not explicitly listed as a task, but it's mentioned on page [p. 5] as a measure).
+6. Comparison between aspects.
+7. Prediction of the strengths and weaknesses in a review.
+8. What is the best aspect rated in this comment?
+
+However, I noticed that there are actually more tasks described in the document context. The text mentions ""the 8 tasks evaluated in ReviewQA"" but only lists 7 specific tasks. It seems that task #5 mentioned above might be an additional one.
+
+To clarify, could you please confirm which tasks you would like me to focus on?",
+40,1bb7eb5c3d029d95d1abf9f2892c1ec7b6eef306,what was their character error rate?,"2.49% for  layer-wise training, 2.63% for distillation, 6.26% for transfer learning. || Their best model achieved a 2.49% Character Error Rate.","According to [p. 5], the performance metric of the system in Mandarin is reported with ""character error rate (CER)"". However, it does not provide a specific value for the character error rate.
+
+It seems that you are referring to the performance of the model after training with CE loss and then employing sMBR loss to further improve its performance. If so, I couldn't find any information about the actual character error rate achieved by this model in the provided document context.",
+41,c0e341c4d2253eb42c8840381b082aae274eddad,What is te core component for KBQA?,answer questions by obtaining information from KB tuples  || hierarchical matching between questions and relations with residual learning,"Based on the document context, I can answer your question.
+
+According to [p. 6], ""This section describes our KBQA pipeline system."" and [p. 1] mentions that ""The main focus of this work is to improve the relation detection subtask and further explore how it can contribute to the KBQA system.""
+
+So, the core component for KBQA, as described in the document, is the relation detection subtask.
+
+However, if I had to pinpoint a specific component or module within the KBQA pipeline, I would say that it's the ""Entity Re-Ranking"" step (also known as the first-step relation detection), which is described in Algorithm 1 on [p. 6].
+
+Please let me know if you'd like me to clarify anything further!",
+42,1329280df5ee9e902b2742bde4a97bc3e6573ff3,Is datasets for sentiment analysis balanced?,No,"The document does not explicitly state whether the dataset used for sentiment analysis is balanced or not. However, it mentions on [p. 3] that in future work, the authors plan to use a crowdworker-labeled dataset to train a new machine-learning based NLP system for tweet analysis and ""ensure that the training data is balanced among classes."" This implies that they recognize the importance of balancing the dataset but does not provide information about the current dataset used in their experiments.
+
+To clarify, would you like me to know more about the specific dataset used in this study or are you asking if the authors plan to balance the dataset in future work?",
+43,ed2eb4e54b641b7670ab5a7060c7b16c628699ab,Which of the three pretraining tasks is the most helpful?,SR || SR,"Based on the document context, it seems that you're referring to Table 4 on page [p. 8]. According to this table, Sentence Reordering (SR) is consistently shown to be the most effective pre-training objective for abstractive summarization.
+
+In fact, when using SR as the pre-training objective and adding more data (i.e., GIAG-CM), our model achieves the highest ROUGE-2 scores on both CNNDM and NYT. This suggests that SR is the most helpful among the three pre-training tasks mentioned in the document.
+
+However, I'd like to clarify which three pre-training tasks you're referring to. The document mentions Sentence Reordering (SR), Next Sentence Generation (NSG), and Masked Document Generation (MDG) as the pre-training objectives being compared.",
+44,de5b6c25e35b3a6c5e40e350fc5e52c160b33490,How much does their model outperform existing models?,"Best proposed model result vs best previous result:
+Arxiv dataset: Rouge 1 (43.62 vs 42.81), Rouge L (29.30 vs 31.80), Meteor (21.78 vs 21.35)
+Pubmed dataset: Rouge 1 (44.85 vs 44.29), Rouge L (31.48 vs 35.21), Meteor (20.83 vs 20.56) || On arXiv dataset, the proposed model outperforms baselie model by (ROUGE-1,2,L)  0.67 0.72 0.77 respectively and by Meteor 0.31.
+","Based on the provided document context, specifically Table 5 on page [p. 9] and Table 2 on page [p. 7], we can see that the authors' model (Ours-attentive context) achieves state-of-the-art results in several metrics.
+
+On the arXiv dataset, their model outperforms existing models as follows:
+
+* ROUGE-1: 43.58 vs. 42.24 (Cheng & Lapata), 42.81 (SummaRuNNer)
+* ROUGE-2: 17.37 vs. 15.97 (Cheng & Lapata), 16.52 (SummaRuNNer)
+* ROUGE-L: 29.30 vs. 27.88 (Cheng & Lapata), 28.23 (SummaRuNNer)
+
+However, the document does not provide explicit information on how much their model outperforms existing models in terms of percentage or margin. The results are presented as absolute values, and it is mentioned that results that are not significantly distinguished from the best systems are bolded.
+
+If you'd like to know more about the specific improvements, I can try to help with further analysis!",
+45,b6f15fb6279b82e34a5bf4828b7b5ddabfdf1d54,which multilingual approaches do they compare with?,"BIBREF19, BIBREF20 || multilingual NMT (MNMT) BIBREF19","According to the document context [p. 5], the authors compare their cross-lingual pre-training based transfer approach against several strong baselines, including:
+
+1. Traditional transfer learning
+2. Pivot-based method
+3. Multilingual NMT (Neural Machine Translation)
+
+These baseline approaches are mentioned as being used for comparison in the experiments.",
+46,568fb7989a133564d84911e7cb58e4d8748243ef,How is trajectory with how rewards extracted?,explores the state space through keeping track of previously visited states by maintaining an archive,"Based on the document context [p. 3], it seems that you are referring to the extraction of high-reward trajectories during Phase 1 of the Go-Explore algorithm.
+
+According to the text, ""New cells are added to the archive when they are encountered in the environment, and existing cells are updated with new meta-data when the trajectory towards that cell is higher scoring or equal scoring but shorter.""
+
+This suggests that the algorithm keeps track of previously visited states by maintaining an archive, and updates the meta-data associated with each cell based on the cumulative reward of the trajectories leading to those cells.
+
+However, it doesn't explicitly state how the high-reward trajectories are extracted. It only mentions that the algorithm starts exploring from promising states in the archive to find high-performing trajectories.
+
+Could you please clarify what you mean by ""trajectory with how rewards"" is extracted? Are you referring to the process of selecting high-rewarding trajectories, or something else?",
+47,787c4d4628eac00dbceb1c96020bff0090edca46,What annotations are present in dataset?,"answer each question with either `yes', `rather yes', `rather no', or `no'., can supplement each answer with a comment of at most 500 characters","According to [p. 4], the data statement is provided in Appendix B (Bender and Friedman, 2018). However, it does not explicitly mention what types of annotations are present in the dataset.
+
+It's worth noting that the document mentions manual annotation as a potential solution to eliminate implicit samples in the dataset ([p. 8]). This suggests that some level of human annotation is involved in creating the dataset, but the specific details of these annotations are not provided.
+
+If you could provide more context or clarify what type of annotations you're referring to (e.g., stance labels, topic classification), I may be able to provide a more specific answer.",
+48,92d1a6df3041667dc662376938bc65527a5a1c3c,Do they report results only on English datasets?,Yes || Yes,"Based on the document context, it appears that the authors use a dataset of 36 million English tweets collected between August and September 2017 [p. 2]. However, there is no explicit statement in the provided text that limits their analysis to only English datasets.
+
+In fact, they mention using GloVe vectors trained on Wikipedia articles, which suggests that they are also considering out-of-domain word-vectors from a non-English source (Wikipedia). But this does not necessarily imply that they report results only on English datasets.
+
+To provide a more accurate answer, I would like to clarify: Are you asking if the authors report results only on English datasets, or are you interested in knowing about their analysis of other languages as well?",
+49,1be54c5b3ea67d837ffba2290a40c1e720d9587f,Is the position in the sequence part of the input?,No || Yes,"According to [p. 3], ""The encoder takes the images in order, one at every timestep t."" This suggests that the position in the sequence is not explicitly provided as an input, but rather the images are processed sequentially.
+
+However, it's worth noting that each decoder uses the corresponding image embedding as its first input, which implies that the position of the image in the sequence is implicitly encoded through the use of different decoders for each image. But this information is not directly fed into the decoders as an explicit input.
+
+So, to answer your question: no, the position in the sequence is not part of the input.",
+50,5c3e98e3cebaecd5d3e75ec2c9fc3dd267ac3c83,What experiments are conducted?,"Irony Classifier, Sentiment Classifier for Irony, Sentiment Classifier for Non-irony, transformation from ironic sentences to non-ironic sentences","Based on the document context, I can see that two types of experiments are mentioned:
+
+1. The transformation from non-ironic sentences to ironic sentences (as shown in Table 4 on p. 8).
+2. The transformation from ironic sentences to non-ironic sentences (also mentioned on p. 9).
+
+Additionally, the document mentions automatic evaluations and human evaluation results for these transformations, as well as other experiments conducted by related works (listed on pp. 11).",

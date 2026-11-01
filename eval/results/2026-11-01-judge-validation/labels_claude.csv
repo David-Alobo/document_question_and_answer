@@ -1,0 +1,51 @@
+question_id,label,confidence,note
+dd76130ec5fac477123fe8880472d03fbafddef6,incorrect,clear,says the paper does not mention it; no annotator marked it unanswerable
+6411622cc8b2fbedbfa468859d453596d3bd2f03,incorrect,borderline,describes the discriminator and asks for clarification; not the language modelling objective
+c7eb71683f53ab7acffd691a36cad6edc7f5522e,correct,clear,says the paper does not say; one annotator marked it unanswerable
+e949b28f6d1f20e18e82742e04d68158415dc61e,partially_correct,borderline,names ltuorp for SLC but gets FLC wrong and says MIC-CIS beat ProperGander
+6c96e910bd98c9fd58ba2050f99b9c9bac69840a,correct,clear,both annotators marked it unanswerable; ends with the document does not say
+0ab3df10f0b7203e859e9b62ffa7d6d79ffbbe50,correct,clear,classification accuracy
+45a5961a4e1d1c22874c4918e5c98bd3c0a670b3,incorrect,clear,counts 5 question types against 7
+fd2c6c26fd0ab3c10aae4f2550c5391576a77491,correct,clear,says the paper does not say; one annotator marked it unanswerable
+876700622bd6811d903e65314ac75971bbe23dcc,correct,clear,SemEval-2016 task 4 Twitter sentiment subtasks
+7d2f812cb345bb3ab91eb8cbbdeefd4b58f65569,correct,clear,says the paper does not specify the pairs; one annotator marked it unanswerable
+6a219d7c58451842aa5d6819a7cdf51c55e9fc0f,partially_correct,borderline,says no specific domains are named but also claims a variety of domains
+f1e90a553a4185a4b0299bd179f4f156df798bce,incorrect,clear,says no baselines found
+cee8cfaf26e49d98e7d34fa1b414f8f31d6502ad,correct,clear,Berard et al. architecture with 3 decoder layers as in Pino et al.
+d9980676a83295dda37c20cfd5d58e574d0a4859,incorrect,clear,"does not name copy, copy-marked, copy-dummies"
+511517efc96edcd3e91e7783821c9d6d5a6562af,incorrect,clear,says the datasets are not given
+fde700d5134a9ae8f7579bea1f1b75f34d7c1c4c,correct,clear,Android application
+79a44a68bb57b375d8a57a0a7f522d33476d9f33,incorrect,clear,"does not name RG, CS, CO"
+5cb610d3d5d7d447b4cd5736d6a7d8262140af58,correct,clear,random alternation between languages per minibatch
+9b7655d39c7a19a23eb8944568eb5618042b9026,partially_correct,borderline,TensiStrength and TwitterNLP overlap; other references are unresolved BIBREFs
+e9cfbfdf30e48cffdeca58d4ac6fdd66a8b27d7a,correct,clear,description of the cluster topic with the propositions
+ef396a34436072cb3c40b0c9bc9179fee4a168ae,correct,clear,text classification and semantic matching
+37f8c034a14c7b4d0ab2e0ed1b827cc0eaa71ac6,correct,clear,LAS and accuracy
+85590bb26fed01a802241bc537d85ba5ef1c6dc2,incorrect,clear,does not name the MCQA baselines
+2317ca8d475b01f6632537b95895608dc40c4415,correct,clear,sequence of s tweets sorted by date
+4c07c33dfaf4f3e6db55e377da6fa69825d0ba15,correct,clear,300
+23b2901264bda91045258b5d4120879ae292e950,correct,clear,+0.58 MRPC and +0.73 QQP
+c7486d039304ca9d50d0571236429f4f6fbcfcf7,incorrect,clear,Russian instead of Turkish
+1b1a30e9e68a9ae76af467e60cefb180d135e285,correct,clear,353 conversations from 40 speakers
+a5e49cdb91d9fd0ca625cc1ede236d3d4672403c,correct,clear,multi-turn answer module
+d3aa0449708cc861a51551b128d73e11d62207d2,partially_correct,borderline,mentions HR-BiLSTM (BiLSTMs with residual learning) but centres on a future-work decoder
+435570723b37ee1f5898c1a34ef86a0b2e8701bb,incorrect,clear,says the systems are not named and asks for clarification
+ef7212075e80bf35b7889dc8dd52fcbae0d1400a,correct,clear,ambiguity and coarseness
+8c48c726bb17a17d70ab29db4d65a93030dd5382,incorrect,clear,says the amount is not given
+bc16ce6e9c61ae13d46970ebe6c4728a47f8f425,correct,clear,4.49 turns
+d571e0b0f402a3d36fb30d70cdcd2911df883bc7,partially_correct,borderline,"leans towards yes (Hindi as low-resource) without committing, then asks"
+a15bc19674d48cd9919ad1cf152bf49c88f4417d,incorrect,clear,"a dialogue corpus, not DSTC2"
+eda4869c67fe8bbf83db632275f053e7e0241e8c,correct,clear,says no dataset is named; two annotators marked it unanswerable
+26126068d72408555bcb52977cd669faf660bdf7,correct,clear,evaluation on word similarity and entailment datasets
+52f8a3e3cd5d42126b5307adc740b71510a6bdf5,correct,clear,lists the ReviewQA tasks
+1bb7eb5c3d029d95d1abf9f2892c1ec7b6eef306,incorrect,clear,says the CER is not given
+c0e341c4d2253eb42c8840381b082aae274eddad,partially_correct,borderline,"relation detection, close to the second reference, but no residual matching"
+1329280df5ee9e902b2742bde4a97bc3e6573ff3,incorrect,clear,says the paper does not say; the answer is No
+ed2eb4e54b641b7670ab5a7060c7b16c628699ab,correct,clear,sentence reordering
+de5b6c25e35b3a6c5e40e350fc5e52c160b33490,partially_correct,borderline,ROUGE-L and baseline numbers match; its ROUGE-1 is 43.58 against 43.62
+b6f15fb6279b82e34a5bf4828b7b5ddabfdf1d54,partially_correct,borderline,multilingual NMT among non-multilingual baselines
+568fb7989a133564d84911e7cb58e4d8748243ef,correct,clear,archive of visited states
+787c4d4628eac00dbceb1c96020bff0090edca46,incorrect,clear,says the annotations are not described
+92d1a6df3041667dc662376938bc65527a5a1c3c,incorrect,clear,notes English tweets but does not commit to yes
+1be54c5b3ea67d837ffba2290a40c1e720d9587f,correct,clear,no; one annotator said no
+5c3e98e3cebaecd5d3e75ec2c9fc3dd267ac3c83,partially_correct,borderline,transformations in both directions; no classifiers
