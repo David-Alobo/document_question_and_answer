@@ -164,12 +164,33 @@ def multidoc_figure():
     plt.close(fig)
 
 
+def screenshot_crops():
+    """Crop the UI-check screenshots to the answers shown in the SI.
+
+    The boxes are pixel coordinates (left, top, right, bottom) in the saved screenshots: the
+    main column from the question to the end of the answer, plus the source list for the
+    comparison.
+    """
+    from PIL import Image
+
+    ui = BASELINE.parent
+    crops = {
+        "ui_single.png": (ui / "2026-11-01-ui-check/screenshots/03_answer_with_sources.png", (320, 730, 1035, 1545)),
+        "ui_compare.png": (ui / "2026-11-01-ui-check-multidoc/screenshots/03_compare.png", (320, 980, 1035, 2270)),
+        "ui_compare_sources.png": (ui / "2026-11-01-ui-check-multidoc/screenshots/03_compare.png",
+                                   (320, 2270, 1035, 4190)),
+    }
+    for name, (source, box) in crops.items():
+        Image.open(source).crop(box).save(FIGURES / name)
+
+
 def main():
-    """Write every data figure."""
+    """Write every data figure and the screenshot crops."""
     FIGURES.mkdir(exist_ok=True)
     answers_figure()
     sweep_figure()
     multidoc_figure()
+    screenshot_crops()
     print("figures written to", FIGURES)
 
 

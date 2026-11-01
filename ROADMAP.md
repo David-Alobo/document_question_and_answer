@@ -6,7 +6,7 @@ The test split is reserved for the final comparison.
 
 ## Now
 
-- Paper and SI: the remaining SI sections (evidence matching, the app in a browser).
+- Paper and SI: draft complete except the repository name and Zenodo DOI (at release).
 - Done: human labels for the judge check (50 answers). The judge credited 27, the human 17
   (21 with four rule slips corrected), so judged rates are reported as upper bounds. Optional: a
   second human labeller on the same 50.

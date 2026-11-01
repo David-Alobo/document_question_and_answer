@@ -77,7 +77,43 @@ the prompt shows \texttt{\{unanswerable\_rule\}}:
 \section{Evidence matching}
 \label{si:matching}
 
-\result{Definition with an example; findability by chunk size; failures to download or parse.}
+\paragraph{Rule.} QASPER marks evidence as paragraphs of the paper's text, taken from its
+\LaTeX{} source, while the app retrieves chunks of the PDF's extracted text. The two are matched
+on word 5-grams. Both texts are normalised (Unicode NFKC, lower case, hyphenation at PDF line
+breaks undone) and split into alphanumeric tokens. A chunk holds an evidence paragraph if it
+contains at least half of the paragraph's 5-grams or, for a paragraph longer than the chunk, if
+at least half of the chunk's 5-grams are in the paragraph. Evidence given only as a figure or
+table is not matched. A question's evidence is \emph{findable} if any chunk of its paper holds
+any of its evidence paragraphs, and \emph{retrieved} if one of the chunks passed to the model
+does. The code is \texttt{matches} in \texttt{eval/qasper/run\_eval.py}.
+
+\paragraph{Example.} For ``what language pairs are explored?'' (arXiv 1912.01214), one
+annotator's evidence is the paragraph that begins ``The statistics of Europarl and MultiUN corpora
+are summarized in Table TABREF18. For Europarl corpus, we evaluate on French-English-Spanish
+\ldots''. The app's chunk 24 begins part-way through that paragraph (``English-French
+(De-En-Fr) and Romanian-English-German \ldots'') and runs into the next one. It shares 111 of the
+paragraph's 151 5-grams (74\%) and is a match. The 40 it misses come from three sources: the
+opening the chunk lacks, the arrows written as \verb|$\rightarrow$| in QASPER's text and as a
+symbol the tokeniser drops in the PDF's (``Fr$\rightarrow$Es''), and the citation, ``BIBREF33'' in
+QASPER and ``(Sennrich, Haddow, and Birch 2015)'' in the PDF. The half-overlap threshold is there
+to tolerate such differences.
+
+\paragraph{Downloads and parsing.} Of the \BaselinePapers{} development papers,
+\PapersDownloaded{} PDFs downloaded from arXiv and \PapersFailed{} returned HTTP 404; its
+\PapersFailedQuestions{} questions were not asked. Every downloaded PDF gave text, so no question
+was lost to parsing. Of the remaining questions, \TextEvidenceQuestions{} have text evidence.
+
+\paragraph{Findability by chunk size.} With the app's chunker, evidence was findable for
+\FindableFiveHundred{} of the \TextEvidenceQuestions{} questions with 500-character chunks,
+\FindableThousand{} with 1,000 and \FindableFifteenHundred{} with 1,500 (the median question's
+paper gave \MedianChunksFiveHundred{}, \MedianChunksThousand{} and \MedianChunksFifteenHundred{}
+chunks). The unfindable rest were not classified; differences between the PDF text and QASPER's,
+as in the example above, and between the arXiv version and the version annotated are possible
+causes. Evidence is findable under all three chunk sizes for
+\SweepQuestions{} questions, the set used in the retrieval sweep. The second clause of the rule
+lets a short chunk match a long paragraph while holding only part of it, which favours small
+chunks; this is why the leading retrieval set-ups were tested on answers
+(main text, Section~4.4).
 
 \section{Retrieval sweep: all set-ups}
 \label{si:sweep}
@@ -173,7 +209,42 @@ notes and the judge's reasoning for every disagreement are in
 \section{The app in a browser}
 \label{si:ui}
 
-\result{Screenshots from eval/results/2026-11-01-ui-check and ui-check-multidoc, including the
-comparison answer that mixed up the two papers.}
+The fixed app was run unchanged in headless Chrome, with its Groq requests forwarded to
+Llama~3.1~8B in Ollama (the weights behind Groq's \texttt{llama-3.1-8b-instant}) and every request
+logged. A script uploaded the PDFs, typed the questions and took the screenshots. The full
+screenshots, the request logs and the scripts are in \texttt{eval/results/2026-11-01-ui-check}
+and \texttt{2026-11-01-ui-check-multidoc}; the crops below are made by
+\texttt{paper/make\_figures.py}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\linewidth,height=0.72\textheight,keepaspectratio]{figures/ui_single.png}
+\caption{One paper (arXiv 1912.01214), ``Which datasets did they experiment with?''. The answer
+names MultiUN and Europarl, the annotators' answer, and cites page 4; the first of the four
+source passages is shown open. One detail is wrong: the languages it gives for MultiUN (English,
+French, German and Romanian) are mostly Europarl's; the paper uses English, Arabic, Spanish and
+Russian for MultiUN.}
+\label{fig:ui-single}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\linewidth,height=0.72\textheight,keepaspectratio]{figures/ui_compare.png}
+\caption{Two papers loaded (1810.08699, Armenian named entity recognition; 1912.01214,
+zero-shot translation), searched together. After a question about the first paper, ``Compare
+these documents: how do their aims, methods and findings differ?''. The answer mixes the papers:
+it says both use a benchmark test set in Armenian, English, German, Spanish and Russian, which
+comes from a table in the first paper only.}
+\label{fig:ui-compare}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\linewidth,height=0.72\textheight,keepaspectratio]{figures/ui_compare_sources.png}
+\caption{The source passages behind the comparison in Figure~\ref{fig:ui-compare}. The top four
+by similarity all come from the named entity recognition paper; the translation paper
+contributes only the one passage the app guarantees each file, part of a results table.}
+\label{fig:ui-compare-sources}
+\end{figure}
 
 \end{document}
