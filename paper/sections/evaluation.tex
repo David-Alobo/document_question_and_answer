@@ -87,6 +87,35 @@ to the judge's verdicts and to Claude's labels, on a page that showed the questi
 reference answers and the app's answer with the judge's instructions (SI, Section~S6). Both labellers graded against the references without reading the
 papers, as the judge does.
 
+\subsection{Repeat runs}
+\label{sec:eval-repeats}
+
+The app answers at temperature 0.1, so the same question can get a different answer on another
+run. To measure how much this moves the results, every question was answered twice more for each
+of the four set-ups compared in Section~\ref{sec:results} (the fixed app, the annotators'
+evidence, and the two leading retrieval set-ups), with answer-model seeds 1 and 2, and judged as
+before; the original runs count as seed 0. Retrieval was not repeated: it is deterministic, and
+the saved chunks were reused. Ollama with parallel requests is not bit-for-bit repeatable even at
+a fixed seed (a rerun at seed 0 did not reproduce the original answers), so the seeds stand for
+independent runs rather than a controlled source of randomness. To separate the judge's own
+variation, the seed-0 answers of the fixed app were also judged a second time with judge seed 1.
+For each set-up we report each run's correct rate, the share of questions whose verdict is the
+same in all three runs, and the paired difference between runs of the same set-up, which is the
+noise floor for differences between set-ups.
+
+\subsection{Citation check}
+\label{sec:eval-citations}
+
+The app asks the model to cite the pages it used, and the context labels each chunk with its page
+(``[p.~4]''). Each answer of the fixed app was split into sentences that carry a citation; a
+sentence ending in a colon takes the list that follows it. For every citation we record whether
+the cited page was among the pages of the four chunks the model was given. One cited statement
+per answer whose pages were all in the context was then drawn at random (seed 0), and the judge
+model was asked whether the passages from the cited pages support it (supported, partially
+supported or not supported; prompt in the SI). Fifty of the drawn statements were labelled by
+one of the authors, blind to the judge, on a page that showed the question, the statement and
+the cited passages exactly as the model saw them.
+
 \subsection{Statistics}
 
 Rates are given with Wilson 95\% intervals~\cite{wilson1927}. Conditions answered on the same

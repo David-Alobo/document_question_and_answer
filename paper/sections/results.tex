@@ -215,3 +215,40 @@ not say'' accepted as ``no'', and a hedge accepted as ``yes''). Every disagreeme
 SI. With one human labeller and \JudgeCheckN{} answers the size of the judge's leniency is
 uncertain, but its direction is consistent, so the judged correct rates in this paper are best
 read as upper bounds.
+
+\subsection{Run-to-run variation}
+\label{sec:res-repeats}
+
+\result{Table: per set-up, correct rate in each of the three runs, by majority, correct in every
+run and in no run, and the share of questions with the same verdict in all three runs.}
+
+Rerunning a set-up changed many individual verdicts but moved its overall rate little. For the
+500-character set-up, \result{152 of 1,001 questions (15\%)} switched between correct and not
+correct from one run to the next (\result{83 one way, 69 the other}), while its correct rate went
+from \result{57.1\% to 55.7\%}; only \result{67} answers were word-for-word the same.
+\result{The same pattern for the other set-ups, and the range of correct rates across the three
+runs of each.} Judging the same answers a second time changed \result{N} verdicts, so
+\result{most / little} of the variation comes from the answers rather than the judge.
+
+\result{Against this noise floor: the differences between set-ups in
+Section~\ref{sec:res-candidates} in each seed, and whether the oracle gap and the null results
+for smaller chunks and reranking hold in every run.}
+
+\subsection{Do cited pages hold the claims?}
+\label{sec:res-citations}
+
+Of the \result{1,002} fixed-app answers, \result{935} cite at least one page. Of their
+\result{1,588} page citations, \result{1,528 (96.2\%)} point to a page that was in the model's
+context; the other \result{60} cite pages the model never saw.
+
+On the \result{50} hand-labelled statements, the human labeller found \result{42} supported,
+\result{2} partially supported and \result{6} not supported; the judge found \result{45}, \result{4}
+and \result{1}. Both put support at \result{84--90\%}, but they agreed on which statements fail
+no better than chance (\result{39 of 50} identical, Cohen's $\kappa =$ \result{0.08}): the judge
+called supported all \result{6} statements the labeller did not. Three of those six are fragments
+the sentence splitter cut from tables or citation lists rather than claims, and in two the
+passage states the claim almost word for word, so some of the disagreement is labelling error.
+\result{One statement quoted a sentence the passage does not contain.} With this sample we
+cannot tell how often the judge misses an unsupported citation, so we do not use its verdicts on
+the remaining \result{865} statements to estimate a failure rate.
+\result{If adjudicated or second-labelled: the rate from the resolved labels.}

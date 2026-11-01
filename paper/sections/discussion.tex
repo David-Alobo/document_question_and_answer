@@ -38,6 +38,13 @@ evidence for all but the best-matching paper; we saw a comparison answer mix up 
 test sets for this reason (SI, Section~S7), and balancing the context across files is the next
 change to measure.
 
+\paragraph{Reliability.} \result{One paragraph once the repeat runs are in: verdicts on single
+questions change between runs far more than overall rates do, so a single run supports claims
+about rates, not about individual answers, and differences between set-ups smaller than the
+run-to-run range are not evidence. Citations mostly point to pages the model saw and that
+support the statement, so a user can check an answer against its cited pages; the check itself
+needs a person, because the judge did not find the unsupported ones.}
+
 \paragraph{How far to trust the judge.} The judge was more generous than a person grading
 against the same references, mostly towards answers that hedge or give part of what was asked.
 For a user of the app, the human-graded rate on the sample (\JudgeCheckHumanCorrect{} or
