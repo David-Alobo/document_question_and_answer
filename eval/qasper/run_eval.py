@@ -385,7 +385,8 @@ def retrieve(args):
         if status.get(paper_id, {}).get("status") == "ok":
             try:
                 chunks = Utils.split_pdf(
-                    data_dir / "pdfs" / f"{paper_id}.pdf", config["chunk_size"], config["chunk_overlap"]
+                    data_dir / "pdfs" / f"{paper_id}.pdf", config["chunk_size"], config["chunk_overlap"],
+                    sections=config.get("chunking") == "sections",
                 )
             except Exception as e:  # noqa: BLE001 - recorded per question
                 error = f"split failed: {e}"
@@ -753,13 +754,16 @@ def _config(args, out, write=False):
         write (bool): Record the settings from args (retrieve stage).
 
     Returns:
-        dict: chunk_size, chunk_overlap, k and rerank.
+        dict: chunk_size, chunk_overlap, k, rerank and, if not fixed, chunking.
 
     Raises:
         ValueError: If args ask for settings other than those the folder was made with.
     """
     path = out / "config.json"
     wanted = {"chunk_size": args.chunk_size, "chunk_overlap": args.chunk_overlap, "k": args.k, "rerank": args.rerank}
+    if getattr(args, "chunking", "fixed") != "fixed":
+        # Recorded only when not the default, so folders made before the option still match
+        wanted["chunking"] = args.chunking
     if path.exists():
         saved = json.loads(path.read_text())
         if write and saved != wanted:
@@ -819,6 +823,8 @@ def main():
     parser.add_argument("--chunk-overlap", type=int, default=CHUNK_OVERLAP, help="retrieve stage")
     parser.add_argument("--k", type=int, default=K_APP, help="retrieve stage: chunks sent to the model")
     parser.add_argument("--rerank", action="store_true", help="retrieve stage: rerank with the cross-encoder")
+    parser.add_argument("--chunking", default="fixed", choices=["fixed", "sections"],
+                        help="retrieve stage: fixed-length chunks (the app) or chunks along section headings")
     parser.add_argument("--retry-errors", action="store_true",
                         help="judge stage: grade again the answers whose judgement failed, with a larger budget")
     parser.add_argument("--seed", type=int, default=0, help="generate stage: sampling seed of the answer model")

@@ -42,7 +42,7 @@ class Utils:
         return Groq(api_key=api_key)
 
     @staticmethod
-    def split_pdf(path, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP):
+    def split_pdf(path, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP, sections=False):
         """
         Load a PDF from disk and split it into overlapping chunks.
 
@@ -52,11 +52,17 @@ class Utils:
             path (str): Path to the PDF file.
             chunk_size (int): Maximum characters per chunk.
             chunk_overlap (int): Characters shared by consecutive chunks.
+            sections (bool): Split along the paper's section headings, with each chunk
+                starting with its section title (see sections.py), instead of across them.
 
         Returns:
             list: LangChain Document objects, one per chunk.
         """
         documents = PyPDFLoader(str(path)).load()
+        if sections:
+            from src.utils.sections import split_sections
+
+            return split_sections(documents, chunk_size, chunk_overlap)
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,

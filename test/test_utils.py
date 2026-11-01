@@ -173,3 +173,37 @@ def test_manage_conversation_context_keeps_the_last_exchanges():
     assert Utils.manage_conversation_context(history, max_exchanges=10) == history[-10:]
     assert Utils.manage_conversation_context(history[:3], max_exchanges=10) == history[:3]
     assert Utils.manage_conversation_context(history, max_exchanges=0) == []
+
+
+def test_heading_detection():
+    """Numbered, Roman, letter-spaced and named headings are found; sentences are not."""
+    from src.utils.sections import heading
+
+    assert heading("3.1 Results on MultiUN") == "3.1 Results on MultiUN"
+    assert heading("IV. EXPERIMENTS") == "IV. EXPERIMENTS"
+    assert heading("I. I N T RO D U CT IO N") == "I. INTRODUCTION"
+    assert heading("Related Work") == "Related Work"
+    assert heading("We train the model for 10 epochs.") is None
+    assert heading("1. We first extract one-hot encoding vectors for") is None
+    assert heading("2 1M 2,000 2,000") is None
+
+
+def test_split_sections_keeps_sections_and_pages():
+    """Chunks stay inside a section, start with its title and keep the page they start on."""
+    from langchain_core.documents import Document
+
+    from src.utils.sections import split_sections
+
+    pages = [
+        Document(page_content="Title\nAbstract\nWe study x.\n1 Introduction\n" + "intro text. " * 20,
+                 metadata={"page": 0}),
+        Document(page_content="2 Method\n" + "method text. " * 20, metadata={"page": 1}),
+    ]
+    chunks = split_sections(pages, chunk_size=120, chunk_overlap=20)
+    sections = {c.metadata["section"] for c in chunks}
+    assert {"Abstract", "1 Introduction", "2 Method"} <= sections
+    for c in chunks:
+        assert c.page_content.startswith(f"Section: {c.metadata['section']}\n") or c.metadata["section"] is None
+        assert ("method" in c.page_content) == (c.metadata["section"] == "2 Method")
+    assert all(c.metadata["page"] == 1 for c in chunks if c.metadata["section"] == "2 Method")
+    assert all(c.metadata["page"] == 0 for c in chunks if c.metadata["section"] == "1 Introduction")
