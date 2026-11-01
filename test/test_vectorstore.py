@@ -1,66 +1,85 @@
-import pytest
-import numpy as np
-from unittest.mock import MagicMock
-from pathlib import Path
-import sys
+from typing import ClassVar
 
-# Get the parent directory of the current file
-parent_dir = Path(__file__).resolve(strict=True).parent.parent
-sys.path.append(str(parent_dir))
+import numpy as np
+import pytest
+from langchain_core.documents import Document
 
 from src.database.vectorstore import LocalVectorStore
 
+
 class MockEmbeddingModel:
     """
-    A mock embedding model for testing purposes.
+    A mock embedding model: each text maps to a fixed unit vector by its first word.
     """
-    def encode(self, texts):
-        # Return a dummy embedding (e.g., a vector of ones with length 5 for each text)
-        return np.ones((len(texts), 5))
 
-class MockDocument:
-    """
-    A mock document class for testing purposes.
-    """
-    def __init__(self, page_content):
-        self.page_content = page_content
+    VECTORS: ClassVar[dict] = {
+        "cats": [1.0, 0.0, 0.0],
+        "dogs": [0.0, 1.0, 0.0],
+        "fish": [0.0, 0.0, 1.0],
+    }
+
+    def encode(self, texts):
+        return np.array([self.VECTORS[t.split()[0].lower()] for t in texts])
+
 
 @pytest.fixture
 def mock_embedding_model():
     return MockEmbeddingModel()
 
+
 @pytest.fixture
 def mock_documents():
-    return [MockDocument("Document 1 content"), MockDocument("Document 2 content")]
+    return [
+        Document(page_content="Cats purr", metadata={"page": 0}),
+        Document(page_content="Dogs bark", metadata={"page": 1}),
+        Document(page_content="Fish swim", metadata={"page": 2}),
+    ]
 
-def test_add_document(mock_embedding_model, mock_documents):
+
+def test_add_documents(mock_embedding_model, mock_documents):
     vector_store = LocalVectorStore(mock_embedding_model)
-    vector_store.add_document(mock_documents)
+    vector_store.add_documents(mock_documents)
 
-    # Check if chunks are correctly stored
-    assert vector_store.chunks == ["Document 1 content", "Document 2 content"]
+    assert vector_store.chunks == ["Cats purr", "Dogs bark", "Fish swim"]
+    assert vector_store.embeddings.shape == (3, 3)
+    assert vector_store.index.ntotal == 3
 
-    # Check if embeddings are correctly created
-    assert vector_store.embeddings.shape == (2, 5)  # 2 documents, embedding size 5
 
-    # Check if FAISS index is created and populated
-    assert vector_store.index.ntotal == 2
-
-def test_similarity_search(mock_embedding_model, mock_documents):
+def test_add_documents_wraps_strings(mock_embedding_model):
     vector_store = LocalVectorStore(mock_embedding_model)
-    vector_store.add_document(mock_documents)
+    vector_store.add_documents(["Cats purr", "Dogs bark"])
+    assert all(isinstance(doc, Document) for doc in vector_store.documents)
 
-    # Perform a similarity search
-    results = vector_store.similarity_search("Query", k=2)
 
-    # Check if results are returned correctly
+@pytest.mark.parametrize("bad", [[], "Cats purr", [1, 2]])
+def test_add_documents_rejects_bad_input(mock_embedding_model, bad):
+    with pytest.raises(ValueError):
+        LocalVectorStore(mock_embedding_model).add_documents(bad)
+
+
+def test_similarity_search_ranks_and_keeps_metadata(mock_embedding_model, mock_documents):
+    vector_store = LocalVectorStore(mock_embedding_model)
+    vector_store.add_documents(mock_documents)
+
+    results = vector_store.similarity_search("dogs", k=2)
+
+    assert results[0].page_content == "Dogs bark"
+    assert results[0].metadata == {"page": 1}
     assert len(results) == 2
-    assert "Document 1 content" in results
-    assert "Document 2 content" in results
+
+
+def test_similarity_search_with_k_above_document_count(mock_embedding_model, mock_documents):
+    """
+    Asking for more chunks than exist returns each chunk once (FAISS pads with -1,
+    which used to return the last chunk again).
+    """
+    vector_store = LocalVectorStore(mock_embedding_model)
+    vector_store.add_documents(mock_documents[:2])
+
+    results = vector_store.similarity_search("cats", k=4)
+
+    assert [doc.page_content for doc in results] == ["Cats purr", "Dogs bark"]
+
 
 def test_similarity_search_empty_index(mock_embedding_model):
-    vector_store = LocalVectorStore(mock_embedding_model)
-
-    # Attempt to search without adding documents
-    with pytest.raises(ValueError, match="Vector store is empty"):
-        vector_store.similarity_search("Query")
+    assert LocalVectorStore(mock_embedding_model).similarity_search("Query") == []

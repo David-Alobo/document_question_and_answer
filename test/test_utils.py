@@ -1,22 +1,24 @@
-import pytest
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
-from pathlib import Path
-import sys
 
-# Get the parent directory of the current file
-parent_dir = Path(__file__).resolve(strict=True).parent.parent
-sys.path.append(str(parent_dir))
+import pytest
+from langchain_core.documents import Document
 
-from src.utils.utils import Utils
+from src.utils.utils import SYSTEM_PROMPT, Utils
+
 
 @pytest.fixture
 def mock_groq_client():
     """
-    Mock the Groq API client.
+    Mock the Groq API client, returning one fixed answer.
     """
     mock_client = MagicMock()
-    mock_client.chat.completions.create.return_value = {"response": "Mocked response"}
+    message = SimpleNamespace(content="Mocked response")
+    mock_client.chat.completions.create.return_value = SimpleNamespace(
+        choices=[SimpleNamespace(message=message)]
+    )
     return mock_client
+
 
 @pytest.fixture
 def mock_uploaded_file():
@@ -24,94 +26,123 @@ def mock_uploaded_file():
     Mock an uploaded file.
     """
     mock_file = MagicMock()
-    mock_file.read.return_value = b"Mock PDF content"
+    mock_file.getvalue.return_value = b"Mock PDF content"
     return mock_file
 
-@pytest.fixture
-def mock_documents():
-    """
-    Mock documents returned by the PDF loader.
-    """
-    return [{"page_content": "Page 1 content"}, {"page_content": "Page 2 content"}]
 
 def test_initialize_groq():
     """
-    Test the initialize_groq method.
+    The Groq client is created with the given key.
     """
     with patch("src.utils.utils.Groq") as MockGroq:
-        mock_instance = MockGroq.return_value
         result = Utils.initialize_groq("mock_api_key")
         MockGroq.assert_called_once_with(api_key="mock_api_key")
-        assert result == mock_instance
+        assert result == MockGroq.return_value
 
-def test_load_and_split_pdf(mock_uploaded_file, mock_documents):
+
+def test_load_and_split_pdf(mock_uploaded_file):
     """
-    Test the load_and_split_pdf method.
+    The upload is written to a temporary file, split, and the file removed.
     """
+    pages = [Document(page_content="Page 1 content", metadata={"page": 0})]
     with patch("src.utils.utils.PyPDFLoader") as MockLoader, \
          patch("src.utils.utils.RecursiveCharacterTextSplitter") as MockSplitter, \
-         patch("os.remove") as mock_remove:
-        
-        # Mock the PDF loader
-        mock_loader_instance = MockLoader.return_value
-        mock_loader_instance.load.return_value = mock_documents
+         patch("src.utils.utils.os.remove") as mock_remove:
+        MockLoader.return_value.load.return_value = pages
+        MockSplitter.return_value.split_documents.return_value = ["Chunk 1", "Chunk 2"]
 
-        # Mock the text splitter
-        mock_splitter_instance = MockSplitter.return_value
-        mock_splitter_instance.split_documents.return_value = ["Chunk 1", "Chunk 2"]
-
-        # Call the method
         result = Utils.load_and_split_pdf(mock_uploaded_file)
 
-        # Assertions
-        MockLoader.assert_called_once()
         MockSplitter.assert_called_once_with(chunk_size=1000, chunk_overlap=200, length_function=len)
-        mock_loader_instance.load.assert_called_once()
-        mock_splitter_instance.split_documents.assert_called_once_with(mock_documents)
-        mock_remove.assert_called_once()  
+        MockSplitter.return_value.split_documents.assert_called_once_with(pages)
+        mock_remove.assert_called_once()
         assert result == ["Chunk 1", "Chunk 2"]
+
+
+def test_load_and_split_pdf_raises_on_unreadable_file(mock_uploaded_file):
+    """
+    An unreadable PDF raises ValueError (it used to return the error text as if it were chunks).
+    """
+    with patch("src.utils.utils.PyPDFLoader") as MockLoader, \
+         patch("src.utils.utils.os.remove") as mock_remove:
+        MockLoader.return_value.load.side_effect = RuntimeError("EOF marker not found")
+        with pytest.raises(ValueError, match="EOF marker not found"):
+            Utils.load_and_split_pdf(mock_uploaded_file)
+        mock_remove.assert_called_once()
+
+
+def test_build_messages_without_history_sends_context_and_question():
+    """
+    The first question carries the document context (it used to be sent with neither).
+    """
+    messages = Utils.build_messages("CONTEXT", "QUESTION?", [])
+    assert [m["role"] for m in messages] == ["system", "user"]
+    assert messages[0]["content"] == SYSTEM_PROMPT
+    assert "CONTEXT" in messages[1]["content"]
+    assert "QUESTION?" in messages[1]["content"]
+
+
+def test_build_messages_with_history_sends_question_once():
+    """
+    History comes before the current question, which appears exactly once.
+    """
+    history = [("q1", "a1"), ("q2", "a2")]
+    messages = Utils.build_messages("CONTEXT", "QUESTION?", history)
+    assert [m["role"] for m in messages] == ["system", "user", "assistant", "user", "assistant", "user"]
+    assert [m["content"] for m in messages[1:5]] == ["q1", "a1", "q2", "a2"]
+    assert sum("QUESTION?" in m["content"] for m in messages) == 1
+
 
 def test_get_groq_response(mock_groq_client):
     """
-    Test the get_groq_response method.
+    The client is called with the built messages and the answer text is returned.
     """
-    context = "This is the context."
-    question = "What is the question?"
-    query = "Mock query"
-    model_name = "llama-31-8b-instant"
+    result = Utils.get_groq_response(mock_groq_client, "CONTEXT", "QUESTION?", [], "llama-3.1-8b-instant")
 
-    result = Utils.get_groq_response(mock_groq_client, context, question, query, model_name)
-
-    # Assertions
     mock_groq_client.chat.completions.create.assert_called_once_with(
-        query=query,
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": f"""
-        Based on the following context, answer the following questions in a concise manner.
-        Context: {context}
-        Question: {question}
-        Answer: Provide a clear, accurate answer based on the provided context. If the answer is not in the context, say "I don't know". 
-        """}
-        ],
-        prompt=f"""
-        Based on the following context, answer the following questions in a concise manner.
-        Context: {context}
-        Question: {question}
-        Answer: Provide a clear, accurate answer based on the provided context. If the answer is not in the context, say "I don't know". 
-        """,
-        model_name=model_name,
-        temperature=0.0,
-        max_tokens=500,
+        messages=Utils.build_messages("CONTEXT", "QUESTION?", []),
+        model="llama-3.1-8b-instant",
+        temperature=0.1,
+        max_tokens=1000,
     )
-    assert result == {"response": "Mocked response"}
+    assert result == "Mocked response"
+
+
+def test_get_groq_response_propagates_errors(mock_groq_client):
+    """
+    API errors reach the caller, which shows rate-limit and context-length messages.
+    """
+    mock_groq_client.chat.completions.create.side_effect = RuntimeError("rate limit exceeded")
+    with pytest.raises(RuntimeError, match="rate limit"):
+        Utils.get_groq_response(mock_groq_client, "c", "q", [])
+
+
+def test_format_context_labels_pages():
+    """
+    Each passage is labelled with its 1-based page.
+    """
+    docs = [
+        Document(page_content="alpha", metadata={"page": 0}),
+        Document(page_content="beta", metadata={}),
+    ]
+    assert Utils.format_context(docs) == "[p. 1] alpha\n\n[p. ?] beta"
+
 
 def test_load_embedding_model():
     """
-    Test the load_embedding_model method.
+    The configured sentence-transformers model is loaded.
     """
-    with patch("src.utils.utils.SentenceTransformerEmbeddings") as MockEmbeddings:
-        mock_instance = MockEmbeddings.return_value
+    with patch("sentence_transformers.SentenceTransformer") as MockModel:
         result = Utils.load_embedding_model()
-        MockEmbeddings.assert_called_once_with(model_name="all-MiniLM-L6-v2")
-        assert result == mock_instance
+        MockModel.assert_called_once_with("all-MiniLM-L6-v2")
+        assert result == MockModel.return_value
+
+
+def test_manage_conversation_context_keeps_the_last_exchanges():
+    """
+    The history is trimmed to a list of the last exchanges (it used to return one tuple).
+    """
+    history = [(f"q{i}", f"a{i}") for i in range(12)]
+    assert Utils.manage_conversation_context(history, max_exchanges=10) == history[-10:]
+    assert Utils.manage_conversation_context(history[:3], max_exchanges=10) == history[:3]
+    assert Utils.manage_conversation_context(history, max_exchanges=0) == []

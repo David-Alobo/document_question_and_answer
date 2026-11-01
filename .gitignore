@@ -9,3 +9,6 @@ wheels/
 # Virtual environments
 .venv
 .env
+
+# Evaluation inputs (QASPER files and arXiv PDFs), downloaded by eval/qasper/run_eval.py
+eval/data/
