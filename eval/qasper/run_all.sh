@@ -6,8 +6,14 @@ out=$1
 ollama=${2:-http://127.0.0.1:11434}
 shift $(( $# >= 2 ? 2 : 1 ))
 cd "$(dirname "$0")/../.."
-for stage in prepare retrieve generate judge summarize; do
-    echo "== $stage $(date -Is)"
-    CUDA_VISIBLE_DEVICES= uv run --frozen python eval/qasper/run_eval.py "$stage" --out "$out" --ollama "$ollama" "$@"
+run() {
+    echo "== $* $(date -Is)"
+    CUDA_VISIBLE_DEVICES= uv run --frozen python eval/qasper/run_eval.py "$@"
+}
+for stage in prepare retrieve generate judge; do
+    run "$stage" --out "$out" --ollama "$ollama" "$@"
 done
+# Judgements that came back empty are graded again with a larger budget (appended)
+run judge --retry-errors --out "$out" --ollama "$ollama" "$@"
+run summarize --out "$out" --ollama "$ollama" "$@"
 echo "== finished $(date -Is)"

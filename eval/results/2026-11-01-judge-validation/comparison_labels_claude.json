@@ -1,0 +1,120 @@
+{
+  "labels": "labels_claude.csv",
+  "n": 50,
+  "exact_agreement": 37,
+  "correct_vs_not_agreement": 40,
+  "kappa_three_grades": 0.57,
+  "labeller_correct": 25,
+  "judge_correct": 27,
+  "confusion_rows_labeller_cols_judge": {
+    "correct": {
+      "correct": 21,
+      "partially_correct": 4,
+      "incorrect": 0
+    },
+    "partially_correct": {
+      "correct": 4,
+      "partially_correct": 3,
+      "incorrect": 2
+    },
+    "incorrect": {
+      "correct": 2,
+      "partially_correct": 1,
+      "incorrect": 13
+    }
+  },
+  "disagreements": [
+    {
+      "question_id": "6a219d7c58451842aa5d6819a7cdf51c55e9fc0f",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "says no specific domains are named but also claims a variety of domains",
+      "judge_explanation": "The candidate correctly states that the corpus does not explicitly mention specific domains, aligning with the reference answer, while adding context about Common Voice and out-of-domain test sets without contradiction."
+    },
+    {
+      "question_id": "9b7655d39c7a19a23eb8944568eb5618042b9026",
+      "labeller": "partially_correct",
+      "judge": "incorrect",
+      "labeller_note": "TensiStrength and TwitterNLP overlap; other references are unresolved BIBREFs",
+      "judge_explanation": "The candidate answer lists tools (Rosette Text Analytics, Google Cloud, mTurk) not present in either reference answer and omits tools mentioned in the references (e.g., BIBREF17, BIBREF18, CogComp-NLP)."
+    },
+    {
+      "question_id": "e9cfbfdf30e48cffdeca58d4ac6fdd66a8b27d7a",
+      "labeller": "correct",
+      "judge": "partially_correct",
+      "labeller_note": "description of the cluster topic with the propositions",
+      "judge_explanation": "The candidate correctly identifies that workers received a description of the document cluster's topic and propositions, aligning with reference 1, but omits the key detail from reference 2 about scoring propositions to determine importance for ranking."
+    },
+    {
+      "question_id": "2317ca8d475b01f6632537b95895608dc40c4415",
+      "labeller": "correct",
+      "judge": "partially_correct",
+      "labeller_note": "sequence of s tweets sorted by date",
+      "judge_explanation": "The candidate correctly identifies that a chunk is a sequence of tweets sorted by date and split into groups of size s, aligning with one reference. However, it omits the reference's mention of tweets being labeled by their account's label, which is a key part of the definition."
+    },
+    {
+      "question_id": "d3aa0449708cc861a51551b128d73e11d62207d2",
+      "labeller": "partially_correct",
+      "judge": "incorrect",
+      "labeller_note": "mentions HR-BiLSTM (BiLSTMs with residual learning) but centres on a future-work decoder",
+      "judge_explanation": "The candidate answer does not mention any of the key components listed in the reference answers (e.g., relation-level/word-level representations, BiLSTMs, residual learning) and instead focuses on unrelated details (decoder integration) and requests clarification, failing to address the question as per the references."
+    },
+    {
+      "question_id": "d571e0b0f402a3d36fb30d70cdcd2911df883bc7",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "leans towards yes (Hindi as low-resource) without committing, then asks",
+      "judge_explanation": "The candidate's answer aligns with the reference answers by suggesting the system may be tested on low-resource languages, even if it does not explicitly confirm this, and does not contradict the references."
+    },
+    {
+      "question_id": "a15bc19674d48cd9919ad1cf152bf49c88f4417d",
+      "labeller": "incorrect",
+      "judge": "partially_correct",
+      "labeller_note": "a dialogue corpus, not DSTC2",
+      "judge_explanation": "The candidate correctly identifies the corpus as a 'dialogue corpus' but misses the specific reference to DSTC2 or its manual transcriptions."
+    },
+    {
+      "question_id": "26126068d72408555bcb52977cd669faf660bdf7",
+      "labeller": "correct",
+      "judge": "partially_correct",
+      "labeller_note": "evaluation on word similarity and entailment datasets",
+      "judge_explanation": "The candidate correctly identifies evaluation on word similarity and entailment tasks but omits specific datasets (e.g., WordNet, crowdsourced dataset) and the nearest neighbor listing experiment from the references."
+    },
+    {
+      "question_id": "52f8a3e3cd5d42126b5307adc740b71510a6bdf5",
+      "labeller": "correct",
+      "judge": "partially_correct",
+      "labeller_note": "lists the ReviewQA tasks",
+      "judge_explanation": "The candidate lists some correct tasks but includes an additional task not in the reference and omits others, such as 'Prediction of the exact rating of an aspect in a review' and 'Prediction of the list of all the positive/negative aspects mentioned in the review'."
+    },
+    {
+      "question_id": "c0e341c4d2253eb42c8840381b082aae274eddad",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "relation detection, close to the second reference, but no residual matching",
+      "judge_explanation": "The candidate correctly identifies relation detection as the core component, aligning with the second reference's focus on hierarchical matching and residual learning within this subtask."
+    },
+    {
+      "question_id": "1329280df5ee9e902b2742bde4a97bc3e6573ff3",
+      "labeller": "incorrect",
+      "judge": "correct",
+      "labeller_note": "says the paper does not say; the answer is No",
+      "judge_explanation": "The candidate correctly notes the paper does not explicitly state the dataset is balanced, aligning with the reference answer 'No'."
+    },
+    {
+      "question_id": "b6f15fb6279b82e34a5bf4828b7b5ddabfdf1d54",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "multilingual NMT among non-multilingual baselines",
+      "judge_explanation": "The candidate correctly includes 'Multilingual NMT (Neural Machine Translation)' which aligns with the reference answer, and additional details do not contradict the references."
+    },
+    {
+      "question_id": "92d1a6df3041667dc662376938bc65527a5a1c3c",
+      "labeller": "incorrect",
+      "judge": "correct",
+      "labeller_note": "notes English tweets but does not commit to yes",
+      "judge_explanation": "The candidate acknowledges the use of an English dataset and aligns with the reference answer that the paper reports results on English data, despite additional speculative analysis about non-English elements."
+    }
+  ],
+  "kappa_correct_vs_not": 0.6
+}
