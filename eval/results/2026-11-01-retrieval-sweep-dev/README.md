@@ -8,13 +8,14 @@ model most often? The sweep is retrieval only, with no language model.
 - Script: `eval/qasper/retrieval_sweep.py`, launcher `eval/qasper/run_sweep.sh`, run on maddog on
   CPU in 4 shards of 6 threads (branch `feat/better-retrieval`, commit `293ae33` plus sharding).
 - Data: QASPER v0.3 dev, using the 280 arXiv PDFs downloaded by `run_eval.py prepare`.
-- There are 33 set-ups:
+- There are 36 set-ups, 12 retrievers × 3 chunkings:
   - **Chunking** (size/overlap in characters): 500/100, 1000/200 (the app's), 1500/300.
   - **Retrievers:**
     - dense: all-MiniLM-L6-v2 (the app's), BAAI/bge-small-en-v1.5, intfloat/e5-small-v2;
     - BM25 (`rank-bm25`);
     - hybrid: dense plus BM25 by reciprocal rank fusion (k = 60);
-    - reranked: each of the above, with the top 20 reranked by cross-encoder/ms-marco-MiniLM-L-6-v2.
+    - reranked: MiniLM dense, BM25 and the three hybrids, each with its top 20 reranked by
+      cross-encoder/ms-marco-MiniLM-L-6-v2.
 - For each question and set-up, the script records the rank of the first chunk holding gold
   evidence, matched as in `run_eval.py`.
 - Questions: the 782 whose evidence is findable under every chunking, so every set-up is scored
@@ -23,7 +24,9 @@ model most often? The sweep is retrieval only, with no language model.
   500, 1000 or 1500 characters). This compares set-ups at the same prompt length. hit@4 does
   not: four 1,500-character chunks hold three times the text of four 500-character ones.
 - Paired exact McNemar tests compare each set-up with the app's (`c1000/dense-minilm`), with Holm
-  correction over the 32 comparisons, separately for hit@4 and hit@budget (`summary.json`).
+  correction over the 35 comparisons, separately for hit@4 and hit@budget (`summary.json`).
+  (An earlier version of this README and the commit that added the sweep said 33 set-ups and 32
+  comparisons; the code always ran and corrected over all 36 and 35.)
 
 ## Results at equal prompt length (hit@budget)
 

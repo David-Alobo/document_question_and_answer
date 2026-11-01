@@ -5,8 +5,9 @@ chunk that holds a gold evidence paragraph (matched as in run_eval.py). Set-ups 
 
     chunking   500/100, 1000/200 (the app's), 1500/300 characters (size/overlap)
     retriever  dense (MiniLM: the app's; BGE-small; E5-small), BM25 keywords,
-               hybrid (dense + BM25 by reciprocal rank fusion), and each of those
-               reranked with a cross-encoder over its top 20
+               hybrid (dense + BM25 by reciprocal rank fusion), and MiniLM dense,
+               BM25 and the three hybrids reranked with a cross-encoder over their
+               top 20: 12 retrievers x 3 chunkings = 36 set-ups
 
 Metrics are computed on the questions whose evidence is findable under every chunking,
 so every set-up is scored on the same questions. "Budget" counts a hit within the first

@@ -1,0 +1,29 @@
+% Manuscript. Build: cd paper && latexmk main.tex (outputs in build/).
+% Numbers come from generated/numbers.tex (python make_numbers.py); references from make_bib.py.
+\documentclass[11pt]{article}
+
+\input{preamble}
+
+\title{Measuring a question-answering app for research papers: a silent prompt bug, chunk
+  size, reranking and crowding by other papers}
+\author{David Obeh Alobo\\
+  \small University of Glasgow\\
+  \small \texttt{2941522A@student.gla.ac.uk}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/introduction}
+\input{sections/app}
+\input{sections/evaluation}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/availability}
+
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,52 @@
+\section{The app}
+\label{sec:app}
+
+\App{} is a Streamlit web application written in Python. A user uploads a PDF and asks questions
+in a chat. The PDF is read page by page with pypdf through LangChain's \texttt{PyPDFLoader} and
+split by LangChain's recursive character splitter into chunks of at most 1,000 characters with
+200 characters of overlap. Each chunk is embedded locally with all-MiniLM-L6-v2 and stored in a
+flat FAISS index. For each question the four nearest chunks are retrieved and sent, with a
+system prompt and the recent conversation, to a model on the Groq API; Llama~3.1~8B is the
+default. Only the retrieved chunks and the conversation leave the user's machine.
+
+\subsection{Defects found}
+\label{sec:defects}
+
+Reading the code and running the app found four defects in the version on the main branch
+(commit \texttt{5a48041}).
+
+\begin{enumerate}
+  \item \textbf{The current question was built inside the loop over past exchanges.} The code
+  that appends the retrieved chunks and the question to the messages was indented one level too
+  deep, inside the loop that adds previous exchanges. With no previous exchange, the loop body
+  never ran and the model received the system prompt alone, with neither the question nor the
+  document. With $h$ previous exchanges (up to five) it received the question and its context
+  $h$ times, interleaved with the history.
+  \item \textbf{History trimming returned one exchange, not a list.} Once the history held more
+  than ten exchanges, the function meant to keep the last ten returned the tenth from last as a
+  single (question, answer) pair. Iterating over it then failed, so from the twelfth question of
+  a conversation every question ended in an error message.
+  \item \textbf{An unreadable PDF was treated as text.} The loader returned the error message as
+  a string where a list of chunks was expected, and the next step failed on it.
+  \item \textbf{Streamlit reruns repeated work and questions.} The script reruns on every
+  interaction. The PDF was embedded again for each question, and because the question box kept
+  its text, any later click (for instance on ``clear history'') asked the last question again
+  and added it to the history once more.
+\end{enumerate}
+
+None of these raised an error on the first question, which is the only one most people try. The
+first defect also does not show as an error: the model receives a valid request and replies, in
+our runs with an empty answer (Section~\ref{sec:res-shipped}).
+
+\subsection{Changes}
+\label{sec:changes}
+
+We fixed the four defects, each with a regression test, and made three changes that the
+evaluation in this paper motivated or measured. Every answer now lists the passages it was
+given, with their pages, and the prompt asks the model to cite pages. Several PDFs can be
+loaded at once; each is embedded once and cached, and passages are labelled with their file.
+With several files, retrieval takes the top four chunks and then the best chunk of each file not
+yet represented, up to eight, so that a question comparing the papers sees all of them; an
+``Ask about'' control restricts the search to one file (Section~\ref{sec:res-multidoc}).
+\result{The retrieval defaults chosen from Sections~\ref{sec:res-sweep}
+and~\ref{sec:res-candidates}.}

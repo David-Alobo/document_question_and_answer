@@ -1,0 +1,33 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{A bug that a demo does not show.} The misplaced loop produced no error and a valid
+request; the only symptom was a poor or empty first answer, easily put down to the model. Unit
+tests of the message builder would have caught it, and so would a benchmark run, which turns
+``the first answer is sometimes odd'' into a rate.
+
+\paragraph{Where answers are lost.} \result{Interpretation of fixed vs oracle and of correctness
+with and without retrieved evidence, once the judged results are in.}
+
+\paragraph{Chunk size is a prompt-length choice.} Comparisons of chunk size at a fixed number
+of chunks change two things at once. Held at the same prompt length, smaller chunks retrieved
+evidence more often in this app, and a cross-encoder reranker added more. Long contexts are not
+free for the model either~\cite{liu2024lost}, which is a reason to keep the budget fixed rather
+than raise it.
+
+\paragraph{Several documents.} Searching all loaded papers together is what a comparison
+question needs and what a question about one paper does not. A user-facing control that scopes
+the search is a simple remedy; routing a question to the paper it names would remove the need
+for it, and is untested here. The app's rule of one chunk per file gives comparisons thin
+evidence for all but the best-matching paper; we saw a comparison answer mix up the two papers'
+test sets for this reason (SI~\result{S7}), and balancing the context across files is the next
+change to measure.
+
+\paragraph{Scope.} Every result here comes from one benchmark of NLP papers, PDFs that may
+differ from the versions the questions were written on, one answering model in a 4-bit
+quantization, questions asked without conversation, and a judge model validated on a small
+sample. The evidence matching is approximate, and its bias towards small chunks is the reason
+the leading retrieval set-ups were tested on answers. The retrieval sweep and the
+several-papers experiment were exploratory. Neither experiment says how the app compares with
+systems such as PaperQA2~\cite{skarlinski2024paperqa2}, which spend many model calls per
+question; running them on the same questions is future work.

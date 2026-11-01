@@ -1,0 +1,1 @@
+Reference {numbers} is "UNANSWERABLE": that annotator found no answer in the paper. A candidate that says the paper does not give this information agrees with that reference and is "correct".

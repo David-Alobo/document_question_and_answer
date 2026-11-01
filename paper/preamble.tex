@@ -1,0 +1,40 @@
+% Packages and macros for the manuscript.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{lineno}
+\usepackage{listings}
+\usepackage{caption}
+\captionsetup[table]{position=top, skip=6pt}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, backgrounds, calc, fit, positioning}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{figures/}}
+\onehalfspacing
+\linenumbers
+\lstset{basicstyle=\ttfamily\small, columns=fullflexible, breaklines=true, frame=single,
+  framerule=0.3pt, xleftmargin=0.5em, xrightmargin=0.5em}
+
+% Placeholders that stay visible until filled. Search for \result and \todo before submitting.
+\newcommand{\result}[1]{\textcolor{orange}{[#1]}}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+
+% Notation. The app's name is not decided yet; change it here only.
+\newcommand{\app}{the app}
+\newcommand{\App}{The app}
+\newcommand{\setup}[1]{\texttt{#1}}
+
+% \input that works inside tabular and longtable, for generated table rows.
+\makeatletter\let\rows\@@input\makeatother
+
+% Numbers generated from eval/results/ by make_numbers.py.
+\input{generated/numbers}

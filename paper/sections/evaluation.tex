@@ -1,0 +1,86 @@
+\section{Evaluation}
+\label{sec:evaluation}
+
+\subsection{Data}
+
+We used the development split of QASPER v0.3~\cite{dasigi2021qasper}: 281 NLP papers and 1,005
+questions, each answered by one or more annotators who also marked the evidence paragraphs. The
+test split is kept for a final comparison once the design is settled, as its authors ask. The
+app reads PDFs, not the dataset's parsed text, so we downloaded each paper from arXiv (one
+request every three seconds, as arXiv asks of automated clients); 280 of 281 downloads
+succeeded. The latest arXiv version may differ from the one QASPER was built from, which we
+measure through evidence findability below.
+
+\subsection{Pipeline under test}
+
+All retrieval and prompting used the app's own functions: \texttt{Utils.split\_pdf},
+\texttt{LocalVectorStore} and \texttt{Utils.build\_messages}. The model ran in Ollama instead of
+Groq, behind a client with the same interface, so that every run could be repeated on our own
+hardware. We used \texttt{llama3.1:8b}, the weights behind Groq's \texttt{llama-3.1-8b-instant},
+in Ollama's 4-bit Q4\_K\_M quantization, which may answer slightly differently from Groq's
+deployment. Generation used the app's settings (temperature 0.1, at most 1,000 tokens) with seed
+0 and a 16,384-token context window, larger than any prompt in the evaluation. Each question was
+asked on its own, without conversation history.
+
+We compared three conditions. \emph{Shipped} sends what the app sent for the first question of
+a conversation before the fix: the system prompt alone. \emph{Fixed} sends the fixed app's prompt
+with the four retrieved chunks. \emph{Oracle} sends the same prompt with the annotators' text
+evidence paragraphs in place of the retrieved chunks; it bounds what better retrieval could
+achieve with this model and prompt.
+
+\subsection{Evidence retrieval}
+\label{sec:ev-evidence}
+
+Retrieval is scored by whether a chunk holding a gold evidence paragraph is among those sent to
+the model. QASPER's paragraphs come from a parse of the paper's source, and the chunks from the
+PDF text, so they are matched approximately: both are normalised (Unicode NFKC, line-break
+hyphens removed, lower case, alphanumeric tokens), and a chunk holds a paragraph if it contains
+at least half of the paragraph's word 5-grams, or if at least half of the chunk's own 5-grams
+lie in the paragraph (for paragraphs longer than a chunk). A question's evidence is
+\emph{findable} if some chunk of the whole PDF holds it; retrieval rates are computed over
+findable questions. Figures and tables are excluded, as in QASPER's text-only evidence.
+
+\subsection{Retrieval sweep}
+
+To choose retrieval settings without calling a language model, we ranked every paper's chunks
+for every question under \SweepSetups{} set-ups: three chunk sizes (500, 1,000 and 1,500
+characters, with 20\% overlap), dense retrieval with all-MiniLM-L6-v2~\cite{wang2020minilm},
+bge-small-en-v1.5~\cite{xiao2023cpack} or e5-small-v2~\cite{wang2022e5}, BM25 keyword
+search~\cite{robertson2009bm25}, a hybrid of dense and BM25 rankings by reciprocal rank
+fusion~\cite{cormack2009rrf}, and five of these (MiniLM, BM25 and the three hybrids) with their
+top 20 reranked by a cross-encoder trained on
+MS~MARCO~\cite{nogueira2019rerank,bajaj2016msmarco}
+(\texttt{cross-encoder/ms-marco-MiniLM-L-6-v2}). Because four chunks of 1,500 characters hold
+three times the text of four of 500, set-ups are compared at a fixed budget of about 4,000
+characters: the top 8, 4 or 3 chunks. The comparison uses the \SweepQuestions{} questions whose
+evidence is findable under every chunk size.
+
+\subsection{Several papers}
+
+To see whether other papers crowd out the one a question is about, each paper was loaded into
+the app's vector store together with 2, 4 or 9 other development papers drawn at random
+(seed 0), and searched with three rules: the top four chunks; the app's rule for several files
+(top four, then one chunk from each unrepresented file, up to eight); and the top four chunks of
+the question's own paper, as when the user selects it under ``Ask about''.
+
+\subsection{Judging answers}
+
+Answers were graded in two ways. The official QASPER evaluator computes token F1 against each
+annotator's answer and keeps the best. It suits short extractive answers and penalises the
+app's full-sentence answers, so we report it but do not rely on it. The main measure is a
+judgement by Qwen3-32B~\cite{yang2025qwen3} (Q4\_K\_M, reasoning enabled, temperature 0), given
+the question, every annotator's answer and the candidate answer, and asked whether the
+candidate gives the substance of at least one reference answer (correct), part of it (partially
+correct) or neither (incorrect); the prompt is in the SI. Language-model judges can be biased in
+known ways~\cite{zheng2023judge}, and in a pilot on nine answers the judge credited empty answers
+with content, so empty answers are graded incorrect by rule, and the judge was validated against
+blind hand labels on a random sample of \result{50} answers (Section~\ref{sec:res-judge}).
+
+\subsection{Statistics}
+
+Rates are given with Wilson 95\% intervals~\cite{wilson1927}. Conditions answered on the same
+questions are compared with exact two-sided McNemar tests~\cite{mcnemar1947} on the discordant
+pairs, reported as questions gained and lost. Within the retrieval sweep, the \SweepComparisons{} comparisons
+with the app's set-up are Holm-corrected~\cite{holm1979}. The sweep
+and the several-papers experiment are exploratory: they were designed after the first runs, to
+explain them.

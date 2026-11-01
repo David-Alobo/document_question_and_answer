@@ -1,0 +1,34 @@
+\section{Introduction}
+\label{sec:intro}
+
+Retrieval-augmented generation~\cite{lewis2020rag} lets a language model answer from a
+document it was not trained on. For a single PDF the usual recipe is short: split the text into
+chunks of a fixed number of characters, embed each chunk with a sentence encoder such as
+Sentence-BERT~\cite{reimers2019sbert}, find the chunks nearest to the question in a vector
+index, and send them with the question to the model. Tutorials, course projects and portfolio
+repositories implement this recipe many times over. A common configuration, and the one in the
+app studied here, is 1,000-character chunks, the MiniLM encoder~\cite{wang2020minilm}, a FAISS
+index~\cite{johnson2021faiss} and the top four chunks. Such apps are seldom evaluated on a public
+benchmark, and when they are, the report is usually of retrieval or of answers, not of where
+between the two the answers are lost.
+
+Research systems for scientific question answering are evaluated carefully but are built
+differently. PaperQA~\cite{lala2023paperqa} and PaperQA2~\cite{skarlinski2024paperqa2} search the
+literature, summarise each retrieved passage for the question before answering, and may decline
+to answer; OpenScholar~\cite{asai2024openscholar} retrieves from tens of millions of papers and
+revises its answers with feedback. They answer questions across the literature. The small apps
+answer questions about a paper the user already has, which is the setting of the QASPER
+benchmark~\cite{dasigi2021qasper}: questions written by readers of an NLP paper's title and
+abstract, answered by other annotators from the full text, with the evidence paragraphs marked.
+
+This paper measures one such app, end to end and with its own code. The app answers questions
+about uploaded PDFs through the Groq API. We ran its pipeline on the QASPER development set and
+asked four questions. How did it behave as shipped? How often does retrieval, rather than the
+model, limit the answers? Which of the common choices (chunk size, embedding model, keyword
+search, reranking) matter when the prompt length is held fixed? And when several papers are
+loaded, as users of such apps expect to do, does retrieval still find the right one?
+
+The answers are specific to one app, one benchmark of NLP papers and one answering model, and
+we do not propose a new method. What the paper offers is a measured account of where a
+typical pipeline loses answers, each finding tied to released per-question data, and the
+changes that recovered them in this app.

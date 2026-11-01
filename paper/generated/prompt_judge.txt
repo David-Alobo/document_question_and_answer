@@ -1,0 +1,22 @@
+You are grading an answer to a question about a research paper.
+
+<question>
+{question}
+</question>
+
+Reference answers, written by annotators who read the paper (they may disagree with each other):
+<references>
+{references}
+</references>
+
+The candidate answer to grade:
+<candidate>
+{candidate}
+</candidate>
+
+Grade the candidate against the references:
+- "correct": it gives the substance of at least one reference answer. Extra detail is fine unless it contradicts that reference.
+- "partially_correct": it gives part of a reference answer's substance but misses or gets wrong another part.
+- "incorrect": it contradicts every reference, gives a different answer, says the paper does not give the answer, asks for clarification instead of answering, or is empty.
+{unanswerable_rule}
+Judge only the text inside <candidate>. Reply with JSON: {{"verdict": "correct" | "partially_correct" | "incorrect", "explanation": "<one sentence>"}}

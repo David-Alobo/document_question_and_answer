@@ -1,0 +1,81 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{The app as shipped}
+\label{sec:res-shipped}
+
+Given the system prompt alone, Llama~3.1~8B returned an empty answer for \result{N} of the
+1,005 questions; \result{the remaining answers and their verdicts}. In the app, this is what
+the first question of every conversation received.
+
+\subsection{Retrieval limits the fixed app}
+\label{sec:res-fixed}
+
+\result{Table: shipped / fixed / oracle, judged correct and correct-or-partial with Wilson
+intervals, official Answer F1; paired McNemar fixed vs oracle.}
+
+\result{Evidence findable in the PDF for X of Y questions with text evidence; in the top four
+chunks for Z\%. Correct rate when the top four held evidence vs when they did not.}
+
+\subsection{Retrieval settings at equal prompt length}
+\label{sec:res-sweep}
+
+With the prompt held at about 4,000 characters, the app's set-up (1,000-character chunks, top 4,
+MiniLM) put a gold evidence passage in the context for \SweepBaseBudget{} of the
+\SweepQuestions{} questions (Table~S\result{n}). Halving the chunk size and taking twice as many
+chunks, with the same encoder, raised this to \SweepSmallBudget{} (\SweepSmallGained{} questions
+gained, \SweepSmallLost{} lost; Holm $p =$ \SweepSmallP{}). Reranking the top 20 of those
+500-character chunks with the cross-encoder raised it to \SweepSmallRerankBudget{}
+(\SweepSmallRerankGained{} gained, \SweepSmallRerankLost{} lost against the app's set-up; Holm
+$p =$ \SweepSmallRerankP{}). The best of the \SweepSetups{} set-ups, \SweepBestName{}, reached
+\SweepBestBudget{}, inside the interval of the simpler reranked set-up; with reranking, the
+choice of encoder and the addition of BM25 changed little. BM25 alone was the worst retriever at
+every chunk size.
+
+These are rates of evidence reaching the model, and the matching rule may favour small chunks
+(a 500-character chunk inside a long evidence paragraph can pass the overlap test while holding
+only part of it). We therefore tested the two leading set-ups on answers.
+
+\subsection{The leading set-ups on answers}
+\label{sec:res-candidates}
+
+\result{Fixed app (c1000, top 4) vs c500 top 8 vs c500 top 8 reranked: judged correct with
+intervals, paired McNemar against the fixed app, official F1, mean prompt length, seconds per
+question.}
+
+\subsection{Several papers}
+\label{sec:res-multidoc}
+
+Other papers crowded out the one a question was about (Table~\ref{tab:multidoc}). For the
+\MultidocQuestions{} questions with findable evidence, the top four chunks held evidence for
+\MultidocZeroSingle{} with the paper alone. With nine other papers loaded, only
+\MultidocNineSingleOwn{} of the four chunks came from the right paper on average, and the rate
+fell to \MultidocNineSingle{} (\MultidocNineSingleLost{} questions lost, none gained). The rule
+the app uses for several files, which adds one chunk from each unrepresented file, recovered
+part of this mainly by widening the context to eight chunks (\MultidocNineMulti{}).
+Restricting the search to the question's paper restored the single-paper rate exactly, as it
+must, since it searches the same chunks with the same embeddings.
+
+\begin{table}[t]
+\centering
+\caption{Evidence retrieval when the question's paper is loaded with $N$ other QASPER
+development papers (\MultidocQuestions{} questions with findable evidence; Wilson 95\%
+intervals). \emph{single}: top 4 chunks. \emph{multi}: top 4, then the best chunk of each other
+file, up to 8. \emph{selected}: top 4 of the question's paper only. Lost / gained: questions
+whose evidence left or entered the context compared with the paper alone.}
+\label{tab:multidoc}
+\small
+\begin{tabular}{rlcccc}
+\toprule
+$N$ & Rule & Evidence in context (\%) & Chunks & From right paper & Lost / gained \\
+\midrule
+\rows{generated/multidoc_rows}
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Agreement of the judge with hand labels}
+\label{sec:res-judge}
+
+\result{Agreement on the blind sample of 50: exact agreement, agreement on correct vs not, the
+confusion table, and examples of disagreements.}
