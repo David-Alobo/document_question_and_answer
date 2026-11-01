@@ -213,7 +213,10 @@ def judge(args):
             result.update(verdict=None, error=str(e))
         return result
 
-    todo = [s for s in drawn if s["question_id"] not in done]
+    # The hand-labelled sample first, so the judge can be checked before the rest finishes
+    with open(out / "to_label_by_hand.csv", encoding="utf-8") as f:
+        sample = {r["question_id"] for r in csv.DictReader(f)}
+    todo = sorted((s for s in drawn if s["question_id"] not in done), key=lambda s: s["question_id"] not in sample)
     with ThreadPoolExecutor(args.workers) as pool:
         for i, result in enumerate(pool.map(grade, todo), 1):
             _append_jsonl(path, result)
