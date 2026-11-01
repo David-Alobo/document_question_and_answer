@@ -23,10 +23,23 @@ The test split is reserved for the final comparison.
 3. **Retry when retrieval misses.** Ask the model whether the chunks answer the question; if
    not, rewrite the query and search again. Costs an extra model call per question.
 
-## Later
+## After the roadmap
 
-- Final comparison on the QASPER test split, and PaperQA2 on the same questions.
-- Choose the project name; update the README and profile card.
+1. **Final test and publication.** Run the final design once on the QASPER test split, with
+   PaperQA2 on the same questions. Post the paper and SI on arXiv, archive code and results on
+   Zenodo (DOI cited in the paper), choose the project name and tag v1.0; update the README
+   and profile card.
+2. **Beyond NLP papers.** Build a small question set from chemistry papers in the QASPER format
+   (question, answer, evidence paragraph) and rerun the evaluation. Check what chemistry
+   paper-QA benchmarks already exist before calling it new.
+3. **Users** (optional). A public demo (e.g. a Hugging Face Space) and a small study in which
+   colleagues ask real questions and record whether answers and page citations were right.
+4. **One larger direction** (optional, chosen from what 3 shows): tables and figures; questions
+   across many papers, closer to PaperQA2; or a vanilla JavaScript front end replacing
+   Streamlit.
+
+Items 1 and 2 come first: a held-out test and a second field strengthen the paper more than any
+extra feature.
 
 ## Frameworks considered
 
