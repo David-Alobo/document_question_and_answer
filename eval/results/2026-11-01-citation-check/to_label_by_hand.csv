@@ -1,0 +1,1646 @@
+n,question_id,question,statement,cited_passages,your_label (supported / partially_supported / not_supported)
+1,f1f1dcc67b3e4d554bfeb508226cdadb3c32d2e9,what datasets were used in evaluation?,"According to Table 2 on page [p. 3], four languages were used for evaluation: Spanish (s r), Turkish (t r), Dutch (d r), and Russian (r r) restaurant reviews.","[p. 3] dataset extracted from Yelp Dataset Challenge [1] and restaurant
+reviews dataset as part of a Kaggle competition [18].
+4.1.2 Test Sets. For evaluation of the multilingual approach,
+we use four languages. /T_hese datasets are part of SemEval-2016
+Challenge Task 5 [23, 24]. Table 2 shows the number of observations
+in each test corpus.
+Dataset name Description # of observations
+s r Spanish restaurant reviews 2 , 045
+t r Turkish restaurant reviews 932
+d r Dutch restaurant reviews 1 , 635
+r r Russian restaurant reviews 2 , 529
+Table 2: Datasets used for testing.
+Dataset Majority Baseline Lexicon-based Baseline RNN
+s r 72.71 70.98 84.21
+t r 56.97 61.59 74.36
+d r 59.63 70.52 81.77
+r r 79.60 67.81 85.61
+Table 3: Accuracy results (%) for RNN-based approach com-
+pared with majority baseline and lexicon-based baseline.
+Dataset False positives False negatives
+s r 30.03 69.97
+t r 18.83 81.17
+d r 13.42 86.58
+r r 35.16 64.84
+Table 4: Percentage of false positives and false negatives of
+
+[p. 3] Dataset False positives False negatives
+s r 30.03 69.97
+t r 18.83 81.17
+d r 13.42 86.58
+r r 35.16 64.84
+Table 4: Percentage of false positives and false negatives of
+wrong classi/f_ications.
+4.2 Experimental Results
+For experimental results, we report majority baseline for each lan-
+guage where the majority baseline corresponds to a model’s ac-
+curacy if it always predicts the majority class in the dataset. For
+example, if the dataset has 60% of all reviews positive and 40% neg-
+ative, majority baseline would be 60% because a model that always
+predicts “positive” will be 60% accurate and will make mistakes 40%
+of the time.
+In addition to the majority baseline, we also compare our results
+with a lexicon-based approach. We use SentiWordNet [4] to obtain
+a positive and a negative sentiment score for each token in a review.
+/T_hen sum of positive sentiment scores and negative sentiment
+scores for each review is obtained by summing up the scores for
+
+[p. 3] able. /T_he /f_irst set consists of English reviews and the second set
+contains restaurant reviews from four diﬀerent languages (Spanish,
+Turkish, Dutch, Russian). We focus on polarity detection in reviews,
+therefore all datasets in this study have two class values (positive,
+negative).
+4.1.1 Training Sets. With the goal of building a generalizable
+sentiment analysis model, we used three diﬀerent training sets
+as provided in Table 1. One of these three datasets (Amazon re-
+views [12, 16]) is larger and has product reviews from several diﬀer-
+ent categories including book reviews, electronics products reviews,
+and application reviews. /T_he other two datasets are to make the
+model more specialized in the domain. In this paper we focus on
+restaurant reviews as our domain and use Yelp restaurant reviews
+dataset extracted from Yelp Dataset Challenge [1] and restaurant
+reviews dataset as part of a Kaggle competition [18].
+4.1.2 Test Sets. For evaluation of the multilingual approach,",
+2,6bfba3ddca5101ed15256fca75fcdc95a53cece7,What are the 18 propaganda techniques?,"According to the document context [p. 1], the list of 18 propaganda techniques is reported below, but it's not explicitly listed in the provided snippet.","[p. 1] among many others (cf. Section 3). Whereas
+proving intent is not easy, we can analyse the
+language of a claim/article and look for the use
+of speciﬁc propaganda techniques. Going at this
+ﬁne-grained level can yield more reliable systems
+and it also makes it possible to explain to the user
+why an article was judged as propagandist by an
+automatic system.
+With this in mind, we organised the shared
+task on ﬁne-grained propaganda detection at the
+NLP4IF@EMNLP-IJCNLP 2019 workshop. The
+task is based on a corpus of news articles anno-
+tated with an inventory of 18 propagandist tech-
+niques at the fragment level. We hope that the
+corpus would raise interest outside of the commu-
+nity of researchers studying propaganda. For ex-
+ample, the techniques related to fallacies and the
+ones relying on emotions might provide a novel
+setting for researchers interested in Argumentation
+and Sentiment Analysis.
+2 Related Work
+Propaganda has been tackled mostly at the arti-
+
+[p. 1] ones relying on emotions might provide a novel
+setting for researchers interested in Argumentation
+and Sentiment Analysis.
+2 Related Work
+Propaganda has been tackled mostly at the arti-
+cle level. Rashkin et al. (2017) created a corpus
+of news articles labelled as propaganda, trusted,
+hoax, or satire. Barr ´on-Cede˜no et al. (2019) ex-
+perimented with a binarized version of that cor-
+pus: propaganda vs. the other three categories.
+Barr´on-Cedeno et al. (2019) annotated a large bi-
+nary corpus of propagandist vs. non-propagandist
+articles and proposed a feature-based system for
+discriminating between them. In all these cases,
+the labels were obtained using distant supervision,
+assuming that all articles from a given news out-
+let share the label of that outlet, which inevitably
+introduces noise (Horne et al., 2018).
+A related ﬁeld is that of computational argu-
+mentation which, among others, deals with some
+logical fallacies related to propaganda. Habernal
+
+[p. 1] ted systems for the FLC task, 25 teams did
+so for the SLC task, and 14 teams eventu-
+ally submitted a system description paper. For
+both subtasks, most systems managed to beat
+the baseline by a sizable margin. The leader-
+board and the data from the competition are
+available athttp://propaganda.qcri.
+org/nlp4if-shared-task/.
+1 Introduction
+Propaganda aims at inﬂuencing people’s mindset
+with the purpose of advancing a speciﬁc agenda.
+In the Internet era, thanks to the mechanism
+of sharing in social networks, propaganda cam-
+paigns have the potential of reaching very large
+audiences (Glowacki et al., 2018; Muller, 2018;
+Tard´aguila et al., 2018).
+Propagandist news articles use speciﬁc
+techniques to convey their message, such as
+whataboutism, red Herring , and name calling ,
+among many others (cf. Section 3). Whereas
+proving intent is not easy, we can analyse the
+language of a claim/article and look for the use
+of speciﬁc propaganda techniques. Going at this",
+3,d9980676a83295dda37c20cfd5d58e574d0a4859,what data simulation techniques were introduced?,"Additionally, on page [p. 10], it mentions that ""In future work, we plan to investigate other cheap ways to generate artificial data."" However, this is mentioned in the context of future work and not specifically about the techniques introduced in this paper.","[p. 10] pact of BT on subparts of the network (§7).
+In future work, we plan to investigate other
+cheap ways to generate artiﬁcial data. The experi-
+mental setup we proposed may also beneﬁt from a
+reﬁning of the data selection strategies to focus on
+the most useful monolingual sentences.",
+4,ffa7f91d6406da11ddf415ef094aaf28f3c3872d,By how much more does PARENT correlate with human judgements in comparison to other text generation metrics?,"To answer your question, let's look at Table 3 on page [p. 8], which shows the accuracy of different metrics in making the same judgments as humans between pairs of generated texts.","[p. 8] relation is 0.328 in this case. With these compo-
+nents, the correlation is 0.838, showing that they
+are crucial to the performance of PARENT.
+Sentence Level Discrimination. Chaganty et al.
+(2018) point out that hill-climbing on an automatic
+metric is meaningless if that metric has a low
+instance-level correlation to human judgments. In
+Table 3 we show the average accuracy of the met-
+rics in making the same judgments as humans be-
+tween pairs of generated texts. Both variants of
+PARENT are signiﬁcantly better than the other
+metrics, however the best accuracy is only60% for
+the binary task. This is a challenging task, since
+there are typically only subtle differences between
+the texts. Achieving higher instance-level accura-
+cies will require more sophisticated language un-
+derstanding models for evaluation.
+5.6 WebNLG Dataset
+To check how PARENT correlates with human
+judgments when the references are elicited from
+humans (and less likely to be divergent), we check
+
+[p. 8] BLEU BLEU-T RG-F PARENT-W PARENT-C
+0.556 0.567 ∗ 0.588∗ 0.598‡ 0.606†
+Table 3: Accuracy on making the same judgments
+as humans between pairs of generated texts. p <
+0.01∗/0.05†/0.10‡: accuracy is signiﬁcantly higher
+than the next best accuracy to the left using a paired
+McNemar’s test.
+this issue by measuring recall against the table in
+addition to the reference.
+Ablation Study. We check how different com-
+ponents in the computation of PARENT contribute
+to its correlation to human judgments. Speciﬁ-
+cally, we remove the probability w(g) of an n-
+gram g being entailed by the table from Eqs. 2
+and 5.11 The average correlation for PARENT-W
+drops to 0.168 in this case. We also try a variant
+of PARENT with λ = 0, which removes the con-
+tribution of Table Recall (Eq. 4). The average cor-
+relation is 0.328 in this case. With these compo-
+nents, the correlation is 0.838, showing that they
+are crucial to the performance of PARENT.
+Sentence Level Discrimination. Chaganty et al.
+
+[p. 8] derstanding models for evaluation.
+5.6 WebNLG Dataset
+To check how PARENT correlates with human
+judgments when the references are elicited from
+humans (and less likely to be divergent), we check
+its correlation with the human ratings provided for
+the systems competing in the WebNLG challenge
+(Gardent et al., 2017). The task is to generate text
+describing 1-5 RDF triples (e.g. John E Blaha,
+birthPlace, San Antonio), and human ratings were
+collected for the outputs of9 participating systems
+11When computing precision we set w(g) = 0, and when
+computing recall we set w(g) = 1for all g.
+Metric Grammar Fluency Semantics Avg
+METEOR 0.788 ±0.04 0.792 ±0.04 0.576 ±0.06 0.719
+ROUGE 0.788 ±0.04 0.792 ±0.04 0.576 ±0.06 0.719
+CIDEr 0.804 ±0.03 0.753 ±0.04 0.860 ±0.02 0.806
+BLEU 0.858±0.02 0.811±0.03 0.775±0.03 0.815
+BLEU-T 0.849 ±0.02 0.801 ±0.03 0.816 ±0.02 0.822
+CIDErD 0.838 ±0.04 0.796 ±0.04 0.853 ±0.02 0.829
+PARENT-W 0.821 ±0.03 0.768 ±0.04 0.887±0.02 0.825",
+5,7561a968470a8936d10e1ba722d2f38b5a9a4d38,What is the size of the dataset?,"According to [p. 1], The Flickr30K dataset is a collection of over 30,000 images with 5 crowdsourced descriptions each.","[p. 1] considers methods to ﬁnd examples of these, and discusses how we should deal with stereotype-driven descriptions in future applications.
+Keywords:image annotation, stereotypes, bias, Flickr30K
+1. Introduction
+The Flickr30K dataset (Young et al., 2014) is a collection of
+over 30,000 images with 5 crowdsourced descriptions each.
+It is commonly used to train and evaluate neural network
+models that generate image descriptions (e.g. (Vinyals et
+al., 2015)). An untested assumption behind the dataset is
+that the descriptions are based on the images, and nothing
+else. Here are the authors (about the Flickr8K dataset, a
+subset of Flickr30K):
+“By asking people to describe the people, ob-
+jects, scenes and activities that are shown in a
+picture without giving them any further informa-
+tion about the context in which the picture was
+taken, we were able to obtain conceptual descrip-
+tions that focus only on the information that can
+be obtained from the image alone.” (Hodosh et
+al., 2013, p. 859)
+
+[p. 1] Stereotyping and Bias in the Flickr30K Dataset
+Emiel van Miltenburg
+Vrije Universiteit Amsterdam
+emiel.van.miltenburg@vu.nl
+Abstract
+In: Proceedings of the Workshop on Multimodal Corpora: Computer vision and language processing (MMC-2016), pages 1–4.
+Workshop held: 24 May 2016, collocated with LREC 2016, Portoroˇz, Slovenia.
+Proceedings available at: http://www.lrec-conf.org/proceedings/lrec2016/workshops/
+LREC2016Workshop-MCC-2016-proceedings.pdf
+An untested assumption behind the crowdsourced descriptions of the images in the Flickr30K dataset (Young et al., 2014) is that they “fo-
+cus only on the information that can be obtained from the image alone” (Hodosh et al., 2013, p. 859). This paper presents some evidence
+against this assumption, and provides a list of biases and unwarranted inferences that can be found in the Flickr30K dataset. Finally, it
+considers methods to ﬁnd examples of these, and discusses how we should deal with stereotype-driven descriptions in future applications.",
+6,0af16b164db20d8569df4ce688d5a62c861ace0b,what were the baselines?,"According to [p. 5], the traditional baselines used for comparison are:
+* BOW (Bag-of-Words)
+* TFIDF (Term Frequency-Inverse Document Frequency)","[p. 5] top 920 training dialogues and predict the evaluation results
+using the model performing the best validation results. The
+results are shown in Table 8 and Table 9. The present method
+achieves 81.5% and 88.5% micro F1-score on the testing
+dataset of Friends and EmotionPush, respectively.
+
+[p. 5] tion models are including Logistic Regression (LR), Random
+Forest (RF), TextCNN [Kim, 2014] with initial word embed-
+ding as GloVe [Pennington et al., 2014 ], and our proposed
+model. All the experiment results are based on the best per-
+formances of validation results.
+5.2 Performance
+The experiment results of validation on Friends are shown
+in Table 6. The proposed model and baselines are evaluated
+based on the Precision (P.), Recall (R.), and F1-measure (F1).
+For the traditional baselines, namelyBOW and TFIDF, we
+observe that they achieve surprising high F1 scores around
+0.81, however, the scores for Anger and Sadness are lower.
+This explains that traditional approaches tend to predict the
+labels with large sample size, such as Joy and Neutral, but
+fail to take of scarce samples even when an ensemble ran-
+dom forest classiﬁer is adopted. In order to prevent the
+unbalanced learning, we choose the weighted loss mecha-
+nism for both TextCNN and causal modeling TextCNN ( C-
+
+[p. 5] Table 6: Validation Results (Friends)
+Anger Joy Neutral Sadness Overall
+Models P. R. F1 P. R. F1 P. R. F1 P. R. F1 F1
+BOW-LR 0.65 0.31 0.42 0.66 0.66 0.66 0.85 0.94 0.89 0.51 0.21 0.30 0.80
+BOW-RF 0.74 0.30 0.43 0.66 0.62 0.64 0.84 0.96 0.89 0.83 0.18 0.29 0.81
+TFIDF-RF 0.61 0.30 0.40 0.62 0.65 0.63 0.86 0.94 0.90 0.53 0.19 0.28 0.80
+TextCNN 0.74 0.40 0.52 0.65 0.71 0.68 0.87 0.94 0.90 0.70 0.25 0.37 0.82
+C-TextCNN 0.71 0.49 0.58 0.70 0.70 0.70 0.87 0.94 0.90 0.62 0.25 0.35 0.83
+FriendsBERT-base-s 0.76 0.58 0.66 0.79 0.71 0.75 0.88 0.95 0.91 0.61 0.36 0.46 0.84
+FriendsBERT-base 0.78 0.58 0.66 0.74 0.78 0.76 0.89 0.93 0.91 0.65 0.38 0.48 0.85
+FriendsBERT-large 0.80 0.61 0.69 0.76 0.83 0.79 0.91 0.93 0.92 0.64 0.41 0.50 0.86
+anger and sadness) earlier and make the training process
+more stable. Since the major evaluation metrics micro F1-
+score is effect by the number of each label, we only apply
+the weighted balanced warming in ﬁrst epoch to optimize the
+performance.",
+7,4cbe5a36b492b99f9f9fea8081fe4ba10a7a0e94,What baselines did they consider?,"However, based on the conversation so far, I'd like to clarify: Are you referring to the baselines mentioned in [p. 3] or are you looking for a different type of baseline?","[p. 3] lation parsing approach for capturing counterfac-
+tual conditionals from tweets (Bhatia et al., 2015;
+Ji and Smith, 2017; Son et al., 2017). These works
+had substantial differences to what propose in this
+paper. First, Ji and Bhatia used a pretrained model
+(not fully optimal for some parts of the given
+task) in their pipeline; Ji’s model performed worse
+than the baseline on the categorization of legisla-
+tive bills, which is thought to be due to legisla-
+tive discourse structures differing from those of
+the training set (WSJ corpus). Bhatia also used
+a pretrained model ﬁnding that utilizing discourse
+relation features did not boost accuracy (Bhatia
+et al., 2015; Ji and Smith, 2017). Both Bhatia
+and Son used manual schemes which may limit
+the coverage of certain types of positive samples–
+Bhatia used a hand-crafted schema for weighting
+discourse structures for the neural network model
+and Son manually developed seven surface forms
+of counterfactual thinking for the rule-based sys-",
+8,932b39fd6c47c6a880621a62e6a978491d881d60,What baselines are used for comparison?,"But, on page [p. 4], it mentions that the max-margin criterion is used to train the model, which is an alternative to probabilistic methods mentioned in [Bordes et al., 2013; Socher et al., 2013].","[p. 4] al., 2014b].
+Let the set of all parameters beΘ, we minimize the follow-
+ing objective:
+J(Θ) =
+∑
+(h,r,t)∈D
+∑
+(ˆh,ˆr,ˆt)∈ˆD
+max (0,γ−
+f(h,r,t) + f(ˆh,ˆr,ˆt) ) + η∥Θ∥2
+2, (10)
+where γ >0 is a margin between golden triplets and negative
+triplets., f(h,r,t) is the score function. We use the standard
+L2 regularization of all the parameters, weighted by the hy-
+perparameter η.
+Experiment
+In this section, we study the empirical performance of our
+proposed models on two benchmark tasks: triplet classiﬁca-
+tion and link prediction.
+Datasets
+We use two popular knowledge bases: WordNet [Miller,
+1995] and Freebase [Bollacker et al. , 2008 ] in this paper.
+Speciﬁcally, we use WN18 (a subset of WordNet) [Bordes
+et al., 2014] and FB15K (a subset of Freebase)[Bordes et al.,
+2013] since their text descriptions are easily publicly avail-
+able.1 Table 1 lists statistics of the two datasets.
+1https://github.com/xrb92/DKRL
+Link Prediction
+Link prediction is a subtask of knowledge graph completion",
+9,8ce11515634236165cdb06ba80b9a36a8b9099a2,Is pre-training effective in their evaluation?,"Based on the document context [p. 2], it is stated that ""we have to train the forward translation model in a manner similar to the conventional attention-based NMT as pre-training."" This suggests that pre-training is necessary for training the encoder-decoder-reconstructor framework effectively.","[p. 2] ℎ!
+Encoder
+	  	  𝑠!!! 	  𝑠!
+Decoder
+	  𝑐!
+Context
+Vector
+	  	  𝑦!!! 	  𝑦!
+Figure 1: Attention-based NMT.
+Encoder
+Decoder
+Reconstructor
+Context
+Vector
+Inverse
+Context
+Vector Figure 2: Encoder-Decoder-Reconstructor.
+English translation tasks using encode-decoder-
+reconstructor. Our experiments show that their
+method offers signiﬁcant improvement in BLEU
+scores and alleviates the problem of repeating
+and missing words in the translation on English-
+Japanese translation task, though the difference
+is not signiﬁcant on Japanese-English translation
+task.
+In addition, we jointly train a model of for-
+ward translation and back-translation without pre-
+training, and then evaluate this model. As a re-
+sult, the encoder-decoder-reconstructor can not be
+trained well without pre-training, so it proves that
+we have to train the forward translation model in a
+manner similar to the conventional attention-based
+NMT as pre-training.
+The main contributions of this paper are as fol-
+lows:
+
+[p. 2] we have to train the forward translation model in a
+manner similar to the conventional attention-based
+NMT as pre-training.
+The main contributions of this paper are as fol-
+lows:
+•Experimental results show that encode-
+decoder-reconstructor framework achieves
+signiﬁcant improvements in BLEU scores
+(1.0-1.4) for English-Japanese translation
+task.
+•Experimental results show that encode-
+decoder-reconstructor framework has to train
+the forward translation model in a manner
+similar to the conventional attention-based
+NMT as pre-training.
+2 Related Works
+Several studies have addressed the NMT-speciﬁc
+problem of missing or repeating words. Niehues
+et al. (2016) optimized NMT by adding the out-
+puts of PBSMT to the input of NMT. Mi et al.
+(2016) and Feng et al. (2016) introduced a dis-
+tributed version of coverage vector taken from PB-
+SMT to consider which words have been already
+translated. All these methods, including ours, em-
+ploy information of the source sentence to im-",
+10,71e4ba4e87e6596aeca187127c0d088df6570c57,What evaluations methods do they take?,"However, it is mentioned in [p. 4] that ""I have also looked at methods to detect stereotype-driven descriptions"", which suggests that some evaluation was done, but the details of these methods and their evaluations are not provided in the document.","[p. 4] tors’ choice of words when confronted with an image that
+may or may not match their stereotypical expectancies. The
+latter corresponds to the tendency of annotators to go be-
+yond what the physical data can tell us, and expand their
+descriptions based on their past experiences and knowledge
+of the world. Acknowledging these phenomena is impor-
+tant, because on the one hand it helps us think about what
+is learnable from the data, and on the other hand it serves
+as a warning: if we train and evaluate language models on
+this data, we are effectively teaching them to be biased.
+I have also looked at methods to detect stereotype-driven
+descriptions, but due to the richness of language it is difﬁ-
+cult to ﬁnd an automated measure. Depending on whether
+your goal is production or interpretation, it may either be
+useful to suppress or to emphasize biases in human lan-
+guage. Finally, I have discussed stereotyping behavior as
+the addition of a contextual layer on top of a more basic de-",
+11,df5a4505edccc0ee11349ed6e7958cf6b84c9ed4,What dataset was used?,"According to the document context, specifically [p. 3], the input for both tasks consists of news articles in free-text format, collected from 36 propagandist and 12 non-propagandist news outlets.","[p. 3] Table 1 reports the total number of instances per
+technique and the percentage with respect to the
+total number of annotations, for the training and
+for the development sets.
+1We obtained the gold labels about whether a given news
+outlet was propagandistic from the Media Bias Fact Check
+website: http://mediabiasfactcheck.com/
+
+[p. 3] Given a news article, detect all spans of the text
+in which a propaganda technique is used. In
+addition, for each span the propaganda technique
+applied must be identiﬁed.
+Sentence-Level Classiﬁcation task (SLC). A
+sentence is considered propagandist if it contains
+at least one propagandist fragment. We then de-
+ﬁne a binary classiﬁcation task in which, given a
+sentence, the correct label, either propaganda or
+non-propaganda, is to be predicted.
+5 Data
+The input for both tasks consists of news articles
+in free-text format, collected from 36 propagandist
+and 12 non-propagandist news outlets 1 and then
+annotated by professional annotators. More de-
+tails about the data collection and the annotation,
+as well as statistics about the corpus can be found
+in (Da San Martino et al., 2019), where an earlier
+version of the corpus is described, which includes
+450 news articles. We further annotated 47 addi-
+tional articles for the purpose of the shared task",
+12,ee2ad0ab64579cffb60853db6a8c0f971d7cf0ff,who transcribed the corpus?,"It's worth noting that the document does mention that the DeepMine database comes with phone-level transcription, which is a feature that makes it suitable to train deep learning models [p. 6].","[p. 6] independent speaker veriﬁcation and speech recognition in Per-
+sian and English, ” in Proc. Odyssey 2018 The Speaker and
+Language Recognition W orkshop, 2018, pp. 386–392.
+[6] V assil Panayotov , Guoguo Chen, Daniel Povey , and Sanjee v
+Khudanpur, “Librispeech: an ASR corpus based on public do-
+main audio books, ” in Acoustics, Speech and Signal Processing
+(ICASSP), IEEE International Conference on, 2015, pp. 5206–
+5210.
+[7] Mahmood Bijankhan, Javad Sheikhzadegan, and Mahmood R.
+Roohani, “FarsDat - the speech database of Farsi spoken lan-
+guage, ” in 5th Australian international conference, Speech sci-
+ence and technology, 1994, pp. 826–831.
+[8] Mahmood Bijankhan, Javad Sheikhzadegan, Mahmood R.
+Roohani, Rahman Zarrintare, Seyyed Z. Ghasemi, and Mo-
+hammad E. Ghasedi, “TFarsDat - the telephone Farsi speech
+database, ” in EuroSpeech, 2003, pp. 1525–1528.
+[9] Hossein Zeinali, Hossein Sameti, Luk´ aˇ s Burget, and Ja n
+ˇCernock ` y, “T ext-dependent speaker veriﬁcation based on i -
+
+[p. 6] T able 11 . WER [%] obtained with different ASR systemss trained
+on DeepMine database. T est-set has 5.9 hours of speech and La rge-
+T est-set contains 28.5 hours of speech.
+T est-set Large-T est-set
+MonoPhone 41.31 40.70
+TriPhone + Deltas + Delta-Deltas 17.30 16.50
+TriPhone + LDA + MLL T 14.08 13.32
+TriPhone + LDA + MLL T + SA T 11.52 10.95
+Kaldi F-TDNN 4.44 4.09
+5. CONCLUSIONS
+In this paper, we have described the ﬁnal version of a large sp eech
+corpus, the DeepMine database. It has been collected using c rowd-
+sourcing and, according to the best of our knowledge, it is th e
+largest public text-dependent and text-prompted speaker v eriﬁcation
+database in two languages: Persian and English. In addition , it is the
+largest text-independent speaker veriﬁcation evaluation database,
+making it suitable to robustly evaluate state-of-the-art m ethods on
+different conditions. Alongside these appealing properti es, it comes
+with phone-level transcription, making it suitable to trai n deep",
+13,568fb7989a133564d84911e7cb58e4d8748243ef,How is trajectory with how rewards extracted?,"Based on the document context [p. 3], it seems that you are referring to the extraction of high-reward trajectories during Phase 1 of the Go-Explore algorithm.","[p. 3] are mapped to the same, discrete representation by some mapping function f(x). Each cell is asso-
+ciated with meta-data including the trajectory towards that cell, the length of that trajectory, and the
+cumulative reward of that trajectory. New cells are added to the archive when they are encountered
+in the environment, and existing cells are updated with new meta-data when the trajectory towards
+that cells is higher scoring or equal scoring but shorter.
+At each iteration the algorithm selects a cell from this archive based on meta-data of the cell (e.g.
+the accumulated reward, etc.) and starts to randomly explore from the end of the trajectory asso-
+ciated with the selected cell. Phase 1 requires three components: the way that observations are
+embedded into cell representations, the cell selection, and the way actions are randomly selected
+when exploring from a selected cell. In our variant of the algorithm, f(x) is deﬁned as follows:
+
+[p. 3] determinism of the simulator in order to return to those states, allowing it to explore sparse-reward
+environments in a sample efﬁcient way (see Ecoffet et al. (2019) as well as section 4.1). For the
+experiments in this paper we mainly focus on the ﬁnal performance of our policy, not how that
+policy is trained, thus making Go-Explore a suitable algorithm for our experiments. Go-Explore
+is composed of two phases. In phase 1 (also referred to as the “exploration” phase) the algorithm
+explores the state space through keeping track of previously visited states by maintaining anarchive.
+During this phase, instead of resuming the exploration from scratch, the algorithm starts exploring
+from promising states in the archive to ﬁnd high performing trajectories. In phase 2 (also referred
+to as the “robustiﬁcation” phase, while in our variant we will call it “generalization”) the algorithm
+trains a policy using the trajectories found in phase 1. Following this framework, which is also",
+14,897ba53ef44f658c128125edd26abf605060fb13,"Do they test their framework performance on commonly used language pairs, such as English-to-German?","But, if we look at [p. 5] and [p. 6], it seems that the authors are using a multilingual attention-based NMT system (Figure 1) to translate between multiple languages, including English-German.","[p. 6] one language pair since it utilizes the semantic context provided by the other source language. We name
+this mix-multi-source.
+Table 1 summarizes the performance of our systems measured in BLEU 7 on two test sets, tst2013
+and tst2014. Compared to the baseline NMT system which is solely trained on TED English-German
+data, our mix-source system achieves a considerable improvement of 2.6 BLEU points on tst2013 and
+6https://github.com/rsennrich/nematus
+7We used the script mteval-v13a.pl of the Moses framework (http://statmt.org/moses/) as the ofﬁcial way
+to calculate BLEU scores in main machine translation campaigns.
+
+[p. 5] monolingual corpora in NMT.
+Figure 1: Preprocessing steps to employ a multilingual attention-based NMT system
+4 Evaluation
+In this section, we describe the evaluation of our proposed approach in comparisons with the strong base-
+lines using NMT in two scenarios: the translation of an under-resource language pair and the translation
+of a language pair that does not exist any paralled data at all.
+4.1 Experimental Settings
+Training Data. We choose WIT3’s TED corpus (Cettolo et al., 2012) as the basis of our experiments
+since it might be the only high-quality parallel data of many low-resourced language pairs. TED is
+also multilingual in a sense that it includes numbers of talks which are commonly translated into many
+languages. In addition, we use a much larger corpus provided freely by WMT organizers 5 when we
+evaluate the impact of our approach in a real machine translation campaign. It includes the paralled",
+15,6568a31241167f618ef5ede939053feaa2fb0d7e,Do they add one latent variable for each language pair in their Bayesian model?,"Based on the document context, specifically [p. 4], it appears that the authors do not explicitly state that they add one latent variable for each language pair.","[p. 4] This is the ﬁrst work to incorporate the cou-
+pling of aligned arguments directly in a Bayesian
+SRL model. This makes it easier to see how to
+extend this model in a principled way to incor-
+porate additional sources of information. First,
+the model scales gracefully to more than two lan-
+guages. If there are a total of n languages, and
+there is an aligned argument in m of them, the
+multilingual latent variable is connected to only
+those maligned arguments.
+Second, having one joint Bayesian model al-
+lows us to use the same model in various semi-
+supervised learning settings, just by ﬁxing the
+annotated variables during training. Section 6.6
+evaluates a setting where we have some labeled
+data in one language (called source), while no la-
+beled data in the second language (called target).
+Note that this is different from a classic annotation
+projection setting (e.g. (Pad ´o and Lapata, 2009)),
+where the role labels are mapped from source con-
+stituents to aligned target constituents.
+
+[p. 4] Figure 4: Multilingual model. The CLVs and their associated parameters are drawn in bold. PR3 in
+language 1 is aligned to PR3 in language 2 with the corresponding CLV taking the value c2, and SRM is
+aligned to PR2 with the CLV taking the valuec7.
+ample, a value c for the CLV z might give high
+probabilities to S3 and S8 in language 1, and to
+S1 in language 2. If cis the only value for z that
+gives high probability to S3 in language 1, and the
+monolingual model in language 1 decides to as-
+sign S3 to the role for z, then z will predict S1 in
+language 2, with high probability. We generate the
+CLVs via a Chinese Restaurant Process (Pitman,
+2002), a non-parametric Bayesian model, which
+allows us to induce the number of CLVs for every
+predicate-tuple from the data. We continue to train
+on the non-parallel sentences using the respective
+monolingual models.
+The multilingual model is deﬁcient, since the
+aligned roles are being generated twice. Ideally,",
+16,ab0fd94dfc291cf3e54e9b7a7f78b852ddc1a797,What is the previous state-of-the-art in summarization?,"However, according to [p. 4], Table 3 shows that pre-trained embeddings can significantly improve on top of a strong baseline transformer.","[p. 4] 4.2 Abstractive summarization
+Following
+See et al. (2017), we experiment on
+the non-anonymized version of CNN-DailyMail.
+When generating summaries, we follow standard
+practice of tuning the maximum output length and
+disallow repeating the same trigram (
+Paulus et al. ,
+2017; Fan et al. , 2017). For this task we train
+language model representations on the combina-
+tion of newscrawl and the CNN-DailyMail train-
+ing data. T able
+3 shows that pre-trained em-
+beddings can signiﬁcantly improve on top of a
+strong baseline transformer. W e also compare to
+Gehrmann et al. (2018) who use a task-speciﬁc ar-
+chitecture compared to our generic sequence to se-
+quence baseline. Pre-trained representations are
+complementary to their method.",
+17,ffeb67a61ecd09542b1c53c3e4c3abd4da0496a8,How do the authors define a concept map?,"According to the document context [p. 1], the authors define a concept map as ""a labeled graph showing concepts as nodes and relationships between them as edges"" (Novak and Gowin, 1984).","[p. 1] 2009; Kang et al., 2011) show that they note down
+important keywords and phrases, try to identify re-
+lationships between them and organize them ac-
+cordingly. Therefore, we believe that the study of
+1Available at https://github.com/UKPLab/
+emnlp2017-cmapsum-corpus
+Concepts Concept
+Maps
+Infor-
+mation
+consist
+of
+are used to
+structure
+Concept Relation Proposition
+Figure 1: Elements of a concept map.
+summarization with similarly structured outputs is
+an important extension of the traditional task.
+A representation that is more in line with ob-
+served user behavior is a concept map (Novak
+and Gowin, 1984), a labeled graph showing con-
+cepts as nodes and relationships between them as
+edges (Figure 1). Introduced in 1972 as a teach-
+ing tool (Novak and Ca ˜nas, 2007), concept maps
+have found many applications in education (Ed-
+wards and Fraser, 1983; Roy, 2008), for writing
+assistance (Villalon, 2012) or to structure infor-
+mation repositories (Briggs et al., 2004; Richard-",
+18,3e1829e96c968cbd8ad8e9ce850e3a92a76b26e4,How big is the dataset used in this work?,"According to Table 1 on page [p. 4], the total number of tweets is 291,885 for propaganda (P), 112,050 for click-bait (C), 19,065 for hoax (H), and 99,967 for real news (R).","[p. 4] 4 B. Ghanem et al.
+Table 1: Statistics on the data with respect to each account type: propaganda (P), click-
+bait (C), hoax (H), and real news (R).
+Accounts Types
+P C H R
+# of accounts 96 36 7 32
+Max # of tweets/account 3,250 3,246 3,250 3,250
+Min # of tweets/account 33 877 453 212
+Avg # of tweets/account 2,978 3,112 2,723 3,124
+Total # of tweets 291,885 112,050 19,065 99,967
+Where T is the total number of timesteps in the input sequence and αtj is a weight
+computed at each time step jfor each state hj.
+3 Experiments and Results
+Data. We build a dataset of Twitter accounts based on two lists annotated in previous
+works. For the non-factual accounts, we rely on a list of 180 Twitter accounts from
+[21]6. This list was created based on public resources 7 where suspicious Twitter ac-
+counts were annotated with the main fake news types (clickbait, propaganda, satire,
+and hoax). We discard the satire labeled accounts since their intention is not to mis-",
+19,9176d2ba1c638cdec334971c4c7f1bb959495a8e,What are the source and target domains?,"According to [p. 1], the source domain refers to an existing domain where we have sufficient labeled data, while the target domain is a new domain where we have very few or no labeled data.","[p. 1] jointly employ two regularizations – entropy
+minimization and self-ensemble bootstrapping
+– to incorporate the unlabeled target data for
+classiﬁer reﬁnement. Our experimental results
+demonstrate that the proposed approach can
+better leverage unlabeled data from the target
+domain and achieve substantial improvements
+over baseline methods in various experimental
+settings.
+1 Introduction
+In practice, it is often difﬁcult and costly to anno-
+tate sufﬁcient training data for diverse application
+domains on-the-ﬂy. We may have sufﬁcient la-
+beled data in an existing domain (called the source
+domain), but very few or no labeled data in a
+new domain (called the target domain). This issue
+has motivated research on cross-domain sentiment
+classiﬁcation, where knowledge in the source do-
+main is transferred to the target domain in order to
+alleviate the required labeling effort.
+One key challenge of domain adaptation is that
+data in the source and target domains are drawn
+
+[p. 1] main is transferred to the target domain in order to
+alleviate the required labeling effort.
+One key challenge of domain adaptation is that
+data in the source and target domains are drawn
+from different distributions. Thus, adaptation per-
+formance will decline with an increase in distribu-
+tion difference. Speciﬁcally, in sentiment analy-
+sis, reviews of different products have different vo-
+cabulary. For instance, restaurants reviews would
+contain opinion words such as “tender”, “tasty”, or
+“undercooked” and movie reviews would contain
+“thrilling”, “horriﬁc”, or “hilarious”. The intersec-
+tion between these two sets of opinion words could
+be small which makes domain adaptation difﬁcult.
+Several techniques have been proposed for ad-
+dressing the problem of domain shifting. The
+aim is to bridge the source and target domains
+by learning domain-invariant feature representa-
+tions so that a classiﬁer trained on a source do-
+main can be adapted to another target domain.
+
+[p. 1] aim is to bridge the source and target domains
+by learning domain-invariant feature representa-
+tions so that a classiﬁer trained on a source do-
+main can be adapted to another target domain.
+In cross-domain sentiment classiﬁcation, many
+works (Blitzer et al., 2007; Pan et al., 2010; Zhou
+et al., 2015; Wu and Huang, 2016; Yu and Jiang,
+2016) utilize a key intuition that domain-speciﬁc
+features could be aligned with the help of domain-
+invariant features (pivot features). For instance,
+“hilarious” and “tasty” could be aligned as both
+of them are relevant to “good”.
+Despite their promising results, these works
+share two major limitations. First, they highly de-
+pend on the heuristic selection of pivot features,
+which may be sensitive to different applications.
+Thus the learned new representations may not ef-
+fectively reduce the domain difference. Further-
+more, these works only utilize the unlabeled tar-
+get data for representation learning while the sen-",
+20,277a7e916e65dfefd44d2d05774f95257ac946ae,What baselines do they introduce?,"According to the document, on [p. 5], it is mentioned that ""better results for BiLSTM-CRF but not outperform transfer learning approach of MTL (or even BioBERT)"".","[p. 5] better results for BiLSTM-CRF but not outperform transfer
+learning approach of MTL (or even BioBERT). In contrast
+to other common NER corpora, like CoNLL 2003 14, even
+the best baseline system only achieves relatively low scores.
+This outcome is due to the inherent difﬁculty of the task
+(annotators are experienced medical doctors) and the small
+number of training samples.
+4. Conclusion
+We present a new corpus, developed to facilitate the pro-
+cessing of case reports. The corpus focuses on ﬁve dis-
+tinct entity types: cases, conditions, factors, ﬁndings and
+modiﬁers. Where applicable, relationships between enti-
+ties are also annotated. Additionally, we annotate discon-
+tinuous entities with a special relationship type ( discontin-
+uous). The corpus presented in this paper is the very ﬁrst
+of its kind and a valuable addition to the scarce number of
+corpora available in the ﬁeld of biomedical NLP. Its com-
+plexity, given the discontinuous nature of entities and a high",
+21,51fe4d44887c5cc5fc98b65ca4cb5876f0a56dad,What type of neural model was used?,"According to [p. 6], the document mentions ""rectional transformer-based language-model"" (Vaswani et al., 2017).","[p. 6] rectional transformer-based language-model
+(Vaswani et al., 2017).14 We ﬁne-tune BERT-base
+on our binary answerability identiﬁcation task
+with a learning rate of 2e-5 for 3 epochs, with a
+maximum sequence length of 128.
+14We utilize the HuggingFace implementtation avail-
+able at https://github.com/huggingface/
+pytorch-transformers",
+22,27cf16bc9ef71761b9df6217f00f39f21130ce15,Are humans and machine learning systems fooled by the same kinds of illusions?,"Based on the document context [p. 1], it appears that there is a question about whether humans are susceptible to the same types of illusions as machine learning systems.","[p. 1] perturbation of the point that will be misclassiﬁed by the system, posing a threat to its deployment in
+certain critical settings [3, 7, 10, 13, 16, 23, 22]. More broadly, the susceptibility of ML systems to
+adversarial examples has prompted a re-examination of whether current ML systems are truly learning
+or if they are assemblages of tricks that are effective yet brittle and easily fooled [25]. Implicit in this
+line of reasoning is the assumption that instances of ”real"" learning, such as human cognition, yield
+extremely robust systems. Indeed, at least in computer vision, human perception is regarded as the
+gold-standard for robustness to adversarial examples.
+Evidently, humans can be fooled by a variety of illusions, whether they be optical, auditory, or
+other; and there is a long line of research from the cognitive science and psychology communities
+investigating these [12]. In general, however, these illusions are viewed as isolated examples that do
+
+[p. 1] A Surprising Density of Illusionable Natural Speech
+Melody Y. Guan
+Department of Computer Science
+Stanford University
+Stanford, CA 94305
+mguan@stanford.edu
+Gregory Valiant
+Department of Computer Science
+Stanford University
+Stanford, CA 94305
+gvaliant@stanford.edu
+Abstract
+Recent work on adversarial examples has demonstrated that most natural inputs can
+be perturbed to fool even state-of-the-art machine learning systems. But does this
+happen for humans as well? In this work, we investigate what fraction of natural
+instances of speech can be turned into “illusions” which either alter humans’
+perception or result in different people having signiﬁcantly different perceptions?
+We ﬁrst consider the McGurk effect, the phenomenon by which adding a carefully
+chosen video clip to the audio channel affects the viewer’s perception of what is
+said [17]. We obtain empirical estimates that a signiﬁcant fraction of both words",
+23,d915b401bb96c9f104a0353bef9254672e6f5a47,What future possible improvements are listed?,"According to the document [p. 12], one possible future improvement is to further constrain the model on the data structure in order to prevent inaccurate or even contradictory descriptions.","[p. 12] on the RotoWire benchmark shows that our model outperforms competitive
+baselines in terms of BLEU score and is generally better on qualitative metrics.
+This way of representing structured databases may lead to automatic inference
+and enrichment, e.g., by comparing entities. This direction could be driven by
+very recent operation-guided networks [35,21]. In addition, we note that our
+approach can still lead to erroneous facts or even hallucinations. An interesting
+perspective might be to further constrain the model on the data structure in
+order to prevent inaccurate of even contradictory descriptions.
+7 Acknowledgements
+We would like to thank the H2020 project AI4EU (825619) which partially sup-
+ports Laure Soulier and Patrick Gallinari.
+
+[p. 12] (CO) and RG-P%. However, this does not help with Content Selection (CS) since
+our best model Hierarchical-k obtains slightly better scores. Indeed, Puduppully-
+updt updates representations after each mention allowing to keep track of the
+mention history. This guides the ordering of mentions (CO metric), each step
+limiting more the number of candidate mentions (increasing RG-P%). In con-
+trast, our model encodes saliency among records/entities more eﬀectively (CS
+metric). We note that while our model encodes the data-structure once and for
+all, Puduppully-updt recomputes, via the updates, the encoding at each step and
+therefore signiﬁcantly increases computation complexity. Combined with their
+RG-# score of 30 .11, we argue that our model is simpler, and obtains ﬂuent
+description with accurate mentions in a more human-like fashion.
+We would also like to draw attention to the number of parameters used
+by those architectures. We note that our scenarios relies on a lower number
+
+[p. 12] 12 Cl´ ement Rebuﬀel, Laure Soulier, Geoﬀrey Scoutheeten, and Patrick Gallinari
+• Our hierarchical models outperform the two-step decoders of Li and
+Puduppully-plan on both BLEU and all qualitative metrics, showing that captur-
+ing structure in the encoding process is more eﬀective that predicting a structure
+in the decoder (i.e., planning or templating). While our models sensibly outper-
+form in precision at factual mentions, the baselinePuduppully-plan reaches 34.28
+mentions on average, showing that incorporating modules dedicated to entity ex-
+traction leads to over-focusing on entities; contrasting with our models that learn
+to generate more balanced descriptions.
+•The comparison with Puduppully-updt shows that dynamically updating
+the encoding across the generation process can lead to better Content Ordering
+(CO) and RG-P%. However, this does not help with Content Selection (CS) since
+our best model Hierarchical-k obtains slightly better scores. Indeed, Puduppully-",
+24,1cb100182508cf55b3509283c0e2bbcd527d625e,How is the data in the new corpus come sourced?,"According to [p. 43], the raw corpus was compiled semi-automatically.","[p. 43] experiments, as well as the results of our system for error analysis. We believe that
+keeping the whole process transparent will help to identify the strengths and possible
+shortcomings and will motivate the community to build upon our work.
+Appendix A: Raw corpus compilation
+Given the six controversial topics and four different registers introduced in section 4.1,
+we compiled the raw corpus semi-automatically. Websites with relevant comments to
+articles and discussions forums were identiﬁed manually (Google search engine) in
+order to maximize their relatedness to the search topic. We did not prefer any particular
+platform or data source. We extracted the texts automatically, however, we did some
+minimal data pre-selection and cleaning. If article comments formed a tree structure, we
+kept only the root comments, as they are most likely comment on the topic of the article,
+according to our observations. In discussion forum posts, we automatically removed all",
+25,b637d6393ef3af7462917b81861531022b291933,Does jiant involve datasets for the 50 NLU tasks?,"[p. 6] states that ""jiant provides a conﬁguration-driven interface for deﬁning transfer learning and representation learning experiments using a bank of over 50 NLU tasks..."" However, it does not explicitly mention whether jiant involves datasets for these tasks.","[p. 6] 5 Conclusion
+jiant provides a conﬁguration-driven interface
+for deﬁning transfer learning and representation
+learning experiments using a bank of over 50 NLU
+tasks, cutting-edge sentence encoder models, and
+multi-task and multi-stage training procedures. Fur-
+ther, jiant is shown to be able to replicate pub-
+lished performance on various NLU tasks.
+jiant’s modular design of task and sentence
+encoder components make it possible for users to
+quickly and easily experiment with a large num-
+ber of tasks, models, and parameter conﬁgurations,
+without editing source code. jiant’s design also
+makes it easy to add new tasks, and jiant’s ar-
+chitecture makes it convenient to extend jiant to
+support new sentence encoders.
+jiant code is open source, and jiant invites
+contributors to open issues or submit pull request to
+the jiant project repository: https://github.
+com/nyu-mll/jiant.
+Acknowledgments
+Katherin Yu, Jan Hula, Patrick Xia, Raghu Pap-
+pagari, Shuning Jin, R. Thomas McCoy, Roma",
+26,e3c9e4bc7bb93461856e1f4354f33010bc7d28d5,what are the state-of-the-art models?,"According to [p. 6], the state-of-the-art RC (Reading Comprehension) models implemented and trained in this work are r-net (Wang et al., 2017) and AoA (Cui et al., 2017), which are leading models on the SQuAD leaderboard.","[p. 6] RC Models We implement and train some
+off-the-shelf RC models, including r-net(Wang
+et al., 2017) and AoA(Cui et al., 2017), which are
+the leading models on SQuAD leaderboard. In our
+initial experiments, these models takefact descrip-
+tion as passage and plea as query. Further, Law
+articles are added to the fact description as a part
+of the reading materials, which is a simple way to
+consider them as well.
+5.4 Results and Analysis
+From Table 1, we have the following observations:
+(1) AutoJudge consistently and signiﬁcantly
+outperforms all the baselines, including RC mod-
+els and other neural text classiﬁcation models,
+which shows the effectiveness and robustness of
+our model.
+(2) RC models achieve better performance
+than most text classiﬁcation models (excluding
+GRU+Attention), which indicates that reading
+mechanism is a better way to integrate informa-
+tion from heterogeneous yet complementary in-
+puts. On the contrary, simply adding law articles",
+27,498c0229f831c82a5eb494cdb3547452112a66a0,How do they match annotators to instances?,"According to the document, on page [p. 7], it is mentioned that ""We now examine the performance of a system trained on data that was routed to either experts or crowd annotators depending on their predicted difficulty."" This suggests that the authors use a method to predict the difficulty of each instance and then route it to either an expert or a crowd annotator based on that prediction.","[p. 7] 20% of data, suggesting that expert annotations
+should be collected whenever possible. Again the
+crowd model on complete data has higher pre-
+cision than expert models but its recall is much
+lower.
+8.2 Routing To Experts or Crowd
+So far a system was trained on one type of data, ei-
+ther labeled by crowd or experts. We now examine
+the performance of a system trained on data that
+was routed to either experts or crowd annotators
+depending on their predicted difﬁcult. Given the
+results presented so far mixing annotators may be
+beneﬁcial given their respective trade-offs of pre-
+cision and recall. We use the annotations from ex-
+perts for an abstract if it exists otherwise use crowd",
+28,9bb7ae50bff91571a945c1af025ed2e67714a788,What was the previous state of the art for this task?,"According to [p. 5], the previous state-of-the-art model for this task is (Chandrasekaran et al., 2015).","[p. 5] (hLSTM), with the attention ablated but with ac-
+cess to the complete context, and a strong, open-
+sourced feature-rich baseline (Chandrasekaran
+et al., 2015). We choose (Chandrasekaran et al.,
+2015) over other prior works such as (Chaturvedi
+et al., 2014) since we do not have access to the
+dataset or the system used in their papers for repli-
+cation. Chandrasekaran et al. (2015) is a logis-",
+29,cb196725edc9cdb2c54b72364f3bbf7c76471490,Do they report results only on English data?,"However, I can point out that the dataset statistics mentioned in Table 4 [p. 7] include both Freebase (FB) and WordNet (WN), which suggests that the system is designed to handle multiple datasets, possibly including non-English ones.","[p. 7] the query resumes. Next, LiLi asks user to pro-
+T able 4: Dataset statistics [ kwn = known, unk = unknown]
+Freebase (FB) W ordNet (WN)
+# Rels ( Korg /KB ) 1,345 / 1,248 18 / 14
+# Entities ( Korg /KB ) 13, 871 / 12, 306 13, 595 / 12, 363
+# Triples ( Korg /KB) 854, 362 / 529,622 107, 146 / 58, 946
+# T est Rels ( kwn / unk) 50 (38 / 12) 18 (14 / 4)
+A vg. # train / valid
+hline / test instances/rel. 1715 / 193 / 557 994 / 109 / 326
+Entity statistics (A vg. %) train valid test train valid test
+only source ( s) unk 15.5 15.8 15.6 12.4 10.4 19.0
+only target ( t) unk 13.0 12.7 13.4 14.2 15.6 13.8
+both s and t unk 2.9 3.3 2.8 3.6 3.6 6.2
+vide a connecting link for “ Obama” by perform-
+ing a3. Now , the query entities and relation being
+known, LiLi enumerates paths between “ Obama”
+and “ USA” by performing a4. Let an extracted
+path be “ Obama − BornIn → Honolulu −
+@−? − @ → Hawaii − StateOf → USA ” with
+missing link between ( Honolulu , Hawaii). LiLi",
+30,e79a5b6b6680bd2f63e9f4adbaae1d7795d81e38,which non-english language had the best performance?,And [p. 4] Table 3: Accuracy results (%) for RNN-based approach com-,"[p. 4] lexicon-based baseline was 60.10%.
+Considering the improvements over the majority baseline achieved
+by the RNN model for both non-English (on the average 22.76% rela-
+tive improvement; 15.82% relative improvement on Spanish, 72.71%
+vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs.
+74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%,
+and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and
+English test sets (27.34% relative improvement), we can draw the
+conclusion that our model is robust to handle multiple languages.
+Building separate models for each language requires both labeled
+and unlabeled data. Even though having lots of labeled data in
+every language is the perfect case, it is unrealistic. /T_herefore, elimi-
+nating the resource requirement in this resource-constrained task
+is crucial. /T_he fact that machine translation can be used in reusing
+models from diﬀerent languages is promising for reducing the data
+requirements.
+6 CONCLUSION
+
+[p. 4] errors.
+We found that 25.84% of Dutch, 21.76% of Turkish, 24.46% Span-
+ish, and 10.71% of Russian reviews that were misclassi/f_ied had
+non-English words in them. /T_hese non-English words might be
+causing the misclassi/f_ications. However, a large portion of the miss-
+classi/f_ications is not caused due to not-translated words. At the end,
+the machine translation errors has some but not noticeable eﬀects
+on our model. /T_herefore, we can claim that machine translation
+preserves most of the information necessary for sentiment analysis.
+We also evaluated our model with an English corpus [23] to see
+its performance without any interference from machine translation
+errors. Using the English data for testing, the model achieved
+87.06% accuracy where a majority baseline was 68.37% and the
+lexicon-based baseline was 60.10%.
+Considering the improvements over the majority baseline achieved
+by the RNN model for both non-English (on the average 22.76% rela-
+
+[p. 4] words would not have word embeddings, which will dramatically
+aﬀect the eﬀectiveness of the system. We analyzed the eﬀect of
+incorrect translations into our approach. To that end, we extracted
+all wrong predictions from the test set and computed the ratio of
+misclassi/f_ications that have non-English words in them. We /f_irst
+extracted all misclassi/f_ications for a given language and for each
+observation in the misclassi/f_ication set, we iterated through each
+token to check if the token is in English. In this way, we counted
+the number of observations that contained at least one non-English
+word and divided that with the size of the misclassi/f_ications set.
+We used this ratio to investigate the eﬀect of machine translation
+errors.
+We found that 25.84% of Dutch, 21.76% of Turkish, 24.46% Span-
+ish, and 10.71% of Russian reviews that were misclassi/f_ied had
+non-English words in them. /T_hese non-English words might be",
+31,b0dbe75047310fec4d4ce787be5c32935fc4e37b,How do the authors examine whether a model is robust to noise or not?,"According to [p. 6], the authors evaluate the robustness to noise of MRC models using the adversarial sets, which contain misleading sentences aimed at distracting MRC models.","[p. 6] models that rank in the top 20 on the SQuAD 1.1
+leader board and have reported their performance
+on the adversarial sets. There are totally ﬁve such
+comparative objects, which can be considered as
+representatives of the state-of-the-art MRC mod-
+els. As shown in Table 2, on the development set
+and the test set, the performance of KAR is on par
+with that of the state-of-the-art MRC models; on
+the adversarial sets, KAR outperforms the state-
+of-the-art MRC models by a large margin. That
+is to say, KAR is comparable in performance with
+the state-of-the-art MRC models, and signiﬁcantly
+more robust to noise than them.
+
+[p. 6] we apply the Adam (Kingma and Ba, 2014) opti-
+mizer with a learning rate of 0.0005 and a mini-
+batch size of 32. For model evaluation, we use
+Exact Match (EM) and F1 score as evaluation met-
+rics. To avoid overﬁtting, we apply dropout (Sri-
+vastava et al., 2014) to the dense layers and the
+BiLSTMs with a dropout rate of 0.3. To boost the
+performance, we apply exponential moving aver-
+age with a decay rate of 0.999.
+5.2 Model Comparison in both Performance
+and the Robustness to Noise
+We compare KAR with other MRC models in both
+performance and the robustness to noise. Specif-
+ically, we not only evaluate the performance of
+KAR on the development set and the test set, but
+also do this on the adversarial sets. As for the com-
+parative objects, we only consider the single MRC
+models that rank in the top 20 on the SQuAD 1.1
+leader board and have reported their performance
+on the adversarial sets. There are totally ﬁve such
+comparative objects, which can be considered as
+
+[p. 6] 2017), to evaluate the robustness to noise of MRC
+models. The passages in the adversarial sets con-
+tain misleading sentences, which are aimed at dis-
+tracting MRC models. Speciﬁcally, each passage
+in AddSent contains several sentences that are
+similar to the question but not contradictory to the
+answer, while each passage in AddOneSent con-
+tains a human-approved random sentence that may
+be unrelated to the passage.
+Implementation Details. We tokenize the MRC
+dataset with spaCy 2.0.13 (Honnibal and Mon-
+tani, 2017), manipulate WordNet 3.0 with NLTK
+3.3, and implement KAR with TensorFlow 1.11.0
+(Abadi et al., 2016). For the data enrichment
+method, we set the hyper-parameterκto 3. For the
+dense layers and the BiLSTMs, we set the dimen-
+sionality unit d to 600. For model optimization,
+we apply the Adam (Kingma and Ba, 2014) opti-
+mizer with a learning rate of 0.0005 and a mini-
+batch size of 32. For model evaluation, we use
+Exact Match (EM) and F1 score as evaluation met-",
+32,2916bbdb95ef31ab26527ba67961cf5ec94d6afe,How large is the corpus?,"According to [p. 2], the corpus consists of 53 documents, which contain an average number of 156.1 sentences per document, each with 19.55 tokens on average.","[p. 2] each documents properties ranging from full text, individ-
+ual passages/sentences along with captured annotations and
+relationships in an organized manner. BioC is based on
+character offsets of annotations and allows the stacking of
+different layers.
+2.5. Corpus Overview
+The corpus consists of 53 documents, which contain an av-
+erage number of 156.1 sentences per document, each with
+19.55 tokens on average. The corpus comprises 8,275 sen-
+tences and 167,739 words in total. 7 However, as men-
+tioned above, only case presentation sections, headings and
+abstracts are annotated. The numbers of annotated entities
+are summarized in Table 2.
+Findings are the most frequently annotated type of entity.
+This makes sense given that ﬁndings paint a clinical picture
+of the patient’s condition. The number of tokens per entity
+ranges from one token for all types to 5 tokens for cases
+(average length 3.1), nine tokens for conditions (average
+4 https://webanno.github.io/webanno/, 08/04/2019.
+
+[p. 2] ranges from one token for all types to 5 tokens for cases
+(average length 3.1), nine tokens for conditions (average
+4 https://webanno.github.io/webanno/, 08/04/2019.
+5 The corpus can be dowloaded here: https://github.com/
+adahealth/medical_case_report_corpus.
+6 http://bioc.sourceforge.net
+7 Sentence splitting and tokenization are performed us-
+ing ScispaCy (https://allenai.github.io/scispacy/) and its
+en_core_sci_md model",
+33,585626d18a20d304ae7df228c2128da542d248ff,What metrics are used to establish that this makes chatbots more knowledgeable and better at learning and conversation? ,"However, it does mention that ""Our experimental results show LiLi is highly promising"" [p. 1].","[p. 1] arXiv:1802.06024v2  [cs.CL]  24 Feb 2018
+T owards a Continuous Knowledge Learning Engine for Chatbots
+Sahisnu Mazumder , Nianzu Ma, Bing Liu
+Department of Computer Science, University of Illinois at C hicago, IL, USA
+sahisnumazumder@gmail.com, nma4@uic.edu, liub@cs.uic. edu
+Abstract
+Although chatbots have been very popular
+in recent years, they still have some serious
+weaknesses which limit the scope of their ap-
+plications. One major weakness is that they
+cannot learn new knowledge during the con-
+versation process, i.e., their knowledge is ﬁxed
+beforehand and cannot be expanded or up-
+dated during conversation. In this paper, we
+propose to build a general knowledge learn-
+ing engine for chatbots to enable them to con-
+tinuously and interactively learn new knowl-
+edge during conversations. As time goes by,
+they become more and more knowledgeable
+and better and better at learning and conver-
+sation. W e model the task as an open-world
+knowledge base completion problem and pro-
+
+[p. 1] they become more and more knowledgeable
+and better and better at learning and conver-
+sation. W e model the task as an open-world
+knowledge base completion problem and pro-
+pose a novel technique called lifelong inter-
+active learning and inference (LiLi) to solve
+it. LiLi works by imitating how humans ac-
+quire knowledge and perform inference during
+an interactive conversation. Our experimental
+results show LiLi is highly promising.
+1 Introduction
+Chatbots such as dialog and question-answering
+systems have a long history in AI and natural lan-
+guage processing. Early such systems were mostly
+built using markup languages such as AIML
+1,
+handcrafted conversation generation rules, and/or
+information retrieval techniques (
+Banchs and Li ,
+2012; Ameixa et al. , 2014; Lowe et al. , 2015;
+Serban et al. , 2015). Recent neural conversation
+models ( Vinyals and Le , 2015; Xing et al. , 2017;
+Li et al. , 2017b) are even able to perform open-
+ended conversations. However, since they do
+
+[p. 1] Serban et al. , 2015). Recent neural conversation
+models ( Vinyals and Le , 2015; Xing et al. , 2017;
+Li et al. , 2017b) are even able to perform open-
+ended conversations. However, since they do
+not use explicit knowledge bases and do not per-
+form inference, they often suffer from generic and
+dull responses (
+Xing et al. , 2017; Li et al. , 2017a).
+More recently , Ghazvininejad et al. (2017) and
+1 http://www .alicebot.org/
+Le et al. (2016) proposed to use knowledge bases
+(KBs) to help generate responses for knowledge-
+grounded conversation. However, one major
+weakness of all existing chat systems is that they
+do not explicitly or implicitly learn new knowl-
+edge in the conversation process. This seriously
+limits the scope of their applications. In contrast,
+we humans constantly learn new knowledge in our
+conversations. Even if some existing systems can
+use very large knowledge bases either harvested
+from a large data source such as the W eb or built",
+34,1d9aeeaa6efa1367c22be0718f5a5635a73844bd,"What meaningful information does the GRU model capture, which traditional ML models do not?","According to the document context [p. 1], it is stated that ""These complexities are what led us to believe lexicon-based features like is normally used in conventional machine learning approaches are unable to capture the intricacy of emotional expressions."" This suggests that the GRU model captures more meaningful information from text, specifically related to the intricacy of emotional expressions, which traditional ML models cannot grasp.","[p. 1] Understanding these limitations, we present a new net-
+work based on a bidirectional GRU model to show that
+capturing more meaningful information from text can
+signiﬁcantly improve the performance of these models.
+The results show signiﬁcant improvement with an aver-
+age of 26.8 point increase in F-measure on our test data
+and 38.6 increase on the totally new dataset.
+Introduction
+There have been many advances in machine learning meth-
+ods which help machines understand human behavior bet-
+ter than ever. One of the most important aspects of human
+behavior is emotion. If machines could detect human emo-
+tional expressions, it could be used to improve on verity
+of applications such as marketing (Bagozzi, Gopinath, and
+Nyer 1999), human-computer interactions (Brave and Nass
+2003), political science (Druckman and McDermott 2008)
+etc.
+Emotion in humans is complex and hard to distinguish.
+There have been many emotional models in psychology
+
+[p. 1] Emotion Detection in Text: Focusing on Latent Representation
+Armin Seyeditabari
+UNC Charlotte
+sseyedi1@uncc.edu
+Narges Tabari
+University of Virginia
+ns5kn@virginia.edu
+Sheﬁe Gholizadeh
+UNC Charlotte
+sgholiza@uncc.eduu
+Wlodek Zadrozny
+UNC Charlotte
+wzadrozn@uncc.edu
+Abstract
+In recent years, emotion detection in text has become
+more popular due to its vast potential applications
+in marketing, political science, psychology, human-
+computer interaction, artiﬁcial intelligence, etc. In this
+work, we argue that current methods which are based
+on conventional machine learning models cannot grasp
+the intricacy of emotional language by ignoring the se-
+quential nature of the text, and the context. These meth-
+ods, therefore, are not sufﬁcient to create an applica-
+ble and generalizable emotion detection methodology.
+Understanding these limitations, we present a new net-
+work based on a bidirectional GRU model to show that
+capturing more meaningful information from text can",
+35,d2a0142150cc3788475572f82458ef88087bd7ac,Which three discriminative models did they use?,"According to [p. 3], ""Our final submission is an ensemble of three discriminative models..."" However, it doesn't explicitly mention which three models are used in the ensemble.","[p. 3] Wt.
+3. Experiments and Results
+We used Pytorch 2 [4] for implementation. 3 In our ex-
+periments, we ﬁnd that ﬁne-tuning initialized Glove em-
+beddings performed better than frozen embeddings. Object
+level representations play a critical role to generate a correct
+response from the model. Eventually, we use an ensemble
+of all the models described above for our ﬁnal submission.
+Table 2 summarizes our results on validation set while Table
+1 on Test-Standard split.
+4. Conclusion
+We experimented with discriminative models for our
+submission. Object level image representations gave a huge
+uplift in the evaluation metrics. Bi-directional GRUs con-
+2https://pytorch.org/
+3We are thankful to the organizers for providing a starter code in
+Pytorch on which we build our model. https://github.com/
+batra-mlp-lab/visdial-challenge-starter-pytorch
+stantly performed better than uni-directional LSTMs with
+Memory Networks outperforming Late fusion encoders for
+
+[p. 3] batra-mlp-lab/visdial-challenge-starter-pytorch
+stantly performed better than uni-directional LSTMs with
+Memory Networks outperforming Late fusion encoders for
+encoding conversational history. We even found that ﬁne-
+tuning Glove embeddings performed better than their coun-
+terparts. Our ﬁnal submission is an ensemble of three dis-
+criminative models and achieve the NDCG of 55.46 on test-
+std.
+References
+[1] P. Anderson, X. He, C. Buehler, D. Teney, M. Johnson,
+S. Gould, and L. Zhang. Bottom-up and top-down attention
+for image captioning and visual question answering. InCVPR,
+2018.
+[2] A. Das, S. Kottur, K. Gupta, A. Singh, D. Yadav, J. M. Moura,
+D. Parikh, and D. Batra. Visual Dialog. In Proceedings of the
+IEEE Conference on Computer Vision and Pattern Recogni-
+tion (CVPR), 2017.
+[3] R. Krishna, Y . Zhu, O. Groth, J. Johnson, K. Hata, J. Kravitz,
+S. Chen, Y . Kalantidis, L.-J. Li, D. A. Shamma, et al. Visual
+genome: Connecting language and vision using crowdsourced
+
+[p. 3] [3] R. Krishna, Y . Zhu, O. Groth, J. Johnson, K. Hata, J. Kravitz,
+S. Chen, Y . Kalantidis, L.-J. Li, D. A. Shamma, et al. Visual
+genome: Connecting language and vision using crowdsourced
+dense image annotations. IJCV, 2017.
+[4] A. Paszke, S. Gross, S. Chintala, G. Chanan, E. Yang, Z. De-
+Vito, Z. Lin, A. Desmaison, L. Antiga, and A. Lerer. Auto-
+matic differentiation in pytorch. In NIPS-W, 2017.
+[5] S. Ren, K. He, R. Girshick, and J. Sun. Faster r-cnn: Towards
+real-time object detection with region proposal networks. In
+Advances in neural information processing systems , pages
+91–99, 2015.
+[6] D. Teney, P. Anderson, X. He, and A. van den Hengel. Tips
+and tricks for visual question answering: Learnings from the
+2017 challenge. In CVPR, 2018.",
+36,154a721ccc1d425688942e22e75af711b423e086,what crowdsourcing platform was used?,"According to Section 2.2 on page [p. 2], our data collection of questions, texts, and answers via crowdsourcing was conducted on Amazon Mechanical Turk (henceforth MTurk).","[p. 2] quisition process, we ended up with a substantial subset of
+questions that require commonsense inference (27.4%).
+2. Corpus
+Machine comprehension datasets consist of three main
+components: texts, questions and answers. In this section,
+we describe our data collection for these 3 components. We
+ﬁrst describe a series of pilot studies that we conducted in
+order to collect commonsense inference questions (Section
+2.1.). In Section 2.2., we discuss the resulting data collec-
+tion of questions, texts and answers via crowdsourcing on
+Amazon Mechanical Turk 1 (henceforth MTurk). Section
+2.3. gives information about some necessary postprocess-
+ing steps and the dataset validation. Lastly, Section 2.4.
+gives statistics about the ﬁnal dataset.
+2.1. Pilot Study
+As a starting point for our pilots, we made use of texts
+from the InScript corpus (Modi et al., 2016), which pro-
+vides stories centered around everyday situations (see Sec-
+tion 2.2.2.). We conducted three different pilot studies to
+
+[p. 2] lected independently, answering a random question is not
+always possible for a given text. Therefore, we carried out
+answer collection in two steps. In the ﬁrst step, we asked
+participants to assign a category to each text–question pair.
+We distinguish two categories of answerable questions:
+The category text-based was assigned to questions that can
+be answered from the text directly. If the answer could only
+be inferred by using commonsense knowledge, the category",
+37,f428618ca9c017e0c9c2a23515dab30a7660f65f,what ml based approaches were compared?,"According to the document context [p. 3], it is mentioned that ""MLP and SVM have shown similar performance"" and also ""Gradient Boosting Classiﬁer (GBC) and Random Forest (RF) both utilize a set of decision trees and achieve similar results"".","[p. 3] propagation for updating parameter weights using loss func-
+tion calculated on training set into classiﬁcation. K-NN has
+shown the weakest performance overall, as this algorithm has
+a bad reputation of not working well in high dimensional data
+[20]. MLP and SVM have shown similar performance. MLP
+takes advantage of multiple hidden layers in order to take non-
+linearly separable samples in a linearly separable condition.
+SVM accomplishes this same feat by taking the samples to a
+higher dimensional hyperplane where the samples are linearly
+separable. Gradient Boosting Classiﬁer (GBC) and Random
+Forest (RF) both utilize a set of decision trees and achieve
+similar results (RF performs slightly without eliminating stop
+words). Naive Bayesian Classiﬁer (NBC) shows performance
+on per with GBC and RF algorithms. The overall better
+performance of all the algorithms when provided with stop
+words show the importance of stop words in Bengali QA
+classiﬁcation.",
+38,c497e8701060583d91bb64b9f9202d40047effc4,How do they determine if tweets have been used by journalists?,"According to [p. 2], the document states that ""To obtain such relevant tweets, we crawled thousands of news articles that include tweet quotations and then employed crowd-sourcing to elicit questions and answers based on these event-aligned tweets."" This suggests that they determine if tweets have been used by journalists by crawling news articles that include tweet quotations.","[p. 2] the Twitter API3 which can yield irrelevant tweets
+with no valuable information, we restrict ourselves
+only to tweets which have been used by journalists
+in news articles thus implicitly implying that such
+tweets contain useful and relevant information. To
+obtain such relevant tweets, we crawled thousands
+of news articles that include tweet quotations and
+then employed crowd-sourcing to elicit questions
+and answers based on these event-aligned tweets.
+Table 1 gives an example from our T WEET QA
+dataset. It shows that QA over tweets raises
+challenges not only because of the informal na-
+ture of oral-style texts ( e.g. inferring the answer
+from multiple short sentences, like the phrase “so
+young” that forms an independent sentence in the
+example), but also from tweet-speciﬁc expressions
+(such as inferring that it is “Jay Sean” feeling sad
+about Paul’s death because he posted the tweet).
+Furthermore, we show the distinctive nature of
+TWEET QA by comparing the collected data with",
+39,5cc2daca2a84ddccba9cdd9449e51bb3f64b3dde,What are the models used for the baseline of the three NLP tasks?,"[p. 1] mentions that ""W e also provide baseline res ults on three core NLP tasks..."", but it does not mention what specific models were used to achieve these baseline results.","[p. 1] The conversations are fully transcribed and translated int o Spanish. The transcriptions also include annotations for code-switching and
+non-standard pronunciations. W e also provide baseline res ults on three core NLP tasks: speech recognition, speech syn thesis, and
+machine translation between Spanish and Mapudungun. W e fur ther explore other applications for which the corpus will be suitable,
+including the study of code-switching, historical orthogr aphy change, linguistic structure, and sociological and an thropological studies.
+Keywords: Mapudungun, Endangered Languages, Speech, Machine Transl ation
+1. Introduction
+Recent years have seen unprecedented progress for Natural
+Language Processing (NLP) on almost every NLP subtask.
+Even though low-resource settings have also been explored,
+this progress has overwhelmingly been observed in lan-
+guages with signiﬁcant data resources that can be leveraged
+to train deep neural networks. Low-resource languages stil l
+lag behind.",
+40,88e62ea7a4d1d2921624b8480b5c6b50cfa5ad42,What is a second order co-ocurrence matrix?,"According to [p. 1], a second-order co-occurrence vector (not matrix, but I assume you meant vector) is based on the frequencies of the other words that occur with both of the two words being compared.","[p. 1] which occur with both of them (i.e., second order
+co–occurrences). This approach has been shown
+to be successful in quantifying semantic relat-
+edness (
+Islam and Inkpen , 2006; Pedersen et al. ,
+2007). However, while more robust in the face of
+sparsity , second–order methods can result in sig-
+niﬁcant amounts of noise, where contextual infor-
+mation that is overly general is included and does
+not contribute to quantifying the semantic related-
+ness between the two concepts.
+Our goal then is to discover methods that auto-
+matically reduce the amount of noise in a second–
+order co–occurrence vector. W e achieve this by
+incorporating pairwise semantic similarity scores
+
+[p. 1] will also be semantically similar (
+Harris, 1954;
+W eeds et al. , 2004). Recently word embedding
+techniques such as word2vec ( Mikolov et al. ,
+2013) have become very popular. Despite the
+prominent role that neural networks play in many
+of these approaches, at their core they remain
+distributional techniques that typically start with
+a word by word co–occurrence matrix, much like
+many of the more traditional approaches.
+However, despite these successes distributional
+methods do not perform well when data is very
+sparse (which is common). One possible solu-
+tion is to use second–order co–occurrence vec-
+tors (
+Sch ¨ utze, 1992; Sch ¨ utze, 1998). In this ap-
+proach the similarity between two words is not
+strictly based on their co–occurrence frequencies,
+but rather on the frequencies of the other words
+which occur with both of them (i.e., second order
+co–occurrences). This approach has been shown
+to be successful in quantifying semantic relat-
+edness (",
+41,a4a1fcef760b133e9aa876ac28145ad98a609927,"Which other hyperparameters, other than number of clusters are typically evaluated in this type of research?","Based on the provided document context [p. 3], it is mentioned that ""For all the experiments we keep the same parametrization for the learning algorithm"" which implies that the researchers have chosen to fix certain hyperparameters across different experiments.","[p. 3] entities and O for non entity tokens.
+Results
+T ables
+1 and 2 present the results for the different
+number of clusters across the three vector models used
+to induce the clusters. For all the experiments we keep
+the same parametrization for the learning algorithm
+and we present the performance of each run on the
+ofﬁcial test set.
+Regarding the segmentation task we notice that
+adding word clusters as features improve the perfor-
+mance of the best model up to 1.1 F-score points while
+it boosts performance in the majority of cases. In only
+one case, for glove40 vectors, there is a drop across
+all number of clusters used.
+As for the number of clusters, the best results are
+generally obtained between 250 and 1000 classes for
+all word vector models. These dimensions seem to
+be sufﬁcient for the three-class sub-task that we deal
+with. The different models of word vectors perform
+similarly and thus one cannot privilege a certain type
+of word vectors. Interestingly , the clusters learned on
+
+[p. 3] cbow100,w5 40.53 40.21 39.22 40.61 40.15
+cbow100,w10 40.02 40.80 39.55 40.40 39.71
+glove40,w5 39.09 40.06 38.73 39.35 38.23
+glove100,w5 39.63 39.40 39.23 39.20 41.42
+glove100,w10 39.55 39.98 39.99 39.53 40.67
+glove50,wiki 40.40 41.09 40.82 40.84 41.24
+glove100,wiki 39.52 39.78 41.04 41.73 40.39
+T able 2: Results in terms of F1-score for named enti-
+ties classiﬁcation for the different word clusters across
+different number of clusters.
+one for the non-entity type and two classes for each
+entity type. In this setting we notice that the best re-
+sults are obtained in most cases for higher number of
+classes (1000 or 2000) possibly due to a better dis-
+criminatory power in higher dimensions. Note also,
+that in some cases the addition of word cluster fea-
+tures does not necessarily improve the performance.
+Contrary , it may degrade it as it is evident in the case
+of glove40,w5 word clusters. Like in the case of seg-
+mentation we do not observe a word vector model that",
+42,1dc2da5078a7e5ea82ccd1c90d81999a922bc9bf,Do the authors conduct experiments on the tasks mentioned?,"Ortiz, in preparation) [p. 6], which suggests that some kind of report or study may be forthcoming, but it does not provide any information about experiments conducted by the authors.","[p. 6] References
+E. Davis, “Qualitative Spatial Reasoning in Interpreting Text and Na rrative” Spatial Cognition
+and Computation, 13:4, 2013, 264-294.
+H. Levesque, E. Davis, and L. Morgenstern, “The Winograd Schem a Challenge,” KR 2012 .
+L. Morgenstern, E. Davis, and C. Ortiz, “Report on the Winograd S chema Challenge, 2016”,
+in preparation.
+T. Winograd, “Procedures as a Representation for Data in a Compu ter Program for Under-
+standing Natural Language,” Ph.D. thesis, Department of Mathem atics, MIT, August 1970.
+Published as MIT AITR-235, January 1971.
+T. Winograd, Understanding Natural Language, Academic Press, 1972.
+6",
+43,6411622cc8b2fbedbfa468859d453596d3bd2f03,What objective function is used in the GAN?,"According to [p. 2], the discriminator's objective is ""to score the quality of the creative text."" This implies that the objective function used in the GAN is related to evaluating the quality of the generated text.","[p. 2] 2 GANs for creative text generation
+Using GANs, we can train generative models in a two-player ga me setting between a discriminator
+and a generator, where the discriminator (a binary classiﬁe r) learns to distinguish between real and
+fake data samples and the generator tries to fool the discrim inator by generating authentic and high
+quality output [17]. GANs have shown to be successful in imag e generation tasks [18] and recently,
+some progress has been observed in text generation [14, 13, 1 6]. Our generator is a language model
+trained using backpropagation through time [19]. During th e pre-training phase we optimize for
+MLE and during the GAN training phase, we optimize on the crea tivity reward from the discrimina-
+tor. The discriminator’s encoder has the same architecture as the generator encoder module with the
+addition of a pooled decoder layer. The decoder contains 3 [DenseBatchNormalization, ReLU ]
+
+[p. 2] W e use the same pre-processing as in earlier work [20, 24]. W e reserve 10% of our data for test set
+and another 10% for our validation set.
+W e ﬁrst pre-train our generator on the Gutenberg dataset [25 ] for 20 epochs and then ﬁne-tune [20]
+them to our target datasets with a language modeling objecti ve. The discriminator’s encoder is
+initialized to the same weights as our ﬁne-tuned language mo del. Once we have our ﬁne-tuned
+encoders for each target dataset, we train in an adversarial manner. The discriminator objective
+here is to score the quality of the creative text. The discrim inator is trained for 3 iterations for
+every iteration of the generator, a practice seen in previou s work [26]. Creative-GAN relies on
+using the reward from the discriminator [13, 16] for backpro pagation. W e follow a similar training
+procedure for GumbelGAN. Outputs are generated through sam pling over a multinomial distribution",
+44,787c4d4628eac00dbceb1c96020bff0090edca46,What annotations are present in dataset?,"According to [p. 4], the data statement is provided in Appendix B (Bender and Friedman, 2018).","[p. 4] spondents are included in the dataset. We provide
+a data statement (Bender and Friedman, 2018) in
+Appendix B.
+3.3 Data Split
+We held out the topics “Healthcare” and “Political
+System” from the training data and created a sepa-
+rate cross-topic test set that contains the questions
+and answers related to those topics.
+Furthermore, in order to test cross-question
+generalization performance within previously seen
+topics, we manually selected 16 held-out ques-
+tions that are distributed over the remaining
+10 topics. We selected the held-out questions man-
+ually because we wanted to make sure that they are
+truly unseen and that no paraphrases of the ques-
+tions are found in the training set.
+We designated Italian as a test-only language,
+since relatively few comments have been written
+in Italian. From the remaining German and French
+data we randomly selected a percentage of respon-
+dents as validation or as test respondents.
+As a result we received one training set, one val-",
+45,59e58c6fc63cf5b54b632462465bfbd85b1bf3dd,"In what way is the offensive dataset not biased by topic, dialect or target?","According to [p. 1], the authors mention that their methodology does not use a seed list of offensive words.","[p. 1] offensive tweets and how Arabic speakers use
+offensive language. Lastly, we conduct many
+experiments to produce strong results (F1 =
+83.2) on the dataset using SOTA techniques.
+1 Introduction
+Disclaimer: Due to the nature of the paper, some
+examples herein contain highly offensive language
+and hate speech. They don’t reﬂect the views of
+the authors in any way. This work is an attempt to
+help ﬁght such speech.
+Much recent interest has focused on the detec-
+tion of offensive language and hate speech in on-
+line social media. Offensiveness is often associ-
+ated with undesirable behaviors such as trolling,
+cyberbullying, online extremism, political polariza-
+tion, and propaganda. Thus, offensive language
+detection is instrumental for a variety of applica-
+tion such as: quantifying polarization (Barber ´a and
+Sood, 2015; Conover et al., 2011), trolls and pro-
+paganda account detection (Darwish et al., 2017),
+hate crimes likelihood estimation (Waseem and
+
+[p. 1] Sood, 2015; Conover et al., 2011), trolls and pro-
+paganda account detection (Darwish et al., 2017),
+hate crimes likelihood estimation (Waseem and
+Hovy, 2016); and predicting conﬂicts (Chadefaux,
+2014). In this paper, we describe our methodol-
+ogy for building a large dataset of Arabic offensive
+tweets. Given that roughly 1-2% of all Arabic
+tweets are offensive (Mubarak and Darwish, 2019),
+targeted annotation is essential to efﬁciently build
+a large dataset. Since our methodology does not
+use a seed list of offensive words, it is not biased
+by topic, target, or dialect. Using our methodol-
+ogy, we tagged a 10,000 Arabic tweet dataset for
+offensiveness, where offensive tweets account for
+roughly 19% of the tweets. Further, we labeled
+tweets as vulgar or hate speech. To date, this is the
+largest available dataset, which we plan to make
+publicly available along with annotation guidelines.
+We use this dataset to characterize Arabic offensive",
+46,b3de9357c569fb1454be8f2ac5fcecaea295b967,How many tweets are in the dataset?,"According to [p. 4], ""Tweets Words / Offensive 1,915 38k"" and ""Clean 8,085 151k"".","[p. 4] we asked three additional annotators to annotate
+two tweet sample sets. The ﬁrst was a random
+sample of 100 tweets containing 50 offensive and
+50 non-offensive tweets. The Inter-Annotator
+Agreement (IIA) between the annotators using
+Fleiss’s Kappa coefﬁcient (Fleiss, 1971) was
+0.92. The second was general random samples
+containing 100 tweets each from the dataset, and
+the IIA with the dataset was: 0.97, 0.96, and
+0.97. This high level of agreement gives more
+conﬁdence in the quality of the annotation. Data
+can be downloaded from:
+https://alt.qcri.org/resources/
+OSACT2020-sharedTask-CodaLab-Train-Dev-Test.
+zip
+Tweets Words
+Offensive 1,915 38k
+– Vulgar 225 4k
+– Hate speech 506 13k
+Clean 8,085 151k
+Total 10,000 193k
+Table 1: Distribution of offensive and clean tweets.
+3.3 Statistics and User Demographics
+Given the annotated tweets, we wanted to ascer-
+tain the distribution of: types of offensive language,
+genres or topics where it is used, the dialects used,
+
+[p. 4] tweets. As for offensive tweets in general, EGY
+and GLF were used in 36% and 35% of the offen-
+sive tweets respectively. Unlike the case of vulgar
+language, 15% of the offensive tweets were writ-
+ten in MSA. For hate speech, GLF and EGY were
+again dominant and MSA constituted 21% of the
+tweets. This is consistent with ﬁndings for other
+languages, e.g. English and Italian, where vulgar-
+ity was more frequently associated with colloquial
+language (Mattiello, 2005; Maisto et al., 2017).
+Gender: Figure 3 shows that the vast majority of
+offensive tweets, including vulgar and hate speech,
+were authored by males. Female Twitter users ac-
+counted for 14% of offensive tweets in general and
+6% and 9% of vulgar and hate speech respectively.
+Figure 4 shows a detailed categorization of hate
+speech types, where the top three include insulting
+groups based on their political ideology, origin, and
+sport afﬁliation. Religious hate speech appeared in
+only 15% of all hate speech tweets.",
+47,bb2de20ee5937da7e3e6230e942bec7b6e8f61ee,What is the source of their dataset?,"On the other hand, for the ILPRL dataset, it is mentioned in [p. 4] that ""After much time, we received the dataset from Bal Krishna Bal, ILPRL, KU.""","[p. 4] separated by empty newline. A sample sentence
+from the dataset is presented in table 3.
+4.2 ILPRL dataset
+After much time, we received the dataset from
+Bal Krishna Bal, ILPRL, KU. This dataset fol-
+lows standard CoNLL-2003 IOB format(Tjong
+Kim Sang and De Meulder, 2003) with POS tags.
+This dataset is prepared by ILPRL Lab 7, KU and
+KEIV Technologies. Few corrections like correct-
+ing the NER tags had to be made on the dataset.
+The statistics of both the dataset is presented in ta-
+ble 1.
+Table 2 presents the total entities (PER, LOC,
+ORG and MISC) from both of the dataset used in
+6https://github.com/sanjaalcorps/NepaliStemmer
+7http://ilprl.ku.edu.np/
+
+[p. 4] /index.html
+4 Dataset Statistics
+4.1 OurNepali dataset
+Since, we there was no publicly available stan-
+dard Nepali NER dataset and did not receive any
+dataset from the previous researchers, we had to
+create our own dataset. This dataset contains the
+sentences collected from daily newspaper of the
+year 2015-2016. This dataset has three major
+classes Person (PER), Location (LOC) and Orga-
+nization (ORG). Pre-processing was performed on
+the text before creation of the dataset, for example
+all punctuations and numbers besides ’,’, ’-’, ’—’
+and ’.’ were removed. Currently, the dataset is in
+standard CoNLL-2003 IO format(Tjong Kim Sang
+and De Meulder, 2003).
+Since, this dataset is not lemmatized originally,
+we lemmatized only the post-positions like Ek,
+kO, l , mA, m {, my, jF, s  g, aEG which are just
+the few examples among 299 post positions in
+Nepali language. We obtained these post-positions
+from sanjaalcorps6 and added few more to match
+
+[p. 4] kO, l , mA, m {, my, jF, s  g, aEG which are just
+the few examples among 299 post positions in
+Nepali language. We obtained these post-positions
+from sanjaalcorps6 and added few more to match
+our dataset. We will be releasing this list in our
+github repository. We found out that lemmatizing
+the post-positions boosted the F1 score by almost
+10%.
+In order to label our dataset with POS-tags, we
+ﬁrst created POS annotated dataset of 6946 sen-
+tences and 16225 unique words extracted from
+POS-tagged Nepali National Corpus and trained a
+BiLSTM model with 95.14% accuracy which was
+used to create POS-tags for our dataset.
+The dataset released in our github repository
+contains each word in newline with space sepa-
+rated POS-tags and Entity-tags. The sentences are
+separated by empty newline. A sample sentence
+from the dataset is presented in table 3.
+4.2 ILPRL dataset
+After much time, we received the dataset from
+Bal Krishna Bal, ILPRL, KU. This dataset fol-",
+48,3941401a182a3d6234894a5c8a75d48c6116c45c,Which real-world datasets are used?,"According to [p. 5], the document states that ""We perform our experiments with two predeter-mined event categories: cyber security (CyberAttack) and death of politicians (PoliticianDeath)."" However, it does not explicitly mention which specific real-world datasets are used.","[p. 5] reliability into account?
+Experimental Setup
+Datasets. We perform our experiments with two predeter-
+mined event categories: cyber security ( CyberAttack) and
+death of politicians ( PoliticianDeath). These event cate-
+gories are chosen as they are representative of important
+event types that are of interest to many governments and
+companies. The need to create our own dataset was mo-
+tivated by the lack of public datasets for event detection
+on microposts. The few available datasets do not suit our
+requirements. For example, the publicly available Events-
+2012 Twitter dataset (McMinn, Moshfeghi, and Jose 2013)
+contains generic event descriptions such as Politics, Sports,
+Culture etc. Our work targets more speciﬁc event cate-
+gories (Bhardwaj et al. 2019). Following previous studies
+(Ritter et al. 2015), we collect event-related microposts from
+Twitter using 11 and 8 seed events (see Section 2) forCyber-
+Attack and PoliticianDeath, respectively. Unlabeled microp-
+
+[p. 5] Table 1: Statistics of the datasets in our experiments.
+Dataset #Positive #Unlabeled #Test
+CyberAttack 2,600 86,000 500
+PoliticianDeath 900 7,000 500
+4 Experiments and Results
+This section presents our experimental setup and results for
+evaluating our approach. We aim at answering the following
+questions:
+• Q1: How effectively does our proposed human-AI loop
+approach enhance the state-of-the-art machine learning
+models for event detection?
+• Q2: How well does our keyword discovery method work
+compare to existing keyword expansion methods?
+• Q3: How effective is our approach using crowdsourcing
+at obtaining new keywords compared with an approach
+labelling microposts for model training under the same
+cost?
+• Q4: How much beneﬁt does our uniﬁed probabilistic
+model bring compared to methods that do not take crowd
+reliability into account?
+Experimental Setup
+Datasets. We perform our experiments with two predeter-
+mined event categories: cyber security ( CyberAttack) and
+
+[p. 5] ing model performance. We observe that the target models
+generally converge between the 7th and 9th iteration on both
+datasets when performance is measured by AUC. The per-
+formance can slightly degrade when the models are further
+1https://www.ﬁgure-eight.com/",
+49,a2015f02dfb376bf9b218d1c897018f4e70424d7,How large is the collection of COVID-19 literature?,"According to [p. 2], ""It"" (the collection of COVID-19 literature) includes a total of 2081 articles and about 360,000 sentences.","[p. 2] • We conduct experiments to verify the eﬀectiveness of our method. From the CORD-
+19 dataset, our method successfully discovers a set of clinical ﬁndings that are closely
+related with COVID-19.
+The rest of the paper is organized as follows. In Section 2, we introduce the data. Section 3
+presents the method. Section 4 gives experimental results. Section 5 concludes the paper.
+2. Dataset
+We used the COVID-19 Open Research Dataset (CORD-19) (Inc., 2020) for our study. In
+response to the COVID-19 pandemic, the White House and a coalition of research groups
+prepared the CORD-19 dataset. It contains over 45,000 scholarly articles, including over
+33,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. These
+articles are contributed by hospitals and medical institutes all over the world. Since the
+outbreak of COVID-19 is after November 2019, we select articles published after November
+2019 to study, which include a total of 2081 articles and about 360000 sentences. Many
+
+[p. 2] outbreak of COVID-19 is after November 2019, we select articles published after November
+2019 to study, which include a total of 2081 articles and about 360000 sentences. Many
+articles report the radiological ﬁndings related to COVID-19. Table 1 shows some examples.
+3. Methods
+Our goal is to develop natural language processing (NLP) methods to analyze a large collec-
+tion of COVID-19 literature and discover unbiased and universally informative correlation
+between radiological ﬁndings and COVID-19. To achieve this goal, we need to address two
+technical challenges. First, in the large collection of COVID-19 literature, only a small
+2",
+50,7b9ca0e67e394f1674f0bcf1c53dfc2d474f8613,what language is the data in?,[Used pages: p. 2],"[p. 2] man, we use samples from News-Commentary-11,
+Rapid, Common-Crawl (WMT 2017) and Multi-
+UN (see table 1). Bilingual BPE units (Sennrich
+et al., 2016b) are learned with 50k merge opera-
+tions, yielding vocabularies of about respectively
+32k and 36k for English→French and 32k and 44k
+for English→German.
+Both systems use 512-dimensional word em-
+beddings and a single hidden layer with 1024 cells.
+They are optimized using Adam (Kingma and Ba,
+1Version 7, see www.statmt.org/europarl/.
+2www.statmt.org/wmt08.
+2014) and early stopped according to the valida-
+tion performance. Training lasted for about three
+weeks on an Nvidia K80 GPU card.
+Systems generating back-translated data are
+trained using the same out-of-domain corpus,
+where we simply exchange the source and target
+sides. They are further documented in §3.1.
+For the sake of comparison, we also train a sys-
+tem that has access to a large batch of in-domain
+parallel data following the strategy often referred",
