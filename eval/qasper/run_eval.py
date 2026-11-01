@@ -472,7 +472,7 @@ def generate(args):
     data_dir, out = Path(args.data), Path(args.out)
     questions = {q["question_id"]: q for p in _load_split(data_dir, args.split, args.limit).values() for q in p["qas"]}
     rows = list(_read_jsonl(out / "retrieval.jsonl.gz"))
-    client = OllamaClient(args.ollama)
+    client = OllamaClient(args.ollama, seed=args.seed)
     k = _config(args, out)["k"]
 
     for condition in args.conditions:
@@ -482,7 +482,8 @@ def generate(args):
         def answer(row, condition=condition):
             q = questions[row["question_id"]]
             messages = _messages(condition, row, q["question"], references(q), k)
-            result = {"question_id": row["question_id"], "condition": condition, "model": args.model}
+            result = {"question_id": row["question_id"], "condition": condition, "model": args.model,
+                      "seed": args.seed}
             if messages is None:
                 result.update(answer=None, skipped=True)
                 return result
@@ -520,7 +521,7 @@ def judge(args):
     questions = {q["question_id"]: q for p in _load_split(data_dir, args.split, args.limit).values() for q in p["qas"]}
     # A retry gets a larger window and budget: a failed reply was empty because the judge's
     # reasoning filled the 8192-token window before it gave a verdict
-    client = OllamaClient(args.ollama, num_ctx=20480 if args.retry_errors else 8192)
+    client = OllamaClient(args.ollama, num_ctx=20480 if args.retry_errors else 8192, seed=args.judge_seed)
     max_tokens = 12000 if args.retry_errors else 6000
 
     for condition in args.conditions:
@@ -532,7 +533,8 @@ def judge(args):
 
         def grade(answer, condition=condition):
             q = questions[answer["question_id"]]
-            result = {"question_id": answer["question_id"], "condition": condition, "judge": args.judge}
+            result = {"question_id": answer["question_id"], "condition": condition, "judge": args.judge,
+                      "judge_seed": args.judge_seed}
             if args.retry_errors:
                 result["retry"] = {"num_ctx": client.num_ctx, "max_tokens": max_tokens}
             if answer.get("answer") is None:
@@ -819,6 +821,8 @@ def main():
     parser.add_argument("--rerank", action="store_true", help="retrieve stage: rerank with the cross-encoder")
     parser.add_argument("--retry-errors", action="store_true",
                         help="judge stage: grade again the answers whose judgement failed, with a larger budget")
+    parser.add_argument("--seed", type=int, default=0, help="generate stage: sampling seed of the answer model")
+    parser.add_argument("--judge-seed", type=int, default=0, help="judge stage: sampling seed of the judge")
     args = parser.parse_args()
     {"prepare": prepare, "retrieve": retrieve, "generate": generate, "judge": judge, "summarize": summarize}[
         args.stage
