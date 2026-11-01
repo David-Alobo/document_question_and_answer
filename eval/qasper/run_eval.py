@@ -41,7 +41,7 @@ from types import SimpleNamespace
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from src.utils.utils import CHUNK_OVERLAP, CHUNK_SIZE, EMBEDDING_MODEL, Utils
+from src.utils.utils import CHUNK_OVERLAP, CHUNK_SIZE, EMBEDDING_MODEL, RERANKER_MODEL, Utils
 
 QASPER_URLS = {
     "dev": "https://qasper-dataset.s3.us-west-2.amazonaws.com/qasper-train-dev-v0.3.tgz",
@@ -52,8 +52,8 @@ EVALUATOR_URL = QASPER_URLS["test"]  # the official evaluator ships with the tes
 ARXIV_PDF = "https://export.arxiv.org/pdf/{}"
 USER_AGENT = "document-question-and-answer-eval/0.2 (QASPER benchmark)"
 
-K_APP = 4  # chunks the app sends to the model
-K_MAX = 10  # chunks retrieved for the recall curve
+K_APP = 4  # chunks the app sends to the model (default; see --k)
+K_MAX = 10  # chunks retrieved for the recall curve (at least --k)
 CONDITIONS = ("shipped", "fixed", "oracle")
 
 # The system prompt the app shipped with before this fix, for the "shipped" condition
@@ -370,10 +370,12 @@ def retrieve(args):
     from src.database.vectorstore import LocalVectorStore
 
     data_dir, out = Path(args.data), Path(args.out)
+    config = _config(args, out, write=True)
     papers = _load_split(data_dir, args.split, args.limit)
     status = {row["paper_id"]: row for row in _read_jsonl(out / "papers.jsonl")}
     done = {row["question_id"] for row in _read_jsonl(out / "retrieval.jsonl.gz")}
     model = Utils.load_embedding_model()
+    reranker = Utils.load_reranker() if config["rerank"] else None
 
     for paper_id, paper in papers.items():
         todo = [q for q in paper["qas"] if q["question_id"] not in done]
@@ -382,7 +384,9 @@ def retrieve(args):
         chunks, error = [], None
         if status.get(paper_id, {}).get("status") == "ok":
             try:
-                chunks = Utils.split_pdf(data_dir / "pdfs" / f"{paper_id}.pdf")
+                chunks = Utils.split_pdf(
+                    data_dir / "pdfs" / f"{paper_id}.pdf", config["chunk_size"], config["chunk_overlap"]
+                )
             except Exception as e:  # noqa: BLE001 - recorded per question
                 error = f"split failed: {e}"
         else:
@@ -391,7 +395,7 @@ def retrieve(args):
             error = "no text extracted"
         store = None
         if chunks:
-            store = LocalVectorStore(model)
+            store = LocalVectorStore(model, reranker=reranker)
             store.add_documents(chunks)
             chunk_grams = [_ngrams(_tokens(c.page_content)) for c in chunks]
 
@@ -415,7 +419,7 @@ def retrieve(args):
                 row["evidence_chunks"] = found
                 found_set = set(found)
                 index = {id(c): i for i, c in enumerate(chunks)}
-                for doc in store.similarity_search(q["question"], k=K_MAX):
+                for doc in store.similarity_search(q["question"], k=max(K_MAX, config["k"])):
                     i = index[id(doc)]
                     row["retrieved"].append(
                         {"chunk": i, "page": doc.metadata.get("page"), "evidence": i in found_set,
@@ -430,7 +434,7 @@ def retrieve(args):
 # ---------------------------------------------------------------- generation
 
 
-def _messages(condition, row, question, refs):
+def _messages(condition, row, question, refs, k=K_APP):
     """The chat messages for one question under one condition.
 
     Args:
@@ -438,6 +442,7 @@ def _messages(condition, row, question, refs):
         row (dict): The question's retrieval record.
         question (str): The question.
         refs (list): The annotators' answers (for the oracle evidence).
+        k (int): Retrieved chunks sent to the model.
 
     Returns:
         list or None: Messages, or None if the condition does not apply.
@@ -449,7 +454,7 @@ def _messages(condition, row, question, refs):
     if condition == "fixed":
         if row["error"]:
             return None
-        docs = [Document(page_content=r["text"], metadata={"page": r["page"]}) for r in row["retrieved"][:K_APP]]
+        docs = [Document(page_content=r["text"], metadata={"page": r["page"]}) for r in row["retrieved"][:k]]
         return Utils.build_messages(Utils.format_context(docs), question, [])
     evidence = sorted({e for r in refs for e in r["evidence"]})
     if not evidence:
@@ -468,6 +473,7 @@ def generate(args):
     questions = {q["question_id"]: q for p in _load_split(data_dir, args.split, args.limit).values() for q in p["qas"]}
     rows = list(_read_jsonl(out / "retrieval.jsonl.gz"))
     client = OllamaClient(args.ollama)
+    k = _config(args, out)["k"]
 
     for condition in args.conditions:
         path = out / f"answers_{condition}.jsonl"
@@ -475,7 +481,7 @@ def generate(args):
 
         def answer(row, condition=condition):
             q = questions[row["question_id"]]
-            messages = _messages(condition, row, q["question"], references(q))
+            messages = _messages(condition, row, q["question"], references(q), k)
             result = {"question_id": row["question_id"], "condition": condition, "model": args.model}
             if messages is None:
                 result.update(answer=None, skipped=True)
@@ -611,6 +617,8 @@ def summarize(args):
     gold = evaluator.get_answers_and_evidence(papers, True)
     retrieval = {r["question_id"]: r for r in _read_jsonl(out / "retrieval.jsonl.gz")}
     paper_rows = list(_read_jsonl(out / "papers.jsonl"))
+    config = _config(args, out)
+    k_app = config["k"]
 
     summary = {
         "split": args.split,
@@ -619,9 +627,11 @@ def summarize(args):
         "questions": len(questions),
         "questions_with_retrieval": sum(not r["error"] for r in retrieval.values()),
         "embedding_model": EMBEDDING_MODEL,
-        "chunk_size": CHUNK_SIZE,
-        "chunk_overlap": CHUNK_OVERLAP,
-        "k_app": K_APP,
+        "chunk_size": config["chunk_size"],
+        "chunk_overlap": config["chunk_overlap"],
+        "k_app": k_app,
+        "rerank": config["rerank"],
+        "reranker_model": RERANKER_MODEL if config["rerank"] else None,
     }
 
     # Retrieval: questions with text evidence whose PDF was processed
@@ -662,7 +672,7 @@ def summarize(args):
         }
         if condition == "fixed":
             hit = [qid for qid in scored if qid in retrieval and retrieval[qid]["n_evidence"]
-                   and any(c["evidence"] for c in retrieval[qid]["retrieved"][:K_APP])]
+                   and any(c["evidence"] for c in retrieval[qid]["retrieved"][:k_app])]
             miss = [qid for qid in scored if qid in retrieval and retrieval[qid]["n_evidence"] and qid not in hit]
             entry["correct_when_evidence_retrieved"] = _rate(
                 sum(verdicts.get(q, {}).get("verdict") == "correct" for q in hit), len(hit))
@@ -721,6 +731,38 @@ def _markdown(summary):
 # ---------------------------------------------------------------- io
 
 
+def _config(args, out, write=False):
+    """The retrieval settings of a results folder.
+
+    The retrieve stage writes them to config.json; later stages read them from there, so a
+    folder's answers and summary always match how its chunks were retrieved. A folder made
+    before config.json existed used the defaults.
+
+    Args:
+        args (argparse.Namespace): Parsed command-line arguments.
+        out (Path): The results folder.
+        write (bool): Record the settings from args (retrieve stage).
+
+    Returns:
+        dict: chunk_size, chunk_overlap, k and rerank.
+
+    Raises:
+        ValueError: If args ask for settings other than those the folder was made with.
+    """
+    path = out / "config.json"
+    wanted = {"chunk_size": args.chunk_size, "chunk_overlap": args.chunk_overlap, "k": args.k, "rerank": args.rerank}
+    if path.exists():
+        saved = json.loads(path.read_text())
+        if write and saved != wanted:
+            raise ValueError(f"{out} was made with {saved}, not {wanted}")
+        return saved
+    if write:
+        out.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(wanted, indent=2))
+        return wanted
+    return {"chunk_size": CHUNK_SIZE, "chunk_overlap": CHUNK_OVERLAP, "k": K_APP, "rerank": False}
+
+
 def _read_jsonl(path):
     """Read a JSON-lines file (gzip if it ends in .gz); a missing file reads as empty.
 
@@ -764,6 +806,10 @@ def main():
     parser.add_argument("--conditions", nargs="+", default=list(CONDITIONS), choices=CONDITIONS)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--limit", type=int, help="only the first N papers (smoke test)")
+    parser.add_argument("--chunk-size", type=int, default=CHUNK_SIZE, help="retrieve stage: characters per chunk")
+    parser.add_argument("--chunk-overlap", type=int, default=CHUNK_OVERLAP, help="retrieve stage")
+    parser.add_argument("--k", type=int, default=K_APP, help="retrieve stage: chunks sent to the model")
+    parser.add_argument("--rerank", action="store_true", help="retrieve stage: rerank with the cross-encoder")
     args = parser.parse_args()
     {"prepare": prepare, "retrieve": retrieve, "generate": generate, "judge": judge, "summarize": summarize}[
         args.stage

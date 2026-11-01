@@ -6,6 +6,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 
@@ -196,6 +197,18 @@ class Utils:
         from sentence_transformers import SentenceTransformer
 
         return SentenceTransformer(EMBEDDING_MODEL)
+
+    @staticmethod
+    def load_reranker():
+        """
+        Load the cross-encoder that reorders retrieved chunks.
+
+        Returns:
+            CrossEncoder: Loaded reranker model
+        """
+        from sentence_transformers import CrossEncoder
+
+        return CrossEncoder(RERANKER_MODEL)
 
     @staticmethod
     def manage_conversation_context(conversation_history, max_exchanges=10):

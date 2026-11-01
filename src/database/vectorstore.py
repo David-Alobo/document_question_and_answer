@@ -13,14 +13,19 @@ class LocalVectorStore:
     3. Provides methods to add documents and search for similar content
     """
 
-    def __init__(self, embedding_model):
+    def __init__(self, embedding_model, reranker=None, rerank_depth=20):
         """
         Initialize the vector store
 
         Args:
             embedding_model: SentenceTransformer model for creating embeddings
+            reranker: Optional cross-encoder (anything with predict([(query, text), ...]))
+                that reorders the top rerank_depth chunks by reading query and chunk together
+            rerank_depth (int): How many of the most similar chunks the reranker reorders
         """
         self.embedding_model = embedding_model
+        self.reranker = reranker
+        self.rerank_depth = rerank_depth
         self.documents = []        # Store original chunks with their metadata
         self.embeddings = None     # Store embedding vectors
         self.index = None          # FAISS search index
@@ -146,6 +151,13 @@ class LocalVectorStore:
         if sources is not None:
             allowed = set(sources)
             ranking = [i for i in ranking if self.documents[i].metadata.get("source") in allowed]
+        if self.reranker is not None and ranking:
+            depth = max(self.rerank_depth, k)
+            top = ranking[:depth]
+            scores = self.reranker.predict([(query, self.documents[i].page_content) for i in top])
+            # Stable sort: ties keep their embedding order
+            order = sorted(range(len(top)), key=lambda j: -float(scores[j]))
+            ranking = [top[j] for j in order] + ranking[depth:]
 
         chosen = ranking[:k]
         if per_source > 0:

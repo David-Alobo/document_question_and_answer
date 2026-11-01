@@ -155,5 +155,44 @@ def test_similarity_search_limited_to_chosen_files():
     assert mixed.similarity_search("cats", k=2, sources=[]) == []
 
 
+class ReverseReranker:
+    """
+    A mock cross-encoder that prefers the chunks the embeddings rank last; records its inputs.
+    """
+
+    def __init__(self):
+        self.calls = []
+
+    def predict(self, pairs):
+        self.calls.append(pairs)
+        return [OneAxisModel.AXIS[text.split()[0].lower()] * -1 for _, text in pairs]
+
+
+def test_similarity_search_reranks_only_the_top():
+    """
+    The reranker reorders the top rerank_depth chunks; the 4th chunk is never scored.
+    """
+    docs = ["Cats one", "Dogs one", "Fish one", "Fish two"]
+    reranker = ReverseReranker()
+    store = LocalVectorStore(OneAxisModel(), reranker=reranker, rerank_depth=3)
+    store.add_documents(docs)
+
+    results = store.similarity_search("cats", k=2)
+
+    assert reranker.calls == [[("cats", "Cats one"), ("cats", "Dogs one"), ("cats", "Fish one")]]
+    assert [d.page_content for d in results] == ["Fish one", "Dogs one"]
+
+
+def test_similarity_search_reranks_at_least_k():
+    """
+    With k above rerank_depth, the reranker sees k chunks.
+    """
+    reranker = ReverseReranker()
+    store = LocalVectorStore(OneAxisModel(), reranker=reranker, rerank_depth=1)
+    store.add_documents(["Cats one", "Dogs one", "Fish one"])
+    store.similarity_search("cats", k=2)
+    assert len(reranker.calls[0]) == 2
+
+
 def test_similarity_search_empty_index(mock_embedding_model):
     assert LocalVectorStore(mock_embedding_model).similarity_search("Query") == []
