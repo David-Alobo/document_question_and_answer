@@ -1,0 +1,162 @@
+🔧 Setup
+
+Get a free Groq API key at: https://console.groq.com
+
+Groq API Key
+
+Choose Model:
+
+Llama 3.1 8B (Fast) - 131k context
+💬 Conversation Settings
+
+Max conversation exchanges to remember:
+
+5
+0
+20
+Deploy
+📄 Document Q&A with Conversation Memory
+
+Upload one or more PDFs and have a conversation about them. Every answer shows the passages it used.
+
+Choose PDF files
+
+Drag and drop files here
+Limit 200MB per file • PDF
+Browse files
+1912.01214.pdf
+0.7MB
+1810.08699.pdf
+131.6KB
+
+✅ 2 documents ready: 1810.08699.pdf (40 chunks), 1912.01214.pdf (49 chunks)
+
+💬 Ask Your Questions
+
+Ask about:
+
+1912.01214.pdf
+
+📋 What is this document about?
+
+🔍 What are the key findings or conclusions?
+
+⚖️ Compare these documents: how do their aims, methods and findings differ?
+
+👥 Who are the main authors or people mentioned?
+
+📊 Can you elaborate on that?
+
+🗑️ Clear Conversation History
+
+What NER models were evaluated?
+
+According to [p. 5], Table III shows the evaluation results for named entity recognition algorithms. The following models were evaluated:
+
+Stanford NER
+spaCy 2.0
+Char-biLSTM+biLSTM+CRF
+
+Additionally, [p. 4] mentions that the main model focused on was the recurrent model using pre-trained GloVe embeddings of different sizes (50, 100, 200, and 300 dimensions).
+
+📚 Sources (4 passages)
+
+Compare these documents: how do their aims, methods and findings differ?
+
+Based on the provided document context, I'll compare the two papers.
+
+The first paper, [1810.08699.pdf], focuses on named entity recognition (NER) in multiple languages. The authors aim to evaluate the performance of various NER models on a benchmark test set with additional annotation of other classes. They rely on categories and guidelines assembled by BBN Technologies for TREC 2002 question answering track.
+
+The second paper, [1912.01214.pdf], explores the use of multilingual language models (MLM) in zero-shot translation tasks. The authors aim to evaluate the performance of MLM combined with different types of bilingual language models (BRLM).
+
+Key differences between the two papers:
+
+Aims: The first paper focuses on NER, while the second paper aims to improve zero-shot translation.
+Methods: The first paper relies on traditional NER models and evaluation metrics, whereas the second paper uses multilingual language models and bilingual language models for zero-shot translation.
+Findings: The first paper presents results on NER performance across multiple languages, while the second paper reports results on zero-shot translation tasks.
+
+However, both papers share some similarities:
+
+Both papers use a benchmark test set (Armenian, English, German, Spanish, and Russian) for evaluation.
+Both papers rely on pre-existing annotation guidelines or categories (BBN Technologies for TREC 2002 question answering track in the first paper, and Europarl validation set in the second paper).
+
+Overall, while both papers contribute to the field of natural language processing, they focus on different tasks and use distinct methods.
+
+📚 Sources (5 passages)
+
+Which datasets were used for zero-shot translation?
+
+According to [p. 5], Table 2 and 3 report zero-shot results on two evaluation sets:
+
+Europarl: This dataset is mentioned in the context of evaluating zero-shot performance.
+Multi-UN: Another dataset, Multi-UN, is also used for evaluating zero-shot performance.
+
+Additionally, [p. 4] mentions that the experiments were conducted on these two public datasets: Europarl and MultiUN.
+
+📚 Sources (4 passages)
+
+Page 8
+
+References
+Aharoni, R.; Johnson, M.; and Firat, O. 2019. Massively
+multilingual neural machine translation. In NAACL-HLT.
+Al-Shedivat, M., and Parikh, A. P. 2019. Consistency
+by agreement in zero-shot neural machine translation. In
+NAACL-HLT.
+Arivazhagan, N.; Bapna, A.; Firat, O.; Aharoni, R.; Johnson,
+M.; and Macherey, W. 2018. The missing ingredient in zero-
+shot neural machine translation. ArXiv abs/1903.07091.
+Artetxe, M.; Labaka, G.; Agirre, E.; and Cho, K.
+2017. Unsupervised neural machine translation. ArXiv
+abs/1710.11041.
+Chen, Y .; Liu, Y . P.; Cheng, Y .; and Li, V . O. K. 2017. A
+te...
+
+Page 5
+
+alignments for BRLM-HA.
+Main Results
+Table 2 and 3 report zero-shot results on Europarl and
+Multi-UN evaluation sets, respectively. We compare our ap-
+proaches with related approaches of pivoting, multilingual
+NMT (MNMT) (Johnson et al. 2016), and cross-lingual
+transfer without pretraining (Kim, Gao, and Ney 2019). The
+results show that our approaches consistently outperform
+other approaches across languages and datasets, especially
+surpass pivoting, which is a strong baseline in the zero-
+shot scenario that multilingual NMT systems often fail to
+beat (Johnson et al. 2016; Al-Shedivat and Pari...
+
+Page 4
+
+generacy issue.
+For the more complicated scenario that either the source
+side or the target side has multiple languages, the encoder
+and the decoder are also shared across each side languages
+for efﬁcient deployment of translation between multiple lan-
+guages.
+Experiments
+Setup
+We evaluate our cross-lingual pre-training based transfer ap-
+proach against several strong baselines on two public datat-
+sets, Europarl (Koehn 2005) and MultiUN (Eisele and Chen
+2010), which contain multi-parallel evaluation data to assess
+the zero-shot performance. In all experiments, we use BLEU
+as the automatic met...
+
+Page 4
+
+ing the explicit alignment between the source and target in-
+feasible. BRLM fully utilizes the alignment information to
+obtain better word-level representation alignment between
+different languages, which better relieves the burden of the
+domain shift problem.
+Transfer Protocol
+We consider the typical zero-shot translation scenario in
+which a high resource pivot language has parallel data with
+both source and target languages, while source and target
+languages has no parallel data between themselves. Our pro-
+posed cross-lingual pretraining based transfer approach for
+source→target zero-shot t...
+
+© 2025 Monstrous. For more information, visit our website.
