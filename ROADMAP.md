@@ -6,21 +6,31 @@ The test split is reserved for the final comparison.
 
 ## Now
 
-- Retrieval candidates on answers: 500-character chunks, top 8, with and without the
-  cross-encoder reranker, against the fixed app. Switch the defaults if a candidate wins.
-- Paper and SI: candidate results, human labels for the judge check, the remaining SI sections.
+- Paper and SI: human labels for the judge check, the remaining SI sections.
+- Done: retrieval candidates on answers (500-character chunks, top 8, with and without
+  reranking). Neither beat the app's settings after correction, so the defaults are unchanged.
 
 ## Next
 
-1. **Section-aware chunking** (the idea behind STAIR, arXiv 2609.03874: retrieve along the
+Working title of the paper: *Beyond retrieval: evaluating the reliability of retrieval-augmented
+question answering over scientific papers*. The two reliability experiments are needed for the
+word "reliability"; the title is settled once the results are in.
+
+1. **Repeat runs (reliability).** Ask every question three times with different seeds and
+   report how often the judged verdict changes, overall and per set-up. Tells which of the
+   paper's differences exceed run-to-run variation.
+2. **Citation check (reliability).** For a random sample of answers, check whether the cited
+   pages hold the claims (by hand, with the judge as a second rater). Answers can be judged
+   correct while citing the wrong page.
+3. **Section-aware chunking** (the idea behind STAIR, arXiv 2609.03874: retrieve along the
    document's structure, not fixed-length chunks). Split on section headings, put the section
    title in front of each chunk, optionally rank sections before chunks. Test in the retrieval
    sweep first (no language model), then on answers. The STAIR model itself is a generative
    retriever trained on a fixed corpus, so it does not suit PDFs uploaded at runtime.
-2. **Per-paper comparisons.** For "compare these documents", gather evidence from each paper
+4. **Per-paper comparisons.** For "compare these documents", gather evidence from each paper
    separately (e.g. 2 chunks per file), then compare. Targets the mixed-up papers seen in
    `eval/results/2026-11-01-ui-check-multidoc`.
-3. **Retry when retrieval misses.** Ask the model whether the chunks answer the question; if
+5. **Retry when retrieval misses.** Ask the model whether the chunks answer the question; if
    not, rewrite the query and search again. Costs an extra model call per question.
 
 ## After the roadmap
@@ -46,4 +56,4 @@ extra feature.
 - **LangChain** is already used for PDF loading and splitting. Moving more of the app onto it
   would not change answers.
 - **LangGraph** is worth adopting only if the workflow grows branches, saved state or a human
-  approval step. Items 2 and 3 above are written in plain Python first.
+  approval step. Items 4 and 5 above are written in plain Python first.
