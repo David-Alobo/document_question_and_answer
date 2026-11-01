@@ -348,6 +348,33 @@ def candidates(macros, tables):
         macros["rerank vs small gained"] = str(gained)
         macros["rerank vs small lost"] = str(lost)
         macros["rerank vs small p"] = pval(mcnemar_exact(gained, lost))
+        # Split the A-vs-B change by whether reranking moved evidence into or out of the top 8
+        def hits(folder):
+            out = {}
+            with gzip.open(folder / "retrieval.jsonl.gz", "rt", encoding="utf-8") as f:
+                for line in f:
+                    r = json.loads(line)
+                    if not r["error"] and r["n_evidence"]:
+                        out[r["question_id"]] = any(c["evidence"] for c in r["retrieved"][:8])
+            return out
+
+        hit_a, hit_b = hits(CANDIDATES["small"]), hits(CANDIDATES["small rerank"])
+        added = [q for q in hit_b if hit_b[q] and not hit_a.get(q)]
+        removed = [q for q in hit_b if hit_a.get(q) and not hit_b[q]]
+        macros["rerank added n"] = str(len(added))
+        macros["rerank added correct before"] = str(sum(q in a["correct"] for q in added))
+        macros["rerank added correct after"] = str(sum(q in b["correct"] for q in added))
+        macros["rerank removed n"] = str(len(removed))
+        macros["rerank removed correct before"] = str(sum(q in a["correct"] for q in removed))
+        macros["rerank removed correct after"] = str(sum(q in b["correct"] for q in removed))
+        # Questions without text evidence count as unchanged (no evidence either way)
+        same = [q for q in both if hit_a.get(q) == hit_b.get(q)]
+        macros["rerank same n"] = str(len(same))
+        macros["rerank same gained"] = str(sum(q in b["correct"] and q not in a["correct"] for q in same))
+        macros["rerank same lost"] = str(sum(q in a["correct"] and q not in b["correct"] for q in same))
+
+        retrieval = json.loads((CANDIDATES["small"] / "summary.json").read_text())["retrieval"]
+        macros["small findable k"] = str(retrieval["evidence_found_in_pdf_chunks"]["k"])
         for name in done:
             hit = json.loads((CANDIDATES[name] / "summary.json").read_text())["retrieval"]["hit_at_k"]["8"]
             macros[f"{name} hit eight"] = f"{hit['pct']:.1f}\\% [{hit['ci95'][0]:.1f}, {hit['ci95'][1]:.1f}]"

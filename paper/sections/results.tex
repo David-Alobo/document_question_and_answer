@@ -59,7 +59,7 @@ controlled one.
 
 With the prompt held at about 4,000 characters, the app's set-up (1,000-character chunks, top 4,
 MiniLM) put a gold evidence passage in the context for \SweepBaseBudget{} of the
-\SweepQuestions{} questions (SI, Table~S1). Halving the chunk size and taking twice as many
+\SweepQuestions{} questions (Fig.~\ref{fig:sweep}; every set-up is listed in the SI, Table~S1). Halving the chunk size and taking twice as many
 chunks, with the same encoder, raised this to \SweepSmallBudget{} (\SweepSmallGained{} questions
 gained, \SweepSmallLost{} lost; Holm $p =$ \SweepSmallP{}). Reranking the top 20 of those
 500-character chunks with the cross-encoder raised it to \SweepSmallRerankBudget{}
@@ -73,11 +73,22 @@ These are rates of evidence reaching the model, and the matching rule may favour
 (a 500-character chunk inside a long evidence paragraph can pass the overlap test while holding
 only part of it). We therefore tested the two leading set-ups on answers.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{sweep.pdf}
+\caption{Gold evidence in the context at a fixed prompt length of about 4,000 characters, for
+every retriever and chunk size (\SweepQuestions{} questions whose evidence is findable under
+every chunk size; Wilson 95\% intervals). Retrievers are sorted by their mean over the three
+chunk sizes. \texttt{rerank-} set-ups rerank the top 20 with a cross-encoder; \texttt{hybrid-}
+set-ups fuse a dense ranking with BM25. The app's set-up is marked.}
+\label{fig:sweep}
+\end{figure}
+
 \subsection{The leading set-ups on answers}
 \label{sec:res-candidates}
 
 Both set-ups were run end to end on all questions, with the same model, prompt and judge
-(Table~\ref{tab:candidates}). With 500-character chunks and the top eight, \SmallCorrect{} of
+(Fig.~\ref{fig:answers} and Table~\ref{tab:candidates}). With 500-character chunks and the top eight, \SmallCorrect{} of
 answers were judged correct, against \FixedCorrect{} for the app's set-up (\SmallGained{}
 questions gained, \SmallLost{} lost; Holm $p =$ \SmallHolmP{} over the \CandidateComparisons{}
 candidates). With reranking added, \SmallRerankCorrect{} were correct (\SmallRerankGained{}
@@ -89,12 +100,28 @@ Reranking changed retrieval but not answers. Of the questions whose evidence was
 500-character chunks, the top eight held evidence for \SmallRerankHitEight{} with reranking and
 \SmallHitEight{} without; on answers, the reranked set-up gained \RerankVsSmallGained{}
 questions and lost \RerankVsSmallLost{} against the unreranked one ($p =$ \RerankVsSmallP{}).
-The extra evidence went partly to questions the model answered correctly either way: with
-reranking, answers were judged correct for \SmallRerankCorrectWhenHit{} of questions whose
-context held evidence and \SmallRerankCorrectWhenMiss{} of those whose context did not, against
-\SmallCorrectWhenHit{} and \SmallCorrectWhenMiss{} without. Both set-ups lengthened the prompt
+Where the evidence moved, answers followed it in part. On the \RerankAddedN{} questions for
+which reranking brought evidence into the top eight, \RerankAddedCorrectBefore{} answers were
+judged correct without reranking and \RerankAddedCorrectAfter{} with it; on the
+\RerankRemovedN{} for which it pushed evidence out, \RerankRemovedCorrectBefore{} and
+\RerankRemovedCorrectAfter{}. These gains were offset on the \RerankSameN{} questions whose
+evidence status did not change, where reranking altered the other passages in the context and
+answers changed in both directions (\RerankSameGained{} gained, \RerankSameLost{} lost). Many questions were answered correctly without
+evidence in either set-up, so the added evidence often reached questions that did not need
+it. Both set-ups lengthened the prompt
 only slightly (a mean of \SmallPromptTokens{} and \SmallRerankPromptTokens{} prompt tokens,
 against \BasePromptTokens{}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{answers.pdf}
+\caption{Retrieval and answers for the app's set-up and the two leading set-ups of the sweep,
+with the annotators' evidence for reference (Wilson 95\% intervals). Left: questions whose
+context held gold evidence, of those whose evidence was findable in the PDF's chunks (\FindableK{}
+questions for 1,000-character chunks, \SmallFindableK{} for 500-character chunks). Right: answers judged
+correct, of \FixedN{} questions (oracle: \OracleN{} questions with text evidence).}
+\label{fig:answers}
+\end{figure}
 
 \begin{table}[t]
 \centering
@@ -118,7 +145,8 @@ Chunks / $k$ & Questions & Correct (\%) & \shortstack{Correct or\\partial (\%)} 
 \subsection{Several papers}
 \label{sec:res-multidoc}
 
-Other papers crowded out the one a question was about (Table~\ref{tab:multidoc}). For the
+Other papers crowded out the one a question was about (Fig.~\ref{fig:multidoc} and
+Table~\ref{tab:multidoc}). For the
 \MultidocQuestions{} questions with findable evidence, the top four chunks held evidence for
 \MultidocZeroSingle{} with the paper alone. With nine other papers loaded, only
 \MultidocNineSingleOwn{} of the four chunks came from the right paper on average, and the rate
@@ -127,6 +155,16 @@ the app uses for several files, which adds one chunk from each unrepresented fil
 part of this mainly by widening the context to eight chunks (\MultidocNineMulti{}).
 Restricting the search to the question's paper restored the single-paper rate exactly, as it
 must, since it searches the same chunks with the same embeddings.
+
+\begin{figure}[t]
+\centering
+\includegraphics{multidoc.pdf}
+\caption{Gold evidence in the context as other QASPER development papers are loaded alongside
+the question's paper, for three retrieval rules (\MultidocQuestions{} questions with findable
+evidence; Wilson 95\% intervals; points offset horizontally for legibility). The third rule is
+what the ``Ask about'' control does.}
+\label{fig:multidoc}
+\end{figure}
 
 \begin{table}[t]
 \centering

@@ -84,12 +84,27 @@ papers' arXiv PDFs), with Llama 3.1 8B answering and Qwen3-32B judging the answe
 | 500-character chunks, top 8, reranked | 56.6% [53.5, 59.6] |
 | The annotators' own evidence given to the model (upper bound for retrieval) | 69.1% [65.9, 72.0] |
 
+![Gold evidence in the context and answers judged correct for each retrieval set-up](paper/figures/answers.png)
+
 95% intervals. The four retrieved chunks held the gold evidence for 48.8% of questions, and
 given the evidence directly the model answers 15 points more questions correctly. Smaller
-chunks and reranking put evidence in the context more often, but neither changed correctness
-detectably after correcting for two comparisons, so the app keeps its settings for now. Every run, with per-question outputs and a README, is in
-[`eval/results/`](eval/results/); the scripts are in [`eval/qasper/`](eval/qasper/). A paper
-describing the evaluation is being written in [`paper/`](paper/).
+chunks and reranking put evidence in the context more often (left), but neither changed
+correctness detectably after correcting for two comparisons (right), so the app keeps its
+settings for now.
+
+Two more findings:
+
+- **Loading other papers hides the right one.** With nine other papers loaded, the evidence
+  for a question about one of them reached the context for 31.9% of questions instead of 48.8%.
+  Choosing the paper under "Ask about" restores the single-paper rate.
+- **Retrieval tests alone would have misled us.** Across 36 retrieval set-ups at the same prompt
+  length, 500-character chunks with reranking were among those that retrieved evidence most
+  often (65.5% against 49.4% for the app's settings), but on answers they did no better.
+
+Every run, with per-question outputs and a README, is in [`eval/results/`](eval/results/); the
+scripts are in [`eval/qasper/`](eval/qasper/). A paper describing the evaluation is being
+written in [`paper/`](paper/); its numbers, tables and figures are generated from the saved
+results (`paper/make_numbers.py`, `paper/make_figures.py`).
 
 ## Project layout
 
@@ -100,7 +115,7 @@ describing the evaluation is being written in [`paper/`](paper/).
 | `test/` | Unit tests (`uv run pytest`) |
 | `eval/` | QASPER evaluation scripts and saved results |
 | `paper/` | Manuscript and supplementary information (LaTeX) |
-| `ROADMAP.md` | Planned changes |
+| [`ROADMAP.md`](ROADMAP.md) | Planned changes: section-aware chunking, per-paper comparisons, a held-out test |
 
 ## Limitations
 
