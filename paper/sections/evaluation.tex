@@ -73,8 +73,12 @@ the question, every annotator's answer and the candidate answer, and asked wheth
 candidate gives the substance of at least one reference answer (correct), part of it (partially
 correct) or neither (incorrect); the prompt is in the SI. Language-model judges can be biased in
 known ways~\cite{zheng2023judge}, and in a pilot on nine answers the judge credited empty answers
-with content, so empty answers are graded incorrect by rule, and the judge was validated against
-blind hand labels on a random sample of \result{50} answers (Section~\ref{sec:res-judge}).
+with content, so empty answers are graded incorrect by rule. Three of the fixed app's
+judgements came back empty because the judge's reasoning filled its 8,192-token window; they
+were graded again with a 20,480-token window, and both attempts are kept. To check the judge,
+\JudgeCheckN{} fixed-app answers were drawn at random (seed 0) and graded with the judge's rules
+by a second model, Claude (Anthropic), before any of the judge's verdicts on them were read
+(Section~\ref{sec:res-judge}). \result{Human labels of the same answers.}
 
 \subsection{Statistics}
 

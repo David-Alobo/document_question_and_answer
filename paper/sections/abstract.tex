@@ -2,17 +2,18 @@
 Question answering over a PDF with retrieval-augmented generation is a common small project:
 split the document into chunks, embed them, retrieve the most similar few and pass them to a
 language model. Such apps are rarely measured. We took one, an open-source Streamlit app for
-research papers, and evaluated its own code on the 1,005 questions of the QASPER development
-set, using the arXiv PDFs of the 281 papers, Llama~3.1~8B as the answering model and Qwen3-32B
-as a judge checked against blind hand labels. As shipped, a misplaced loop sent the first
-question of every conversation to the model without the question or the document; the model
-returned \result{N} empty answers out of 1,005. After the fix, \result{X\%} of answers were
-judged correct, against \result{Y\%} when the model was given the annotators' own evidence
-paragraphs. At equal prompt length (about 4,000 characters), 500-character chunks with
-cross-encoder reranking put a gold evidence passage in the context for \SweepSmallRerankBudget{}
-of \SweepQuestions{} questions, against \SweepBaseBudget{} for the app's 1,000-character
-chunks; on answers this \result{raised correctness to Z\%}. Loading nine other papers alongside
-the one a question is about lowered evidence retrieval from \MultidocZeroSingle{} to
-\MultidocNineMulti{}; letting the user restrict the search to one paper restored it. All code,
-per-question outputs and prompts are released.
+research papers, and evaluated its own code on the \BaselineQuestions{} questions of the QASPER
+development set, using the arXiv PDFs of the \BaselinePapers{} papers, Llama~3.1~8B as the
+answering model and Qwen3-32B as a judge. As shipped, a misplaced loop sent the first question of
+every conversation to the model without the question or the document; the model returned an
+empty answer to all \ShippedEmpty{}. After the fix, \FixedCorrect{} of answers were judged
+correct, against \OracleCorrect{} when the model was given the annotators' own evidence
+paragraphs, and the four retrieved chunks held a gold evidence passage for \HitFour{} of
+questions. At equal prompt length (about 4,000 characters), 500-character chunks with
+cross-encoder reranking put evidence in the context for \SweepSmallRerankBudget{} of
+\SweepQuestions{} questions, against \SweepBaseBudget{} for the app's 1,000-character chunks; on
+answers this \result{raised correctness to Z\%}. Loading nine other papers alongside the one a
+question is about lowered evidence retrieval from \MultidocZeroSingle{} to \MultidocNineMulti{};
+letting the user restrict the search to one paper restored it. All code, per-question outputs
+and prompts are released.
 \end{abstract}

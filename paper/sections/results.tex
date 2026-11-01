@@ -4,18 +4,55 @@
 \subsection{The app as shipped}
 \label{sec:res-shipped}
 
-Given the system prompt alone, Llama~3.1~8B returned an empty answer for \result{N} of the
-1,005 questions; \result{the remaining answers and their verdicts}. In the app, this is what
-the first question of every conversation received.
+Given the system prompt alone, Llama~3.1~8B returned an empty answer for all \ShippedEmpty{}
+questions (Table~\ref{tab:answers}). In the app, this is what the first question of every
+conversation received: a blank reply, with nothing to show that the question and the document
+had not been sent.
+
+\begin{table}[t]
+\centering
+\caption{Answers on the QASPER development set, judged by Qwen3-32B (Wilson 95\% intervals).
+\emph{Shipped}: the system prompt alone. \emph{Fixed}: the fixed app's prompt with the four
+retrieved chunks; the three questions on the paper whose PDF could not be downloaded are left
+out. \emph{Oracle}: the same prompt with the annotators' text evidence, for the questions that
+have some. Answer F1 is the official QASPER metric, which compares tokens with short reference
+answers.}
+\label{tab:answers}
+\small
+\begin{tabular}{lrccc}
+\toprule
+Condition & Questions & Correct (\%) & Correct or partial (\%) & Answer F1 \\
+\midrule
+\rows{generated/answers_rows}
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Retrieval limits the fixed app}
 \label{sec:res-fixed}
 
-\result{Table: shipped / fixed / oracle, judged correct and correct-or-partial with Wilson
-intervals, official Answer F1; paired McNemar fixed vs oracle.}
+With the bug fixed, \FixedCorrect{} of the \FixedN{} answers were judged correct and
+\FixedPartial{} correct or partially correct. Official Answer F1 was \FixedFOne{}; it is low for
+every condition because the app answers in full sentences and the metric counts the words that
+are not in a short reference answer, so we use it only alongside the judged rates.
 
-\result{Evidence findable in the PDF for X of Y questions with text evidence; in the top four
-chunks for Z\%. Correct rate when the top four held evidence vs when they did not.}
+Replacing the retrieved chunks with the annotators' evidence paragraphs, on the \PairedOracleN{}
+questions that have text evidence and were answered in both conditions, raised the rate from
+\PairedFixedOnOracleQuestions{} to \OracleCorrect{} (\PairedOracleGained{} questions gained,
+\PairedOracleLost{} lost; exact McNemar $p =$ \PairedOracleP{}). The model and prompt were the
+same, so the difference is due to what the context held.
+
+Two things limit the retrieved context. A chunk of the downloaded PDF held the gold evidence for
+\Findable{} of the \TextEvidenceQuestions{} questions with text evidence; the rest were lost to
+PDF extraction or to differences between the arXiv version and the text QASPER was built on.
+Of the \FindableK{} findable questions, the four retrieved chunks held evidence for \HitFour{},
+and the top ten for \HitTen{}. The fixed app was judged correct for \CorrectWhenHit{} of the
+\CorrectWhenHitN{} questions whose four chunks held evidence and for \CorrectWhenMiss{} of the
+\CorrectWhenMissN{} whose chunks did not. That second figure is not small: some questions can
+be answered from text near the evidence, and some answers were judged correct for saying the
+paper did not answer the question. The comparison is observational, since questions whose
+evidence is easy to retrieve may also be easier to answer; the oracle comparison above is the
+controlled one.
 
 \subsection{Retrieval settings at equal prompt length}
 \label{sec:res-sweep}
@@ -77,5 +114,11 @@ $N$ & Rule & Evidence in context (\%) & Chunks & From right paper & Lost / gaine
 \subsection{Agreement of the judge with hand labels}
 \label{sec:res-judge}
 
-\result{Agreement on the blind sample of 50: exact agreement, agreement on correct vs not, the
-confusion table, and examples of disagreements.}
+On the \JudgeCheckN{} sampled answers, Claude's grades and the judge's agreed exactly for
+\JudgeCheckExact{} (Cohen's $\kappa =$ \JudgeCheckKappa{}) and on correct versus not correct for
+\JudgeCheckBinary{} ($\kappa =$ \JudgeCheckKappaBinary{}). The judge called \JudgeCheckJudgeCorrect{}
+of them correct and Claude \JudgeCheckClaudeCorrect{}. Its errors ran both ways. In two clear
+cases it credited answers that did not answer (``the paper does not say'' accepted as ``no'', and
+a hedge accepted as ``yes''), and in four it called a complete answer partial because it added
+or left out detail (every disagreement is listed in the SI). This is agreement between two models, not
+accuracy against people; \result{agreement of each with human labels on the same answers}.
