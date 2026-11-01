@@ -27,7 +27,7 @@ for _ in range(50):
         break
     except OSError:
         time.sleep(0.2)
-ws = websocket.create_connection([t for t in tabs if t["type"] == "page"][0]["webSocketDebuggerUrl"])
+ws = websocket.create_connection(next(t for t in tabs if t["type"] == "page")["webSocketDebuggerUrl"])
 n = 0
 
 
