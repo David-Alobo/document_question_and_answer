@@ -1,0 +1,106 @@
+{
+  "0/multi": {
+    "evidence_in_context": [
+      398,
+      815,
+      48.8,
+      45.4,
+      52.3
+    ],
+    "mean_context_chunks": 4.0,
+    "mean_own_paper_chunks": 4.0,
+    "lost_vs_alone": 0,
+    "gained_vs_alone": 0
+  },
+  "0/single": {
+    "evidence_in_context": [
+      398,
+      815,
+      48.8,
+      45.4,
+      52.3
+    ],
+    "mean_context_chunks": 4.0,
+    "mean_own_paper_chunks": 4.0,
+    "lost_vs_alone": 0,
+    "gained_vs_alone": 0
+  },
+  "2/multi": {
+    "evidence_in_context": [
+      328,
+      815,
+      40.2,
+      36.9,
+      43.7
+    ],
+    "mean_context_chunks": 5.49,
+    "mean_own_paper_chunks": 2.91,
+    "lost_vs_alone": 70,
+    "gained_vs_alone": 0
+  },
+  "2/single": {
+    "evidence_in_context": [
+      307,
+      815,
+      37.7,
+      34.4,
+      41.0
+    ],
+    "mean_context_chunks": 4.0,
+    "mean_own_paper_chunks": 2.78,
+    "lost_vs_alone": 91,
+    "gained_vs_alone": 0
+  },
+  "4/multi": {
+    "evidence_in_context": [
+      297,
+      815,
+      36.4,
+      33.2,
+      39.8
+    ],
+    "mean_context_chunks": 7.27,
+    "mean_own_paper_chunks": 2.59,
+    "lost_vs_alone": 101,
+    "gained_vs_alone": 0
+  },
+  "4/single": {
+    "evidence_in_context": [
+      263,
+      815,
+      32.3,
+      29.1,
+      35.6
+    ],
+    "mean_context_chunks": 4.0,
+    "mean_own_paper_chunks": 2.38,
+    "lost_vs_alone": 135,
+    "gained_vs_alone": 0
+  },
+  "9/multi": {
+    "evidence_in_context": [
+      260,
+      815,
+      31.9,
+      28.8,
+      35.2
+    ],
+    "mean_context_chunks": 8.0,
+    "mean_own_paper_chunks": 2.23,
+    "lost_vs_alone": 138,
+    "gained_vs_alone": 0
+  },
+  "9/single": {
+    "evidence_in_context": [
+      229,
+      815,
+      28.1,
+      25.1,
+      31.3
+    ],
+    "mean_context_chunks": 4.0,
+    "mean_own_paper_chunks": 2.02,
+    "lost_vs_alone": 169,
+    "gained_vs_alone": 0
+  }
+}

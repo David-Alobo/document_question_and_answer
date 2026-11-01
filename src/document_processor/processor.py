@@ -11,6 +11,7 @@ EXAMPLE_QUESTIONS = [
 ]
 COMPARE_QUESTION = ("⚖️", "Compare these documents: how do their aims, methods and findings differ?")
 
+ALL_DOCUMENTS = "All documents"
 MAX_DOCUMENTS = 10
 TOP_K = 4            # chunks retrieved by similarity alone
 MAX_CONTEXT = 8      # with several files: up to this many chunks, at least one per file
@@ -111,19 +112,23 @@ class DocumentProcessor:
                 st.markdown(f"**{label[0].upper()}{label[1:]}**")
                 st.text(text[:600] + "..." if len(text) > 600 else text)
 
-    def _answer(self, question, groq_client):
+    def _answer(self, question, groq_client, scope=None):
         """
         Retrieve passages for a question, ask the model, and record the exchange.
 
         Args:
             question (str): The user's question.
             groq_client: Initialized Groq API client
+            scope (str): A file name to search only that file, or None for all files.
         """
         store = st.session_state.vector_store
-        several = len(store.sources) > 1
-        sources = store.similarity_search(
-            question, k=TOP_K, per_source=1 if several else 0, max_total=MAX_CONTEXT if several else None
-        )
+        if scope is not None:
+            sources = store.similarity_search(question, k=TOP_K, sources=[scope])
+        else:
+            several = len(store.sources) > 1
+            sources = store.similarity_search(
+                question, k=TOP_K, per_source=1 if several else 0, max_total=MAX_CONTEXT if several else None
+            )
         if not sources:
             st.warning("🤷 No relevant information found. Try rephrasing your question.")
             return
@@ -190,6 +195,19 @@ class DocumentProcessor:
             st.success(f"✅ {len(counts)} documents ready: {listed}")
         st.header("💬 Ask Your Questions")
 
+        # With several files, a question about one paper is best searched in that paper
+        # alone: on QASPER, loading 9 other papers cut evidence retrieval from 48.8% to
+        # 31.9% (eval/results/2026-11-01-multidoc-dev)
+        scope = None
+        if len(counts) > 1:
+            choice = st.selectbox(
+                "Ask about:",
+                [ALL_DOCUMENTS, *counts],
+                key="scope",
+                help="Pick one file when your question is about it; other files' passages can crowd it out.",
+            )
+            scope = None if choice == ALL_DOCUMENTS else choice
+
         # Example questions to help users get started
         examples = EXAMPLE_QUESTIONS + ([COMPARE_QUESTION] if len(counts) > 1 else [])
         cols = st.columns(2)
@@ -206,7 +224,7 @@ class DocumentProcessor:
                                  "Ask anything about the document...")
         question = question or st.session_state.pop("pending_question", None)
         if question:
-            self._answer(question, groq_client)
+            self._answer(question, groq_client, scope)
 
         exchanges = zip(st.session_state.conversation_history, st.session_state.conversation_sources, strict=True)
         for (q, a), sources in exchanges:

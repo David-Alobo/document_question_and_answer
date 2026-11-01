@@ -135,5 +135,25 @@ def test_similarity_search_covers_every_file():
     assert [d.page_content for d in capped] == ["Cats one", "Cats two", "Dogs one"]
 
 
+def test_similarity_search_limited_to_chosen_files():
+    """
+    Restricting to one file gives exactly that file's ranking, as if it were alone.
+    """
+    docs = [
+        Document(page_content="Cats one", metadata={"source": "a.pdf"}),
+        Document(page_content="Dogs one", metadata={"source": "b.pdf"}),
+        Document(page_content="Fish one", metadata={"source": "b.pdf"}),
+    ]
+    mixed = LocalVectorStore(OneAxisModel())
+    mixed.add_documents(docs)
+    alone = LocalVectorStore(OneAxisModel())
+    alone.add_documents(docs[1:])
+
+    chosen = mixed.similarity_search("cats", k=2, sources=["b.pdf"])
+    assert chosen == alone.similarity_search("cats", k=2)
+    assert [d.page_content for d in chosen] == ["Dogs one", "Fish one"]
+    assert mixed.similarity_search("cats", k=2, sources=[]) == []
+
+
 def test_similarity_search_empty_index(mock_embedding_model):
     assert LocalVectorStore(mock_embedding_model).similarity_search("Query") == []

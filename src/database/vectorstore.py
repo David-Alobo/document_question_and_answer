@@ -115,7 +115,7 @@ class LocalVectorStore:
         self.index.add(embeddings)
         self.documents.extend(documents)
 
-    def similarity_search(self, query, k=4, per_source=0, max_total=None):
+    def similarity_search(self, query, k=4, per_source=0, max_total=None, sources=None):
         """
         Find the most similar chunks to a query
 
@@ -129,6 +129,8 @@ class LocalVectorStore:
             k (int): Number of most similar chunks to return
             per_source (int): Chunks to guarantee from each file
             max_total (int): Upper limit on the chunks returned (default: no limit)
+            sources (list): Search only chunks from these files (default: all). Other
+                files' chunks would otherwise crowd out the file a question is about.
 
         Returns:
             list: Document objects, most similar first, then the added chunks of other
@@ -141,6 +143,9 @@ class LocalVectorStore:
         _, indices = self.index.search(query_embedding, len(self.documents))
         # FAISS pads with -1 when it finds fewer results than asked for
         ranking = [i for i in indices[0] if 0 <= i < len(self.documents)]
+        if sources is not None:
+            allowed = set(sources)
+            ranking = [i for i in ranking if self.documents[i].metadata.get("source") in allowed]
 
         chosen = ranking[:k]
         if per_source > 0:
