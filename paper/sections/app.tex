@@ -7,7 +7,10 @@ split by LangChain's recursive character splitter into chunks of at most 1,000 c
 200 characters of overlap. Each chunk is embedded locally with all-MiniLM-L6-v2 and stored in a
 flat FAISS index. For each question the four nearest chunks are retrieved and sent, with a
 system prompt and the recent conversation, to a model on the Groq API; Llama~3.1~8B is the
-default. Only the retrieved chunks and the conversation leave the user's machine.
+default. Only the retrieved chunks and the conversation leave the user's machine
+(Fig.~\ref{fig:system}a).
+
+\input{figures/system}
 
 \subsection{Defects found}
 \label{sec:defects}
@@ -21,7 +24,7 @@ Reading the code and running the app found four defects in the version on the ma
   deep, inside the loop that adds previous exchanges. With no previous exchange, the loop body
   never ran and the model received the system prompt alone, with neither the question nor the
   document. With $h$ previous exchanges (up to five) it received the question and its context
-  $h$ times, interleaved with the history.
+  $h$ times, interleaved with the history (Fig.~\ref{fig:system}b).
   \item \textbf{History trimming returned one exchange, not a list.} Once the history held more
   than ten exchanges, the function meant to keep the last ten returned the tenth from last as a
   single (question, answer) pair. Iterating over it then failed, so from the twelfth question of

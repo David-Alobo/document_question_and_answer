@@ -1,0 +1,93 @@
+% Figure 1: the app's pipeline (a) and the message bug (b). Drawn in TikZ on a fixed grid; the
+% numbers are the app's defaults as described in sections/app.tex.
+\begin{figure}[t]
+\centering
+\hyphenpenalty=10000
+\begin{tikzpicture}[
+  font=\small,
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=3pt, minimum height=10mm,
+    text width=#1, anchor=north},
+  box/.default=26mm,
+  data/.style={box=#1, fill=black!6},
+  data/.default=26mm,
+  remote/.style={box=#1, fill=blue!10, draw=blue!60!black},
+  remote/.default=22mm,
+  arr/.style={-{Stealth[length=2mm]}, thick},
+  note/.style={font=\footnotesize, align=center, text=black!65},
+  sub/.style={font=\footnotesize},
+]
+% --- (a) pipeline -------------------------------------------------------------------------
+\node[font=\bfseries] at (-0.6, 0.3) {a};
+
+% Indexing, once per file
+\node[data] (pdf) at (1.3, 0) {PDF files\\[1pt]\footnotesize up to 10};
+\node[box] (split) at (4.6, 0) {Split into chunks\\[1pt]\footnotesize 1,000 characters,\\200 overlap};
+\node[box] (embed) at (7.9, 0) {Embed\\[1pt]\footnotesize all-MiniLM-L6-v2};
+\node[data] (index) at (11.2, 0) {FAISS index\\[1pt]\footnotesize cached per file};
+\draw[arr] (pdf) -- (split);
+\draw[arr] (split) -- (embed);
+\draw[arr] (embed) -- (index);
+
+% Answering, once per question
+\node[data] (q) at (1.3, -2.1) {Question\\[1pt]\footnotesize scope: all files or one (``Ask about'')};
+\node[box] (search) at (4.6, -2.1) {Search\\[1pt]\footnotesize top 4; with several files, +1 per file, up to 8};
+\node[box, dashed] (rerank) at (7.9, -2.1) {Rerank\\[1pt]\footnotesize optional cross-encoder};
+\node[box] (prompt) at (11.2, -2.1) {Prompt\\[1pt]\footnotesize system, history, chunks labelled [file, p.], question};
+\draw[arr] (q) -- (search);
+\draw[arr] (search) -- (rerank);
+\draw[arr] (rerank) -- (prompt);
+\coordinate (gap) at (0, -1.8);
+\draw[arr] (index.south) -- (index.south |- gap) -- (search.north |- gap) -- (search.north);
+
+\node[remote] (llm) at (14.5, -2.1) {Groq API\\[1pt]\footnotesize Llama~3.1~8B};
+\node[data=50mm] (answer) at (7.9, -4.3) {Answer citing pages,\\with the passages it was given listed};
+\draw[arr] (prompt.east |- llm.west) -- (llm.west);
+\draw[arr] (llm.south) |- (answer.east);
+\draw[arr, dashed, black!55] (answer.west) -| node[note, pos=0.75, left] {history} (q.south);
+
+% What stays local
+\begin{scope}[on background layer]
+  \node[draw=black!40, dashed, rounded corners=4pt, inner sep=2.5mm,
+    fit=(pdf) (index) (q) (prompt) (answer)] (local) {};
+\end{scope}
+\node[note, anchor=south east] at (local.north east) {on the user's machine};
+
+% --- (b) the message bug -------------------------------------------------------------------
+\begin{scope}[yshift=-6.6cm,
+  msg/.style={draw, rounded corners=1pt, text width=31mm, align=center, minimum height=5mm,
+    inner sep=1pt, font=\footnotesize, anchor=north},
+  sys/.style={msg, fill=black!14},
+  past/.style={msg, fill=black!4},
+  cur/.style={msg, fill=orange!35},
+  head/.style={font=\footnotesize\bfseries, anchor=south}]
+\node[font=\bfseries] at (-0.6, 0.3) {b};
+
+\node[head] at (2.0, 0) {As shipped, first question};
+\node[sys] (s1) at (2.0, -0.1) {system prompt};
+\node[note, anchor=north] at (2.0, -0.8) {nothing else:\\no question, no chunks};
+
+\node[head] at (7.4, 0) {As shipped, after two exchanges};
+\node[sys] (s2) at (7.4, -0.1) {system prompt};
+\node[past, below=0.5mm of s2] (p1) {past question 1};
+\node[past, below=0.5mm of p1] (a1) {past answer 1};
+\node[cur, below=0.5mm of a1] (c1) {chunks + current question};
+\node[past, below=0.5mm of c1] (p2) {past question 2};
+\node[past, below=0.5mm of p2] (a2) {past answer 2};
+\node[cur, below=0.5mm of a2] (c2) {chunks + current question};
+
+\node[head] at (12.8, 0) {Fixed, any question};
+\node[sys] (s3) at (12.8, -0.1) {system prompt};
+\node[past, below=0.5mm of s3] (h1) {past exchanges};
+\node[cur, below=0.5mm of h1] (c3) {chunks + current question};
+\node[note, below=1.5mm of c3] {current question sent once, last};
+\end{scope}
+\end{tikzpicture}
+\caption{\textbf{a}, \App{} after the fixes. Each file is split, embedded and indexed once. Each
+question is searched in the index, or in one file's chunks when the user picks it under ``Ask
+about'', and the retrieved chunks, labelled with file and page, go to the language model with
+the system prompt and recent conversation. Only the prompt leaves the user's machine. The
+reranker is optional. \textbf{b}, The messages sent to the model. As shipped, the code that adds
+the chunks and the question sat inside the loop over past exchanges, so the first question was
+sent as the system prompt alone, and later questions were repeated once per past exchange.}
+\label{fig:system}
+\end{figure}

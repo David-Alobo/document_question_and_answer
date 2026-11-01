@@ -1,0 +1,74 @@
+% Figure 2: the evaluation design, on a fixed grid. Counts come from generated/numbers.tex.
+\begin{figure}[t]
+\centering
+\hyphenpenalty=10000
+\begin{tikzpicture}[
+  font=\small,
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=3pt, minimum height=10mm,
+    text width=#1, anchor=north},
+  box/.default=32mm,
+  data/.style={box=#1, fill=black!6},
+  data/.default=32mm,
+  model/.style={box=#1, fill=blue!10, draw=blue!60!black},
+  model/.default=60mm,
+  out/.style={box=#1, fill=orange!20},
+  out/.default=60mm,
+  arr/.style={-{Stealth[length=2mm]}, thick},
+]
+% Inputs
+\node[data=44mm] (qasper) at (2.3, 0) {QASPER v0.3, development\\[1pt]\footnotesize
+  \BaselinePapers{} papers, \BaselineQuestions{} questions};
+\node[data] (pdfs) at (6.6, 0) {arXiv PDFs\\[1pt]\footnotesize \BaselinePdfs{} of \BaselinePapers{} downloaded};
+\node[box=60mm] (app) at (11.8, 0) {The app's own code\\[1pt]\footnotesize
+  \texttt{split\_pdf}, \texttt{LocalVectorStore}, \texttt{build\_messages}};
+\draw[arr] (qasper.east |- pdfs.west) -- (pdfs.west);
+\draw[arr] (pdfs.east) -- (pdfs.east -| app.west);
+
+% Retrieval only (no language model)
+\node[box] (sweep) at (1.85, -2.6) {Retrieval sweep\\[1pt]\footnotesize \SweepSetups{} set-ups:
+  3 chunk sizes $\times$ 12 retrievers};
+\node[box] (multi) at (5.35, -2.6) {Other papers loaded\\[1pt]\footnotesize $N = 0, 2, 4, 9$;
+  3 retrieval rules};
+\node[out=67mm] (match) at (3.6, -4.6) {Evidence in the context?\\[1pt]\footnotesize chunks
+  matched to gold paragraphs by word 5-grams; no language model};
+\draw[arr] (sweep.south) -- (sweep.south |- match.north);
+\draw[arr] (multi.south) -- (multi.south |- match.north);
+
+% Answers
+\node[box=60mm, align=left] (conds) at (11.8, -2.6) {Answer conditions\\[1pt]\footnotesize
+  shipped: system prompt only\\
+  fixed: the app's top 4 chunks\\
+  oracle: the annotators' evidence\\
+  candidates: 500-character chunks, top 8, with and without reranking};
+\node[model, below=5mm of conds] (llm) {Answer: Llama~3.1~8B in Ollama\\[1pt]\footnotesize
+  temperature 0.1, seed 0};
+\node[model, below=5mm of llm] (judge) {Judge: Qwen3-32B\\[1pt]\footnotesize correct, partial or
+  incorrect; empty answers by rule};
+\node[out, below=5mm of judge] (f1) {Judged correctness and official Answer F1};
+\draw[arr] (conds) -- (llm);
+\draw[arr] (llm) -- (judge);
+\draw[arr] (judge) -- (f1);
+
+% From the app's code to both branches
+\coordinate (bus) at (0, -1.75);
+\draw[thick] (app.south) -- (app.south |- bus);
+\draw[thick] (sweep.north |- bus) -- (app.south |- bus);
+\draw[arr] (sweep.north |- bus) -- (sweep.north);
+\draw[arr] (multi.north |- bus) -- (multi.north);
+\draw[arr] (app.south |- bus) -- (conds.north);
+
+% Statistics
+\path (f1.south) ++(0, -6mm) coordinate (statsy);
+\coordinate (mid) at (7.5, 0);
+\node[box=150mm] (stats) at (mid |- statsy) {Wilson 95\% intervals; exact McNemar tests paired by
+  question (gained / lost), Holm-corrected within each family};
+\draw[arr] (match.south) -- (match.south |- stats.north);
+\draw[arr] (f1.south) -- (f1.south |- stats.north);
+\end{tikzpicture}
+\caption{Evaluation design. Every experiment runs the app's own retrieval and prompting code on
+the arXiv PDFs of the QASPER development papers. Retrieval experiments score whether a gold
+evidence paragraph reached the context, without calling a language model; answer experiments
+generate with Llama~3.1~8B and grade with a Qwen3-32B judge and the official Answer F1.
+Comparisons are paired by question.}
+\label{fig:evaluation}
+\end{figure}
