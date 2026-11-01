@@ -11,8 +11,9 @@ correct, against \OracleCorrect{} when the model was given the annotators' own e
 paragraphs, and the four retrieved chunks held a gold evidence passage for \HitFour{} of
 questions. At equal prompt length (about 4,000 characters), 500-character chunks with
 cross-encoder reranking put evidence in the context for \SweepSmallRerankBudget{} of
-\SweepQuestions{} questions, against \SweepBaseBudget{} for the app's 1,000-character chunks; on
-answers this \result{raised correctness to Z\%}. Loading nine other papers alongside the one a
+\SweepQuestions{} questions, against \SweepBaseBudget{} for the app's 1,000-character chunks, but
+on answers neither smaller chunks (\SmallCorrectRate{}) nor reranking (\SmallRerankCorrectRate{})
+differed from the app's set-up after correction for two comparisons. Loading nine other papers alongside the one a
 question is about lowered evidence retrieval from \MultidocZeroSingle{} to \MultidocNineMulti{};
 letting the user restrict the search to one paper restored it. All code, per-question outputs
 and prompts are released.

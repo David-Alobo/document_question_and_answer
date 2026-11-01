@@ -59,7 +59,7 @@ controlled one.
 
 With the prompt held at about 4,000 characters, the app's set-up (1,000-character chunks, top 4,
 MiniLM) put a gold evidence passage in the context for \SweepBaseBudget{} of the
-\SweepQuestions{} questions (Table~S\result{n}). Halving the chunk size and taking twice as many
+\SweepQuestions{} questions (SI, Table~S1). Halving the chunk size and taking twice as many
 chunks, with the same encoder, raised this to \SweepSmallBudget{} (\SweepSmallGained{} questions
 gained, \SweepSmallLost{} lost; Holm $p =$ \SweepSmallP{}). Reranking the top 20 of those
 500-character chunks with the cross-encoder raised it to \SweepSmallRerankBudget{}
@@ -76,9 +76,44 @@ only part of it). We therefore tested the two leading set-ups on answers.
 \subsection{The leading set-ups on answers}
 \label{sec:res-candidates}
 
-\result{Fixed app (c1000, top 4) vs c500 top 8 vs c500 top 8 reranked: judged correct with
-intervals, paired McNemar against the fixed app, official F1, mean prompt length, seconds per
-question.}
+Both set-ups were run end to end on all questions, with the same model, prompt and judge
+(Table~\ref{tab:candidates}). With 500-character chunks and the top eight, \SmallCorrect{} of
+answers were judged correct, against \FixedCorrect{} for the app's set-up (\SmallGained{}
+questions gained, \SmallLost{} lost; Holm $p =$ \SmallHolmP{} over the \CandidateComparisons{}
+candidates). With reranking added, \SmallRerankCorrect{} were correct (\SmallRerankGained{}
+gained, \SmallRerankLost{} lost; Holm $p =$ \SmallRerankHolmP{}). Neither difference is
+distinguishable from no effect at the 0.05 level, and both point estimates are about three
+points.
+
+Reranking changed retrieval but not answers. Of the questions whose evidence was findable in
+500-character chunks, the top eight held evidence for \SmallRerankHitEight{} with reranking and
+\SmallHitEight{} without; on answers, the reranked set-up gained \RerankVsSmallGained{}
+questions and lost \RerankVsSmallLost{} against the unreranked one ($p =$ \RerankVsSmallP{}).
+The extra evidence went partly to questions the model answered correctly either way: with
+reranking, answers were judged correct for \SmallRerankCorrectWhenHit{} of questions whose
+context held evidence and \SmallRerankCorrectWhenMiss{} of those whose context did not, against
+\SmallCorrectWhenHit{} and \SmallCorrectWhenMiss{} without. Both set-ups lengthened the prompt
+only slightly (a mean of \SmallPromptTokens{} and \SmallRerankPromptTokens{} prompt tokens,
+against \BasePromptTokens{}).
+
+\begin{table}[t]
+\centering
+\caption{The app's retrieval set-up and the two leading set-ups of the sweep, on answers
+(\FixedN{} questions; Wilson 95\% intervals). Gained / lost: questions judged correct only with
+the set-up / only with the app's set-up, with exact McNemar $p$ Holm-corrected over the two
+comparisons. Prompt tokens: mean, as counted by the model.}
+\label{tab:candidates}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrcccrc}
+\toprule
+Chunks / $k$ & Questions & Correct (\%) & \shortstack{Correct or\\partial (\%)} & \shortstack{Answer\\F1} &
+\shortstack{Prompt\\tokens} & \shortstack{Gained / lost\\(Holm $p$)} \\
+\midrule
+\rows{generated/candidates_rows}
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Several papers}
 \label{sec:res-multidoc}

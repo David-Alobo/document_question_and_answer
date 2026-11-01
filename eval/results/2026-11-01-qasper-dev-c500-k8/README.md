@@ -36,8 +36,9 @@ As `../2026-11-01-qasper-dev` (fixed condition only), except for the retrieval s
 Wilson 95% intervals.
 
 - **Paired against the app** on the same 1,002 questions: 148 questions became correct and
-  113 stopped being correct (exact two-sided McNemar p = 0.035, before correction across the
-  two candidates; the paper applies Holm over both, in `paper/make_numbers.py`).
+  113 stopped being correct (exact two-sided McNemar p = 0.035; Holm-corrected over the two
+  candidates, p = 0.07, so not different from the app at the 0.05 level). Candidate B, with
+  reranking, is in `../2026-11-01-qasper-dev-c500-k8-rerank`.
 - **Retrieval:** evidence was findable for 832 of 891 questions with text evidence (93.4%,
   against 91.5% with 1,000-character chunks), and the top 8 held it for 57.6% [54.2, 60.9] of
   those. `summary.md` has the curve for k = 1–10.

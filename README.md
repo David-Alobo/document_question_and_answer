@@ -81,10 +81,13 @@ papers' arXiv PDFs), with Llama 3.1 8B answering and Qwen3-32B judging the answe
 | As first released (a bug sent the first question without the question or the document) | 0.0% |
 | Fixed | 53.6% [50.5, 56.7] |
 | 500-character chunks, top 8 | 57.1% [54.0, 60.1] |
+| 500-character chunks, top 8, reranked | 56.6% [53.5, 59.6] |
 | The annotators' own evidence given to the model (upper bound for retrieval) | 69.1% [65.9, 72.0] |
 
-95% intervals. Retrieval is what limits the app: the four retrieved chunks held the gold
-evidence for 48.8% of questions. Every run, with per-question outputs and a README, is in
+95% intervals. The four retrieved chunks held the gold evidence for 48.8% of questions, and
+given the evidence directly the model answers 15 points more questions correctly. Smaller
+chunks and reranking put evidence in the context more often, but neither changed correctness
+detectably after correcting for two comparisons, so the app keeps its settings for now. Every run, with per-question outputs and a README, is in
 [`eval/results/`](eval/results/); the scripts are in [`eval/qasper/`](eval/qasper/). A paper
 describing the evaluation is being written in [`paper/`](paper/).
 

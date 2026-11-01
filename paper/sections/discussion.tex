@@ -6,21 +6,36 @@ request; the only symptom was a poor or empty first answer, easily put down to t
 tests of the message builder would have caught it, and so would a benchmark run, which turns
 ``the first answer is sometimes odd'' into a rate.
 
-\paragraph{Where answers are lost.} \result{Interpretation of fixed vs oracle and of correctness
-with and without retrieved evidence, once the judged results are in.}
+\paragraph{Where answers are lost.} Given the annotators' evidence, the same model and prompt
+were judged correct for \OracleCorrect{} of questions, against \FixedCorrect{} with the app's
+retrieval, so a gap of about fifteen points lies between what the app retrieves and what it
+could use. Retrieval settings that put evidence in the context more often closed little of it:
+the best set-up at equal prompt length raised evidence retrieval by about sixteen points in the
+sweep, yet neither leading set-up changed correctness detectably, and reranking, which added
+evidence over smaller chunks alone, changed nothing. We see three possible reasons, which these
+experiments do not separate. First, the oracle context holds only the evidence, while
+retrieved context holds evidence among other passages; the model may need the evidence alone,
+or whole, more than it needs it present. Second, a 500-character chunk can match a long evidence
+paragraph while holding only part of it, so the retrieval gain may be partly an artefact of the
+matching rule, as noted in Section~\ref{sec:res-sweep}. Third, correctness depends on more than
+evidence: \CorrectWhenMiss{} of the app's answers were judged correct without matched evidence
+in the context, through nearby text or by saying correctly that the paper does not answer.
+Retrieval rates are therefore a poor stand-in for answers here, and settings should be chosen
+on answers.
 
 \paragraph{Chunk size is a prompt-length choice.} Comparisons of chunk size at a fixed number
 of chunks change two things at once. Held at the same prompt length, smaller chunks retrieved
-evidence more often in this app, and a cross-encoder reranker added more. Long contexts are not
-free for the model either~\cite{liu2024lost}, which is a reason to keep the budget fixed rather
-than raise it.
+evidence more often in this app, and a cross-encoder reranker added more, but on answers the
+gain was at most a few points and not distinguishable from none. Long contexts are not free
+for the model either~\cite{liu2024lost}, which is a reason to keep the budget fixed rather than
+raise it.
 
 \paragraph{Several documents.} Searching all loaded papers together is what a comparison
 question needs and what a question about one paper does not. A user-facing control that scopes
 the search is a simple remedy; routing a question to the paper it names would remove the need
 for it, and is untested here. The app's rule of one chunk per file gives comparisons thin
 evidence for all but the best-matching paper; we saw a comparison answer mix up the two papers'
-test sets for this reason (SI~\result{S7}), and balancing the context across files is the next
+test sets for this reason (SI, Section~S7), and balancing the context across files is the next
 change to measure.
 
 \paragraph{Scope.} Every result here comes from one benchmark of NLP papers, PDFs that may

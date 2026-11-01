@@ -338,6 +338,22 @@ def candidates(macros, tables):
         macros[f"{name} seconds"] = f"{r['seconds']:.1f}"
         rows.append(" & ".join(cells) + " \\\\")
     macros["candidate comparisons"] = str(len(tests))
+
+    # The two candidates against each other: does reranking change answers? (descriptive, outside the Holm family)
+    if len(done) == 2:
+        a, b = done["small"], done["small rerank"]
+        both = a["scored"] & b["scored"]
+        gained = len((b["correct"] - a["correct"]) & both)
+        lost = len((a["correct"] - b["correct"]) & both)
+        macros["rerank vs small gained"] = str(gained)
+        macros["rerank vs small lost"] = str(lost)
+        macros["rerank vs small p"] = pval(mcnemar_exact(gained, lost))
+        for name in done:
+            hit = json.loads((CANDIDATES[name] / "summary.json").read_text())["retrieval"]["hit_at_k"]["8"]
+            macros[f"{name} hit eight"] = f"{hit['pct']:.1f}\\% [{hit['ci95'][0]:.1f}, {hit['ci95'][1]:.1f}]"
+            when = json.loads((CANDIDATES[name] / "summary.json").read_text())["conditions"]["fixed"]
+            macros[f"{name} correct when hit"] = f"{when['correct_when_evidence_retrieved']['pct']:.1f}\\%"
+            macros[f"{name} correct when miss"] = f"{when['correct_when_evidence_missed']['pct']:.1f}\\%"
     tables["candidates_rows.tex"] = "\n".join(rows) + "\n"
 
 
