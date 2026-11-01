@@ -31,7 +31,8 @@ Condition & Questions & Correct (\%) & Correct or partial (\%) & Answer F1 \\
 \subsection{Retrieval limits the fixed app}
 \label{sec:res-fixed}
 
-With the bug fixed, \FixedCorrect{} of the \FixedN{} answers were judged correct and
+With the bug fixed, \FixedCorrect{} of the \FixedN{} answers were judged correct (probably an
+upper bound, Section~\ref{sec:res-judge}) and
 \FixedPartial{} correct or partially correct. Official Answer F1 was \FixedFOne{}; it is low for
 every condition because the app answers in full sentences and the metric counts the words that
 are not in a short reference answer, so we use it only alongside the judged rates.
@@ -187,11 +188,30 @@ $N$ & Rule & Evidence in context (\%) & Chunks & From right paper & Lost / gaine
 \subsection{Agreement of the judge with hand labels}
 \label{sec:res-judge}
 
-On the \JudgeCheckN{} sampled answers, Claude's grades and the judge's agreed exactly for
-\JudgeCheckExact{} (Cohen's $\kappa =$ \JudgeCheckKappa{}) and on correct versus not correct for
-\JudgeCheckBinary{} ($\kappa =$ \JudgeCheckKappaBinary{}). The judge called \JudgeCheckJudgeCorrect{}
-of them correct and Claude \JudgeCheckClaudeCorrect{}. Its errors ran both ways. In two clear
-cases it credited answers that did not answer (``the paper does not say'' accepted as ``no'', and
-a hedge accepted as ``yes''), and in four it called a complete answer partial because it added
-or left out detail (every disagreement is listed in the SI). This is agreement between two models, not
-accuracy against people; \result{agreement of each with human labels on the same answers}.
+The judge called \JudgeCheckJudgeCorrect{} of the \JudgeCheckN{} sampled answers correct
+(\JudgeCheckJudgeRate{}, in line with its rate over all questions). The human labeller called
+\JudgeCheckHumanCorrect{} correct (\JudgeCheckHumanRate{}). The two agreed exactly on
+\JudgeCheckHumanExact{} answers (Cohen's $\kappa =$ \JudgeCheckHumanKappa{}) and on correct
+versus not correct on \JudgeCheckHumanBinary{} ($\kappa =$ \JudgeCheckHumanKappaBinary{}). The
+disagreements ran mostly one way: \JudgeCheckHumanJudgeOnly{} answers were correct for the judge
+only and \JudgeCheckHumanHumanOnly{} for the human only. Most of the judge's extra credit went to
+answers that hedged or gave part of the reference.
+
+Four of the human labels contradict the instructions where they are mechanical: one annotator's
+reference matched the answer, as in a question whose references were ``yes'' and
+``unanswerable'' and whose answer was that the paper does not say. Counting those four as
+correct, an exploratory check made after the judge's verdicts had been seen, gives
+\JudgeCheckHumanRuleCorrect{} correct (\JudgeCheckHumanRuleRate{}), exact agreement on
+\JudgeCheckHumanRuleExact{} ($\kappa =$ \JudgeCheckHumanRuleKappa{}), correct versus not on
+\JudgeCheckHumanRuleBinary{} ($\kappa =$ \JudgeCheckHumanRuleKappaBinary{}), and still
+\JudgeCheckHumanRuleJudgeOnly{} answers correct for the judge only against
+\JudgeCheckHumanRuleHumanOnly{}.
+
+Claude's labels, made earlier on the same answers, fell between the two: \JudgeCheckClaudeCorrect{}
+correct, exact agreement with the judge on \JudgeCheckExact{} ($\kappa =$ \JudgeCheckKappa{}) and
+with the human on \JudgeCheckHumanClaudeExact{}. Where Claude and the judge disagreed, errors ran
+both ways; in two clear cases the judge credited an answer that did not answer (``the paper does
+not say'' accepted as ``no'', and a hedge accepted as ``yes''). Every disagreement is listed in the
+SI. With one human labeller and \JudgeCheckN{} answers the size of the judge's leniency is
+uncertain, but its direction is consistent, so the judged correct rates in this paper are best
+read as upper bounds.

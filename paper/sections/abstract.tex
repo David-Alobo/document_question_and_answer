@@ -9,7 +9,9 @@ every conversation to the model without the question or the document; the model 
 empty answer to all \ShippedEmpty{}. After the fix, \FixedCorrect{} of answers were judged
 correct, against \OracleCorrect{} when the model was given the annotators' own evidence
 paragraphs, and the four retrieved chunks held a gold evidence passage for \HitFour{} of
-questions. At equal prompt length (about 4,000 characters), 500-character chunks with
+questions. On a random sample of \JudgeCheckN{} answers a human labeller credited
+\JudgeCheckHumanCorrect{} where the judge credited \JudgeCheckJudgeCorrect{}, so the judged rates
+are best read as upper bounds. At equal prompt length (about 4,000 characters), 500-character chunks with
 cross-encoder reranking put evidence in the context for \SweepSmallRerankBudget{} of
 \SweepQuestions{} questions, against \SweepBaseBudget{} for the app's 1,000-character chunks, but
 on answers neither smaller chunks (\SmallCorrectRate{}) nor reranking (\SmallRerankCorrectRate{})

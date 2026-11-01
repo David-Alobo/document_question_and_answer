@@ -6,7 +6,10 @@ The test split is reserved for the final comparison.
 
 ## Now
 
-- Paper and SI: human labels for the judge check, the remaining SI sections.
+- Paper and SI: the remaining SI sections (evidence matching, the app in a browser).
+- Done: human labels for the judge check (50 answers). The judge credited 27, the human 17
+  (21 with four rule slips corrected), so judged rates are reported as upper bounds. Optional: a
+  second human labeller on the same 50.
 - Done: retrieval candidates on answers (500-character chunks, top 8, with and without
   reranking). Neither beat the app's settings after correction, so the defaults are unchanged.
 

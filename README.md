@@ -92,7 +92,13 @@ chunks and reranking put evidence in the context more often (left), but neither 
 correctness detectably after correcting for two comparisons (right), so the app keeps its
 settings for now.
 
-Two more findings:
+Three more findings:
+
+- **The judge is lenient, so these rates are upper bounds.** On a random 50 of the fixed
+  app's answers, a person grading blind against the same references marked 17 correct (21 when
+  four labels that broke the grading rules are counted as correct); the judge marked 27. Most of
+  its extra credit went to answers that hedge or give part of the answer
+  ([details](eval/results/2026-11-01-judge-validation/)).
 
 - **Loading other papers hides the right one.** With nine other papers loaded, the evidence
   for a question about one of them reached the context for 31.9% of questions instead of 48.8%.

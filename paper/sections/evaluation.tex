@@ -82,7 +82,10 @@ judgements came back empty because the judge's reasoning filled its 8,192-token 
 were graded again with a 20,480-token window, and both attempts are kept. To check the judge,
 \JudgeCheckN{} fixed-app answers were drawn at random (seed 0) and graded with the judge's rules
 by a second model, Claude (Anthropic), before any of the judge's verdicts on them were read
-(Section~\ref{sec:res-judge}). \result{Human labels of the same answers.}
+(Section~\ref{sec:res-judge}). The same answers were then labelled by one of the authors, blind
+to the judge's verdicts and to Claude's labels, on a page that showed the question, the
+reference answers and the app's answer with the judge's instructions (SI, Section~S6). Both labellers graded against the references without reading the
+papers, as the judge does.
 
 \subsection{Statistics}
 

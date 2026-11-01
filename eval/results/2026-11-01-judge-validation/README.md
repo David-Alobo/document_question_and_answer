@@ -42,6 +42,69 @@ compared with `python compare.py labels_<name>.csv`.
   - In four it called a complete answer partial because the answer added or left out detail.
 - `comparison_labels_claude.json` lists every disagreement with both explanations.
 
-What this supports: the judge's correct rate on the fixed app is probably within a few points of
-what a careful grader would give, with errors in both directions. What it does not support:
-a judge accuracy figure for the paper, which needs human labels.
+Read alone, Claude's labels suggested the judge's correct rate was within a few points of a
+careful grader's. The human labels below do not support that.
+
+## Human labels
+
+`labels_human.csv` was made by a person (the first author), blind to the judge's verdicts and
+to Claude's labels, on 2026-11-01.
+
+- **How:** on a web page (`labelling_page.html`) that showed each question, the annotators'
+  reference answers and the app's answer, with three buttons and an optional note. The page held
+  no verdicts. Labels were saved as the buttons were pressed and exported to the CSV.
+- **Instructions on the page:** judge the content against the references (one matching
+  reference is enough); correct = gives the reference's content, extra detail allowed if it does
+  not contradict; partially correct = part of it, or right content mixed with something wrong;
+  incorrect = wrong or misses the point; "the paper does not say" is correct only when an
+  annotator marked the question unanswerable; ignore page citations.
+- **Examples given beforehand**, taken from the sample itself: #1 (incorrect: says the paper
+  does not mention it, no annotator marked it unanswerable), #3 (either "yes" or "the paper does
+  not say" would be correct), #5 (only "the paper does not say" is correct).
+- The labeller graded against the references without reading the papers, as the judge does.
+
+### Against the judge
+
+| | Judge: correct | partially | incorrect |
+|---|---|---|---|
+| Human: correct | 15 | 2 | 0 |
+| partially | 5 | 2 | 4 |
+| incorrect | 7 | 4 | 11 |
+
+- **Agreement:** exact on 28/50 (Cohen's κ = 0.32); correct-vs-not on 36/50 (κ = 0.45).
+- **Direction:** the judge called 27 of the 50 correct, the human 17. In 12 answers the judge
+  said correct and the human did not; in 2 the reverse.
+- **Human against Claude:** exact on 32/50 (κ = 0.45).
+
+### Rule check (exploratory, done after seeing the judge's verdicts)
+
+Four human labels contradict the instructions above in cases where they are mechanical: one
+annotator's reference matches the answer given, and one matching reference is enough.
+
+| # | References | Answer | Human label |
+|---|---|---|---|
+| 3 | Yes, Unanswerable | the paper does not say | incorrect |
+| 8 | Yes, Unanswerable | the paper does not say | incorrect |
+| 37 | Unanswerable, PPDB and BookCorpus, Unanswerable | no dataset is named | incorrect |
+| 49 | No, Yes | position is not given as input (= no) | partially correct |
+
+`labels_human_rule_applied.csv` sets these four to correct and changes nothing else. Against
+the judge: exact on 32/50 (κ = 0.43), correct-vs-not on 40/50 (κ = 0.60); human correct 21,
+judge 27. The judge stays more lenient: 8 answers it called correct the human did not, against 2.
+The labels as given are the primary result; this file is a sensitivity check, since the four were
+reviewed knowing the judge's verdicts.
+
+### What this means
+
+- On this sample the judge credited 27/50 answers (54%), close to its 53.6% over all questions.
+  The human credited 17/50 (34%), or 21/50 (42%) with the rule applied. The judged rate for the
+  fixed app is therefore probably an upper bound.
+- The judge's extra credit went mostly to hedged or incomplete answers that the human called
+  partial or wrong.
+- Paired comparisons between set-ups use the same judge on the same questions; if its leniency
+  is similar across set-ups they are less affected. These labels do not test that.
+- One labeller and 50 answers: the direction is clear, the size is not. A second labeller on the
+  same 50 would show how much is the judge and how much the labeller.
+
+`comparison_labels_human.json` and `comparison_labels_human_rule_applied.json` list every
+disagreement with the human's note and the judge's explanation.

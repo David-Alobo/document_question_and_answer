@@ -127,8 +127,48 @@ annotator marked evidence.
 \section{Judge validation}
 \label{si:judge}
 
-\result{The blind sample, the labelling instructions, every disagreement with the judge's
-reasoning.}
+\paragraph{Sample.} \JudgeCheckN{} of the 1,002 non-empty fixed-app answers, drawn with
+Python's \texttt{random.Random(0).sample} from the answers sorted by question id. The judge's
+last verdict for each question is used, as in the main results.
+
+\paragraph{Labellers.} Claude (Anthropic) graded the answers first, with the judge's rules and
+before reading any of its verdicts on them; those labels were committed before the comparison
+was run. One of the authors then graded the same answers blind to both the judge and Claude, on
+a web page that showed the question, every annotator's reference answer and the app's answer,
+with three buttons and an optional note. Neither labeller read the papers.
+
+\paragraph{Instructions shown to the human labeller.} Judge the app's answer against the
+reference answers; one matching reference is enough. Correct: gives the reference's content;
+extra detail is fine if it does not contradict it. Partially correct: part of the reference, or
+the right content mixed with something wrong. Incorrect: wrong, or misses the point. An answer
+saying the paper does not give this is correct only when an annotator marked the question
+unanswerable. Grade the content only, not the page citations. Three questions from the sample
+(1, 3 and 5 below) were explained as examples before labelling.
+
+\paragraph{Rule check.} In four answers (marked $\dagger$) the human label contradicts the
+instructions where they leave no room for judgement: an annotator's reference matches the answer.
+Counting them as correct is the exploratory sensitivity check reported in the main text; it was
+made after the judge's verdicts had been seen.
+
+{\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{rp{10.5cm}ccc}
+\caption{Every label in the judge check. C, P, I: correct, partially correct, incorrect.
+$\dagger$: contradicts the instructions (see Rule check). Full answers, references, the human's
+notes and the judge's reasoning for every disagreement are in
+\texttt{eval/results/2026-11-01-judge-validation/}.}\\
+\toprule
+\# & Question & Human & Claude & Judge \\
+\midrule
+\endfirsthead
+\toprule
+\# & Question & Human & Claude & Judge \\
+\midrule
+\endhead
+\rows{generated/judge_rows}
+\bottomrule
+\end{longtable}
+}
 
 \section{The app in a browser}
 \label{si:ui}

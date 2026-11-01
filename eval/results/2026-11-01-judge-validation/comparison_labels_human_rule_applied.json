@@ -1,0 +1,155 @@
+{
+  "labels": "labels_human_rule_applied.csv",
+  "n": 50,
+  "exact_agreement": 32,
+  "correct_vs_not_agreement": 40,
+  "kappa_three_grades": 0.426,
+  "labeller_correct": 21,
+  "judge_correct": 27,
+  "confusion_rows_labeller_cols_judge": {
+    "correct": {
+      "correct": 19,
+      "partially_correct": 2,
+      "incorrect": 0
+    },
+    "partially_correct": {
+      "correct": 4,
+      "partially_correct": 2,
+      "incorrect": 4
+    },
+    "incorrect": {
+      "correct": 4,
+      "partially_correct": 4,
+      "incorrect": 11
+    }
+  },
+  "disagreements": [
+    {
+      "question_id": "6411622cc8b2fbedbfa468859d453596d3bd2f03",
+      "labeller": "partially_correct",
+      "judge": "incorrect",
+      "labeller_note": "It didn't mention language modeling explicitly but it mentioned generated text evalution with GAN",
+      "judge_explanation": "The candidate asks for clarification instead of directly answering the question about the objective function, which violates the grading criteria."
+    },
+    {
+      "question_id": "e949b28f6d1f20e18e82742e04d68158415dc61e",
+      "labeller": "incorrect",
+      "judge": "partially_correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly identifies Ituorp as a better system in FLC but misses other systems (newspeak, Antiganda in FLC; ProperGander, YMJA in SLC) and incorrectly claims ProperGander had worse results than the authors' system, contradicting the reference."
+    },
+    {
+      "question_id": "7d2f812cb345bb3ab91eb8cbbdeefd4b58f65569",
+      "labeller": "incorrect",
+      "judge": "correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly identifies that the paper does not explicitly specify which two ERP pairs are mentioned in the literature, aligning with the 'UNANSWERABLE' reference."
+    },
+    {
+      "question_id": "9b7655d39c7a19a23eb8944568eb5618042b9026",
+      "labeller": "partially_correct",
+      "judge": "incorrect",
+      "labeller_note": "",
+      "judge_explanation": "The candidate answer lists tools (Rosette Text Analytics, Google Cloud, mTurk) not present in either reference answer and omits tools mentioned in the references (e.g., BIBREF17, BIBREF18, CogComp-NLP)."
+    },
+    {
+      "question_id": "37f8c034a14c7b4d0ab2e0ed1b827cc0eaa71ac6",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "Transaction probabilities was not mentioned",
+      "judge_explanation": "The candidate correctly identifies LAS and accuracy as evaluation metrics, aligning with one of the reference answers."
+    },
+    {
+      "question_id": "2317ca8d475b01f6632537b95895608dc40c4415",
+      "labeller": "correct",
+      "judge": "partially_correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly identifies that a chunk is a sequence of tweets sorted by date and split into groups of size s, aligning with one reference. However, it omits the reference's mention of tweets being labeled by their account's label, which is a key part of the definition."
+    },
+    {
+      "question_id": "1b1a30e9e68a9ae76af467e60cefb180d135e285",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly states the dataset comprises 353 conversations from 40 speakers, aligning with the reference, and adds non-contradictory context about a sampled subset."
+    },
+    {
+      "question_id": "d3aa0449708cc861a51551b128d73e11d62207d2",
+      "labeller": "partially_correct",
+      "judge": "incorrect",
+      "labeller_note": "",
+      "judge_explanation": "The candidate answer does not mention any of the key components listed in the reference answers (e.g., relation-level/word-level representations, BiLSTMs, residual learning) and instead focuses on unrelated details (decoder integration) and requests clarification, failing to address the question as per the references."
+    },
+    {
+      "question_id": "d571e0b0f402a3d36fb30d70cdcd2911df883bc7",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate's answer aligns with the reference answers by suggesting the system may be tested on low-resource languages, even if it does not explicitly confirm this, and does not contradict the references."
+    },
+    {
+      "question_id": "a15bc19674d48cd9919ad1cf152bf49c88f4417d",
+      "labeller": "incorrect",
+      "judge": "partially_correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly identifies the corpus as a 'dialogue corpus' but misses the specific reference to DSTC2 or its manual transcriptions."
+    },
+    {
+      "question_id": "52f8a3e3cd5d42126b5307adc740b71510a6bdf5",
+      "labeller": "correct",
+      "judge": "partially_correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate lists some correct tasks but includes an additional task not in the reference and omits others, such as 'Prediction of the exact rating of an aspect in a review' and 'Prediction of the list of all the positive/negative aspects mentioned in the review'."
+    },
+    {
+      "question_id": "1bb7eb5c3d029d95d1abf9f2892c1ec7b6eef306",
+      "labeller": "partially_correct",
+      "judge": "incorrect",
+      "labeller_note": "",
+      "judge_explanation": "The candidate claims the paper does not provide a specific character error rate, but the references explicitly state values (e.g., 2.49%)."
+    },
+    {
+      "question_id": "c0e341c4d2253eb42c8840381b082aae274eddad",
+      "labeller": "incorrect",
+      "judge": "correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly identifies relation detection as the core component, aligning with the second reference's focus on hierarchical matching and residual learning within this subtask."
+    },
+    {
+      "question_id": "1329280df5ee9e902b2742bde4a97bc3e6573ff3",
+      "labeller": "incorrect",
+      "judge": "correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly notes the paper does not explicitly state the dataset is balanced, aligning with the reference answer 'No'."
+    },
+    {
+      "question_id": "de5b6c25e35b3a6c5e40e350fc5e52c160b33490",
+      "labeller": "incorrect",
+      "judge": "partially_correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly reports some ROUGE metrics for the arXiv dataset but omits the Meteor results and Pubmed dataset comparisons from the references, and slightly misstates the ROUGE-1 value for arXiv."
+    },
+    {
+      "question_id": "b6f15fb6279b82e34a5bf4828b7b5ddabfdf1d54",
+      "labeller": "incorrect",
+      "judge": "correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly includes 'Multilingual NMT (Neural Machine Translation)' which aligns with the reference answer, and additional details do not contradict the references."
+    },
+    {
+      "question_id": "92d1a6df3041667dc662376938bc65527a5a1c3c",
+      "labeller": "partially_correct",
+      "judge": "correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate acknowledges the use of an English dataset and aligns with the reference answer that the paper reports results on English data, despite additional speculative analysis about non-English elements."
+    },
+    {
+      "question_id": "5c3e98e3cebaecd5d3e75ec2c9fc3dd267ac3c83",
+      "labeller": "incorrect",
+      "judge": "partially_correct",
+      "labeller_note": "",
+      "judge_explanation": "The candidate correctly identifies the transformation experiments but misses the three classifier experiments (Irony Classifier, Sentiment Classifier for Irony, Sentiment Classifier for Non-irony) mentioned in the reference answer."
+    }
+  ],
+  "kappa_correct_vs_not": 0.605
+}

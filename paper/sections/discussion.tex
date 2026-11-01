@@ -38,10 +38,20 @@ evidence for all but the best-matching paper; we saw a comparison answer mix up 
 test sets for this reason (SI, Section~S7), and balancing the context across files is the next
 change to measure.
 
+\paragraph{How far to trust the judge.} The judge was more generous than a person grading
+against the same references, mostly towards answers that hedge or give part of what was asked.
+For a user of the app, the human-graded rate on the sample (\JudgeCheckHumanCorrect{} or
+\JudgeCheckHumanRuleCorrect{} of \JudgeCheckN{}) means an answer is a pointer to the cited pages
+rather than a result. For the paper, the absolute
+rates are upper bounds. The comparisons between set-ups are paired and graded by the same judge,
+so they are affected less if its leniency is similar across set-ups; the hand labels cover only
+the app's set-up and do not test that. A second human labeller on the same answers would show
+how much of the gap is the judge and how much the labeller.
+
 \paragraph{Scope.} Every result here comes from one benchmark of NLP papers, PDFs that may
 differ from the versions the questions were written on, one answering model in a 4-bit
-quantization, questions asked without conversation, and a judge model validated on a small
-sample. The evidence matching is approximate, and its bias towards small chunks is the reason
+quantization, questions asked without conversation, and a judge model checked against one human labeller on
+\JudgeCheckN{} answers. The evidence matching is approximate, and its bias towards small chunks is the reason
 the leading retrieval set-ups were tested on answers. The retrieval sweep and the
 several-papers experiment were exploratory. Neither experiment says how the app compares with
 systems such as PaperQA2~\cite{skarlinski2024paperqa2}, which spend many model calls per
