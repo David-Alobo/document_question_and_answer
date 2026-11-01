@@ -70,7 +70,7 @@ def main():
     entries = []
     for key, doi in REFERENCES.items():
         entry = fetch(doi)
-        entry = re.sub(r"^@(\w+)\{[^,]*,", lambda m: f"@{m.group(1)}{{{key},", entry, count=1)
+        entry = re.sub(r"^@(\w+)\{[^,]*,", lambda m, key=key: f"@{m.group(1)}{{{key},", entry, count=1)
         entries.append(entry)
         print(key, "ok", flush=True)
         time.sleep(1)

@@ -54,7 +54,8 @@ def compare(label_file):
     Returns:
         dict: The comparison, also written to comparison_<name>.json.
     """
-    labels = {r["question_id"]: r for r in csv.DictReader(open(HERE / label_file, encoding="utf-8"))}
+    with open(HERE / label_file, encoding="utf-8") as f:
+        labels = {r["question_id"]: r for r in csv.DictReader(f)}
     judged = verdicts()
     pairs = [(labels[q]["label"], judged[q]["verdict"]) for q in labels]
     binary = [(a == "correct", b == "correct") for a, b in pairs]
