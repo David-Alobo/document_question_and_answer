@@ -46,12 +46,12 @@ def main():
     4. Orchestrates the entire application flow with conversation context
     """
     st.set_page_config(
-        page_title="Document Q&A with Memory",
+        page_title="CitePage",
         page_icon="📄",
         layout="centered"
     )
 
-    st.title("📄 Document Q&A with Conversation Memory")
+    st.title("📄 CitePage")
     st.write("Upload one or more PDFs and have a conversation about them. Every answer shows the passages it used.")
 
     with st.sidebar:

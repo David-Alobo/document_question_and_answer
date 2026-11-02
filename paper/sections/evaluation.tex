@@ -9,7 +9,7 @@ Figure~\ref{fig:evaluation} outlines the experiments.
 
 We used the development split of QASPER v0.3~\cite{dasigi2021qasper}: 281 NLP papers and 1,005
 questions, each answered by one or more annotators who also marked the evidence paragraphs. The
-test split is kept for a final comparison once the design is settled, as its authors ask. The
+test split is kept for a final comparison once the design is settled. The
 app reads PDFs, not the dataset's parsed text, so we downloaded each paper from arXiv (one
 request every three seconds, as arXiv asks of automated clients); 280 of 281 downloads
 succeeded. The latest arXiv version may differ from the one QASPER was built from, which we
@@ -82,7 +82,7 @@ judgements came back empty because the judge's reasoning filled its 8,192-token 
 were graded again with a 20,480-token window, and both attempts are kept. To check the judge,
 \JudgeCheckN{} fixed-app answers were drawn at random (seed 0) and graded with the judge's rules
 by a second model, Claude (Anthropic), before any of the judge's verdicts on them were read
-(Section~\ref{sec:res-judge}). The same answers were then labelled by one of the authors, blind
+(Section~\ref{sec:res-judge}). The same answers were then labelled by the author, blind
 to the judge's verdicts and to Claude's labels, on a page that showed the question, the
 reference answers and the app's answer with the judge's instructions (SI, Section~S6). Both labellers graded against the references without reading the
 papers, as the judge does.
@@ -113,8 +113,30 @@ the cited page was among the pages of the four chunks the model was given. One c
 per answer whose pages were all in the context was then drawn at random (seed 0), and the judge
 model was asked whether the passages from the cited pages support it (supported, partially
 supported or not supported; prompt in the SI). Fifty of the drawn statements were labelled by
-one of the authors, blind to the judge, on a page that showed the question, the statement and
+the author, blind to the judge, on a page that showed the question, the statement and
 the cited passages exactly as the model saw them.
+
+\subsection{Changes beyond retrieval settings}
+\label{sec:eval-changes}
+
+Three further changes were each tested against the app's set-up on the same questions, with the
+same model, prompt and judge. \emph{Section-aware chunking} splits the PDF text at section
+headings, found from the lines themselves (numbered, Roman-numeral and the usual unnumbered
+names such as ``Related Work''), so that no chunk spans two sections, and starts each chunk with
+its section title; on the \PapersDownloaded{} development PDFs it found \result{78\%} of QASPER's
+section names. It was compared at the app's settings (1,000 characters, top four) and at 500
+characters with the top eight, first on retrieval and then on answers. \emph{Retry on a miss}
+first shows the model the four retrieved chunks and asks whether they hold the answer; if the
+model says no, it writes a search query, the paper is searched again, and the top four chunks of
+the new search replace the first ones, so the prompt length does not change. \emph{Balanced
+context for comparisons} was tested on comparison questions built from QASPER, which has none: a
+question asked of several papers (``What datasets are used?'') gives, for any two of them, a
+comparison question with an annotated answer for each paper. Questions on baselines, datasets,
+evaluation metrics and English-only results gave \result{120} pairs (30 per topic, drawn with
+seed 0). The app's rule for several files (top four, then the best chunk of a missing file) was
+compared with the top two chunks of each paper, which is no longer. Each comparison answer was
+judged once per paper against that paper's references, and counts as correct only if both
+judgements are.
 
 \subsection{Statistics}
 

@@ -1,5 +1,5 @@
 [project]
-name = "document-question-and-answer"
+name = "citepage"
 version = "0.2.0"
 description = "Question answering over PDF documents with retrieval (FAISS, Sentence Transformers) and Groq-hosted LLMs, in a Streamlit app"
 readme = "README.md"

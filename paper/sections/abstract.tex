@@ -1,8 +1,8 @@
 \begin{abstract}
 Question answering over a PDF with retrieval-augmented generation is a common small project:
 split the document into chunks, embed them, retrieve the most similar few and pass them to a
-language model. Such apps are rarely measured. We took one, an open-source Streamlit app for
-research papers, and evaluated its own code on the \BaselineQuestions{} questions of the QASPER
+language model. Such apps are rarely measured. We evaluated one, CitePage, an open-source
+Streamlit app for research papers written by the author, with its own code on the \BaselineQuestions{} questions of the QASPER
 development set, using the arXiv PDFs of the \BaselinePapers{} papers, Llama~3.1~8B as the
 answering model and Qwen3-32B as a judge. As shipped, a misplaced loop sent the first question of
 every conversation to the model without the question or the document; the model returned an
@@ -17,6 +17,8 @@ cross-encoder reranking put evidence in the context for \SweepSmallRerankBudget{
 on answers neither smaller chunks (\SmallCorrectRate{}) nor reranking (\SmallRerankCorrectRate{})
 differed from the app's set-up after correction for two comparisons. Loading nine other papers alongside the one a
 question is about lowered evidence retrieval from \MultidocZeroSingle{} to \MultidocNineMulti{};
-letting the user restrict the search to one paper restored it. All code, per-question outputs
-and prompts are released.
+letting the user restrict the search to one paper restored it. \result{Repeat runs: share of
+verdicts that change between runs against the change in overall rates. Citations: share of cited
+pages that were in the context and share of cited statements the pages support.} All code,
+per-question outputs and prompts are released.
 \end{abstract}

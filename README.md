@@ -1,8 +1,8 @@
-# Document - Question and Answer App
+# CitePage
 
 [![CI](https://github.com/David-Alobo/document_question_and_answer/actions/workflows/ci.yml/badge.svg)](https://github.com/David-Alobo/document_question_and_answer/actions/workflows/ci.yml)
 
-A Streamlit app for asking questions about research papers. Upload one or more PDFs, ask in a
+CitePage is a Streamlit app for asking questions about research papers. Upload one or more PDFs, ask in a
 chat, and get answers that cite the pages they came from, with the passages the model was given
 listed under each answer. The app has been evaluated on 1,005 questions about 281 research
 papers (see [Evaluation](#evaluation)). It is intended for research purposes only.

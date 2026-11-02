@@ -1,0 +1,28 @@
+You are checking whether a statement is supported by the passages it cites.
+
+The statement comes from an answer to a question about a research paper. The passages are the
+text of the paper's pages that the statement cites, as the answering model saw them.
+
+<question>
+{question}
+</question>
+
+<statement>
+{claim}
+</statement>
+
+<cited_passages>
+{passages}
+</cited_passages>
+
+Judge only from the passages, not from what you know about the paper or the topic.
+- "supported": everything the statement says about the paper is stated in the passages or follows
+  directly from them.
+- "partially_supported": part of what it says is in the passages, but part is missing from them
+  or goes beyond them.
+- "not_supported": the passages do not state it, or contradict it.
+Ignore wording, citation formatting, and phrases such as "according to the document". A statement
+that the paper does not give some information is supported only if the passages are about that
+topic and do not give it.
+
+Reply with JSON: {{"verdict": "supported" | "partially_supported" | "not_supported", "explanation": "<one sentence>"}}

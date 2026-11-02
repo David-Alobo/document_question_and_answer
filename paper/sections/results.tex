@@ -245,10 +245,22 @@ On the \result{50} hand-labelled statements, the human labeller found \result{42
 \result{2} partially supported and \result{6} not supported; the judge found \result{45}, \result{4}
 and \result{1}. Both put support at \result{84--90\%}, but they agreed on which statements fail
 no better than chance (\result{39 of 50} identical, Cohen's $\kappa =$ \result{0.08}): the judge
-called supported all \result{6} statements the labeller did not. Three of those six are fragments
-the sentence splitter cut from tables or citation lists rather than claims, and in two the
-passage states the claim almost word for word, so some of the disagreement is labelling error.
+called supported all \result{6} statements the labeller marked not supported. Two of those six,
+and one of the two marked partially supported, are fragments the sentence splitter cut from a
+table caption or a citation rather than claims, and in two more the passage states the claim
+almost word for word, so some of the disagreement is labelling error.
 \result{One statement quoted a sentence the passage does not contain.} With this sample we
 cannot tell how often the judge misses an unsupported citation, so we do not use its verdicts on
 the remaining \result{865} statements to estimate a failure rate.
 \result{If adjudicated or second-labelled: the rate from the resolved labels.}
+
+\subsection{Changes beyond retrieval settings}
+\label{sec:res-changes}
+
+\result{Section-aware chunking: on retrieval, evidence in the context rose from 44.7\% to 47.5\%
+at the app's settings (117 questions gained, 92 lost; $p = 0.097$) and from 53.8\% to 55.4\% at
+500 characters and the top eight (94 gained, 79 lost; $p = 0.29$), of the 891 questions with
+text evidence; answers at the app's settings to follow.} \result{Retry on a miss: how often the
+model asked for a retry, how often it said the chunks held the answer when they did not, and the
+effect on evidence and answers.} \result{Comparison questions: evidence from both papers in the
+context and answers correct for both papers, the app's rule against two chunks per paper.}

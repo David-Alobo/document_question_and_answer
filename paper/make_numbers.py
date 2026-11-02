@@ -485,6 +485,7 @@ def prompts(tables):
 
     sys.path.insert(0, str(ROOT))
     sys.path.insert(0, str(ROOT / "eval" / "qasper"))
+    from citation_check import SUPPORT_PROMPT
     from run_eval import JUDGE_PROMPT, SHIPPED_SYSTEM_PROMPT, UNANSWERABLE_RULE
 
     from src.utils.utils import SYSTEM_PROMPT, Utils
@@ -495,6 +496,7 @@ def prompts(tables):
     tables["prompt_user.txt"] = example[-1]["content"]
     tables["prompt_judge.txt"] = JUDGE_PROMPT
     tables["prompt_judge_unanswerable.txt"] = UNANSWERABLE_RULE.strip()
+    tables["prompt_support.txt"] = SUPPORT_PROMPT
 
 
 def main():

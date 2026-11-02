@@ -32,7 +32,7 @@ commands.
 
 \begin{center}
 \footnotesize
-\begin{tabular}{P{4.6cm}P{4.8cm}P{5.2cm}}
+\begin{tabular}{P{5.2cm}P{4.6cm}P{4.8cm}}
 \toprule
 Folder in \texttt{eval/results/} & What it measures & Code and models \\
 \midrule
@@ -46,6 +46,15 @@ Folder in \texttt{eval/results/} & What it measures & Code and models \\
 no language model \\
 \texttt{2026-11-01-ui-check}, \texttt{...-multidoc} & The app in a browser & as listed in each
 README \\
+\texttt{2026-11-01-judge-validation} & The judge against Claude's and the author's labels & no
+language model \\
+\texttt{2026-11-01-repeats} & Answers with seeds 1 and 2; seed-0 answers judged again &
+\texttt{3c084b3}; as above \\
+\texttt{2026-11-01-citation-check} & Cited pages and support of cited statements &
+\texttt{a259f1c}; Qwen3-32B judge \\
+\texttt{2026-11-01-qasper-dev-sections}, \texttt{...-sections-c500-k8},
+\texttt{...-retry}, \texttt{2026-11-01-compare} & Section-aware chunking, retry on a miss,
+comparison questions & \texttt{ef747b9}; as above \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -73,6 +82,9 @@ several files are loaded):
 When at least one annotator marked the question unanswerable, the following is inserted where
 the prompt shows \texttt{\{unanswerable\_rule\}}:
 \lstinputlisting{generated/prompt_judge_unanswerable.txt}
+
+\subsection{Citation-check prompt}
+\lstinputlisting{generated/prompt_support.txt}
 
 \section{Evidence matching}
 \label{si:matching}
@@ -169,7 +181,7 @@ last verdict for each question is used, as in the main results.
 
 \paragraph{Labellers.} Claude (Anthropic) graded the answers first, with the judge's rules and
 before reading any of its verdicts on them; those labels were committed before the comparison
-was run. One of the authors then graded the same answers blind to both the judge and Claude, on
+was run. The author then graded the same answers blind to both the judge and Claude, on
 a web page that showed the question, every annotator's reference answer and the app's answer,
 with three buttons and an optional note. Neither labeller read the papers.
 
