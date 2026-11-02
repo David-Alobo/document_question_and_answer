@@ -1,37 +1,39 @@
 \section{Introduction}
 \label{sec:intro}
 
-Retrieval-augmented generation~\cite{lewis2020rag} lets a language model answer from a
-document it was not trained on. For a single PDF the usual recipe is short: split the text into
-chunks of a fixed number of characters, embed each chunk with a sentence encoder such as
-Sentence-BERT~\cite{reimers2019sbert}, find the chunks nearest to the question in a vector
-index, and send them with the question to the model. Tutorials, course projects and portfolio
-repositories implement this recipe many times over. A common configuration, and the one in the
-app studied here, is 1,000-character chunks, the MiniLM encoder~\cite{wang2020minilm}, a FAISS
-index~\cite{johnson2021faiss} and the top four chunks. Such apps are seldom evaluated on a public
-benchmark, and when they are, the report is usually of retrieval or of answers, not of where
-between the two the answers are lost.
+Retrieval-augmented generation~\cite{lewis2020rag} allows a language model to answer questions
+from a document it was not trained on. For a single PDF, the usual approach is simple. The text is
+split into chunks of a fixed number of characters, each chunk is embedded with a sentence encoder
+such as Sentence-BERT~\cite{reimers2019sbert}, the chunks nearest to the question are found in a
+vector index, and these are sent to the model together with the question. This approach is used
+in many tutorials, course projects and portfolio repositories. A common configuration, which is
+also the one in our app, is 1,000-character chunks, the MiniLM encoder~\cite{wang2020minilm}, a
+FAISS index~\cite{johnson2021faiss} and the top four chunks. Such apps are rarely tested on a
+public benchmark. When they are, the report usually covers either retrieval or the answers, and
+does not show where between the two the answers are lost.
 
-Research systems for scientific question answering are evaluated carefully but are built
-differently. PaperQA~\cite{lala2023paperqa} and PaperQA2~\cite{skarlinski2024paperqa2} search the
-literature, summarise each retrieved passage for the question before answering, and may decline
-to answer; OpenScholar~\cite{asai2024openscholar} retrieves from tens of millions of papers and
-revises its answers with feedback. They answer questions across the literature. The small apps
-answer questions about a paper the user already has, which is the setting of the QASPER
-benchmark~\cite{dasigi2021qasper}: questions written by readers of an NLP paper's title and
-abstract, answered by other annotators from the full text, with the evidence paragraphs marked.
+Research systems for scientific question answering are evaluated more carefully, but they are
+built differently. PaperQA~\cite{lala2023paperqa} and PaperQA2~\cite{skarlinski2024paperqa2}
+search the literature, summarise each retrieved passage for the question before answering, and
+may decline to answer. OpenScholar~\cite{asai2024openscholar} retrieves from tens of millions of
+papers and revises its answers using feedback. These systems answer questions across the
+literature, whereas the small apps answer questions about a paper the user already has. This is
+the setting of the QASPER benchmark~\cite{dasigi2021qasper}, in which questions were written by
+readers who had seen only the title and abstract of an NLP paper, and answered by other
+annotators from the full text, who also marked the evidence paragraphs.
 
-This paper measures one such app, end to end and with its own code. The app, CitePage, is one
-we developed; it answers questions about uploaded PDFs through the Groq API. We ran its
-pipeline on the QASPER development set and asked four questions. How did it behave as shipped?
-How often does retrieval, rather than the model, limit the answers? Which of the common choices
-(chunk size, embedding model, keyword search, reranking) matter when the prompt length is held
-fixed? And when several papers are loaded, as users of such apps expect to do, does retrieval
-still find the right one? A fifth question concerns the measurements themselves: how far a
-language-model judge agrees with a person, how much the results move when the same questions
-are asked again, and whether the pages an answer cites hold what it says.
+We built one such app, CitePage, which answers questions about uploaded PDFs through the Groq
+API, and in this paper we run its own pipeline over the QASPER development set. We first wanted
+to know how the app behaved as we had released it, and how often retrieval, rather than the
+model, was what kept an answer from being right. We then tried the settings people usually
+change (chunk size, embedding model, keyword search and reranking) while keeping the prompt the
+same length. Users also load several papers at once, so we checked whether retrieval still finds
+the paper a question is about. Finally, we checked the measurements themselves. We graded a
+sample of answers by hand to see how far to trust the language-model judge, asked every question
+three times to see how much the results move, and looked at whether the pages an answer cites
+contain what it says.
 
-The answers are specific to one app, one benchmark of NLP papers and one answering model, and
-we do not propose a new method. What the paper offers is a measured account of where a
-typical pipeline loses answers, each finding tied to released per-question data, with the
-changes that recovered answers in this app and those that did not.
+These results come from one app, one benchmark of NLP papers and one answering model, and we
+do not propose a new method. Instead, we show where a typical pipeline loses its answers, and
+which of the changes we tried helped and which did not. Every number in the paper can be traced
+to the per-question outputs we release.

@@ -1,148 +1,162 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
-Figure~\ref{fig:evaluation} outlines the experiments.
+Figure~\ref{fig:evaluation} gives an overview of the experiments.
 
 \input{figures/evaluation}
 
 \subsection{Data}
 
-We used the development split of QASPER v0.3~\cite{dasigi2021qasper}: 281 NLP papers and 1,005
-questions, each answered by one or more annotators who also marked the evidence paragraphs. The
-test split is kept for a final comparison once the design is settled. The
-app reads PDFs, not the dataset's parsed text, so we downloaded each paper from arXiv (one
-request every three seconds, as arXiv asks of automated clients); 280 of 281 downloads
-succeeded. The latest arXiv version may differ from the one QASPER was built from, which we
-measure through evidence findability below.
+We used the development split of QASPER v0.3~\cite{dasigi2021qasper}, which contains 281 NLP
+papers and 1,005 questions. Each question was answered by one or more annotators, who also
+marked the paragraphs that hold the evidence. We kept the test split for a final comparison once
+the design is settled. Because the app reads PDFs and not the dataset's parsed text, we
+downloaded each paper from arXiv, with one request every three seconds as arXiv asks of automated
+clients. 280 of the 281 downloads succeeded. The current arXiv version of a paper may differ from
+the one QASPER was built from, and we measure the effect of this through evidence findability
+(below).
 
 \subsection{Pipeline under test}
 
-All retrieval and prompting used the app's own functions: \texttt{Utils.split\_pdf},
-\texttt{LocalVectorStore} and \texttt{Utils.build\_messages}. The model ran in Ollama instead of
-Groq, behind a client with the same interface, so that every run could be repeated on our own
-hardware. We used \texttt{llama3.1:8b}, the weights behind Groq's \texttt{llama-3.1-8b-instant},
-in Ollama's 4-bit Q4\_K\_M quantization, which may answer slightly differently from Groq's
-deployment. Generation used the app's settings (temperature 0.1, at most 1,000 tokens) with seed
-0 and a 16,384-token context window, larger than any prompt in the evaluation. Each question was
-asked on its own, without conversation history.
+All retrieval and prompting used the app's own functions (\texttt{Utils.split\_pdf},
+\texttt{LocalVectorStore} and \texttt{Utils.build\_messages}). The only difference from the app
+is that the model ran in Ollama instead of on Groq, behind a client with the same interface, so
+that every run could be repeated on our own hardware. We used \texttt{llama3.1:8b}, which has the
+same weights as Groq's \texttt{llama-3.1-8b-instant}, in Ollama's 4-bit Q4\_K\_M quantization.
+This may answer slightly differently from Groq's deployment. Generation used the app's settings
+(temperature 0.1 and at most 1,000 tokens), with seed 0 and a 16,384-token context window, which
+is larger than any prompt in the evaluation. Each question was asked on its own, without
+conversation history.
 
-We compared three conditions. \emph{Shipped} sends what the app sent for the first question of
-a conversation before the fix: the system prompt alone. \emph{Fixed} sends the fixed app's prompt
-with the four retrieved chunks. \emph{Oracle} sends the same prompt with the annotators' text
-evidence paragraphs in place of the retrieved chunks; it bounds what better retrieval could
-achieve with this model and prompt.
+We compared three conditions. \emph{Shipped} sends what the app sent for the first question of a
+conversation before the fix, which is the system prompt alone. \emph{Fixed} sends the fixed app's
+prompt with the four retrieved chunks. \emph{Oracle} sends the same prompt with the annotators'
+evidence paragraphs in place of the retrieved chunks. The oracle condition shows how well this
+model and prompt could do if retrieval were perfect.
 
 \subsection{Evidence retrieval}
 \label{sec:ev-evidence}
 
-Retrieval is scored by whether a chunk holding a gold evidence paragraph is among those sent to
-the model. QASPER's paragraphs come from a parse of the paper's source, and the chunks from the
-PDF text, so they are matched approximately: both are normalised (Unicode NFKC, line-break
-hyphens removed, lower case, alphanumeric tokens), and a chunk holds a paragraph if it contains
-at least half of the paragraph's word 5-grams, or if at least half of the chunk's own 5-grams
-lie in the paragraph (for paragraphs longer than a chunk). A question's evidence is
-\emph{findable} if some chunk of the whole PDF holds it; retrieval rates are computed over
-findable questions. Figures and tables are excluded, as in QASPER's text-only evidence.
+We scored retrieval by whether a chunk holding a gold evidence paragraph was among the chunks
+sent to the model. QASPER's paragraphs come from a parse of the paper's source, while the chunks
+come from the PDF text, so the two had to be matched approximately. Both were normalised
+(Unicode NFKC, line-break hyphens removed, lower case and alphanumeric tokens only). A chunk was
+taken to hold a paragraph if it contained at least half of the paragraph's word 5-grams, or, for
+paragraphs longer than a chunk, if at least half of the chunk's own 5-grams were in the
+paragraph. We call a question's evidence \emph{findable} if some chunk of the whole PDF holds it,
+and we compute retrieval rates over the questions with findable evidence. As in QASPER's
+text-only evidence, figures and tables are left out.
 
 \subsection{Retrieval sweep}
 
-To choose retrieval settings without calling a language model, we ranked every paper's chunks
-for every question under \SweepSetups{} set-ups: three chunk sizes (500, 1,000 and 1,500
-characters, with 20\% overlap), dense retrieval with all-MiniLM-L6-v2~\cite{wang2020minilm},
-bge-small-en-v1.5~\cite{xiao2023cpack} or e5-small-v2~\cite{wang2022e5}, BM25 keyword
-search~\cite{robertson2009bm25}, a hybrid of dense and BM25 rankings by reciprocal rank
-fusion~\cite{cormack2009rrf}, and five of these (MiniLM, BM25 and the three hybrids) with their
-top 20 reranked by a cross-encoder trained on
-MS~MARCO~\cite{nogueira2019rerank,bajaj2016msmarco}
-(\texttt{cross-encoder/ms-marco-MiniLM-L-6-v2}). Because four chunks of 1,500 characters hold
-three times the text of four of 500, set-ups are compared at a fixed budget of about 4,000
-characters: the top 8, 4 or 3 chunks. The comparison uses the \SweepQuestions{} questions whose
-evidence is findable under every chunk size.
+To choose retrieval settings without calling a language model, we ranked every paper's chunks for
+every question under \SweepSetups{} set-ups. These covered three chunk sizes (500, 1,000 and
+1,500 characters, with 20\% overlap) and several retrievers: dense retrieval with
+all-MiniLM-L6-v2~\cite{wang2020minilm}, bge-small-en-v1.5~\cite{xiao2023cpack} or
+e5-small-v2~\cite{wang2022e5}; BM25 keyword search~\cite{robertson2009bm25}; and hybrids of the
+dense and BM25 rankings by reciprocal rank fusion~\cite{cormack2009rrf}. Five of these (MiniLM,
+BM25 and the three hybrids) were also run with their top 20 chunks reranked by a cross-encoder
+trained on MS~MARCO~\cite{nogueira2019rerank,bajaj2016msmarco}
+(\texttt{cross-encoder/ms-marco-MiniLM-L-6-v2}). Four chunks of 1,500 characters hold three
+times as much text as four chunks of 500, so we compared the set-ups at the same budget of about
+4,000 characters, which is the top 8, 4 or 3 chunks depending on the chunk size. The comparison
+uses the \SweepQuestions{} questions whose evidence is findable at every chunk size.
 
 \subsection{Several papers}
 
-To see whether other papers crowd out the one a question is about, each paper was loaded into
-the app's vector store together with 2, 4 or 9 other development papers drawn at random
-(seed 0), and searched with three rules: the top four chunks; the app's rule for several files
-(top four, then one chunk from each unrepresented file, up to eight); and the top four chunks of
-the question's own paper, as when the user selects it under ``Ask about''.
+To test whether other papers crowd out the one a question is about, we loaded each paper into the
+app's vector store together with 2, 4 or 9 other development papers drawn at random (seed 0). We
+then searched with three rules: the top four chunks; the app's rule for several files, which takes
+the top four and then one chunk from each file not yet represented, up to eight; and the top four
+chunks of the question's own paper, which is what happens when the user selects that paper under
+``Ask about''.
 
 \subsection{Judging answers}
 
-Answers were graded in two ways. The official QASPER evaluator computes token F1 against each
-annotator's answer and keeps the best. It suits short extractive answers and penalises the
-app's full-sentence answers, so we report it but do not rely on it. The main measure is a
-judgement by Qwen3-32B~\cite{yang2025qwen3} (Q4\_K\_M, reasoning enabled, temperature 0), given
-the question, every annotator's answer and the candidate answer, and asked whether the
-candidate gives the substance of at least one reference answer (correct), part of it (partially
-correct) or neither (incorrect); the prompt is in the SI. Language-model judges can be biased in
-known ways~\cite{zheng2023judge}, and in a pilot on nine answers the judge credited empty answers
-with content, so empty answers are graded incorrect by rule. Three of the fixed app's
-judgements came back empty because the judge's reasoning filled its 8,192-token window; they
-were graded again with a 20,480-token window, and both attempts are kept. To check the judge,
-\JudgeCheckN{} fixed-app answers were drawn at random (seed 0) and graded with the judge's rules
-by a second model, Claude (Anthropic), before any of the judge's verdicts on them were read
-(Section~\ref{sec:res-judge}). The same answers were then labelled by the author, blind
-to the judge's verdicts and to Claude's labels, on a page that showed the question, the
-reference answers and the app's answer with the judge's instructions (SI, Section~S6). Both labellers graded against the references without reading the
-papers, as the judge does.
+We graded the answers in two ways. The official QASPER evaluator computes token F1 against each
+annotator's answer and keeps the best score. It suits short extractive answers but penalises the
+app's full-sentence answers, so we report it without relying on it. Our main measure was a
+judgement by Qwen3-32B~\cite{yang2025qwen3} (Q4\_K\_M, reasoning enabled, temperature 0). The
+judge was given the question, every annotator's answer and the app's answer, and asked whether
+the app's answer gives the substance of at least one reference answer (correct), part of it
+(partially correct) or neither (incorrect). The prompt is in the SI. Language-model judges have
+known biases~\cite{zheng2023judge}, and in a pilot on nine answers our judge gave credit to empty
+answers. We therefore graded empty answers as incorrect by rule. Three of the fixed app's
+judgements came back empty because the judge's reasoning filled its 8,192-token window. These
+were graded again with a 20,480-token window, and both attempts are kept.
+
+To check the judge, we drew \JudgeCheckN{} answers of the fixed app at random (seed 0). Claude
+(Anthropic) first graded them with the judge's rules, before any of the judge's verdicts on them
+had been read (Section~\ref{sec:res-judge}). We then labelled the same answers ourselves, without
+seeing the judge's verdicts or Claude's labels, on a page that showed the question, the reference
+answers and the app's answer together with the judge's instructions (SI, Section~S6). Like the
+judge, neither Claude nor we read the papers, and all grading was done against the references.
 
 \subsection{Repeat runs}
 \label{sec:eval-repeats}
 
-The app answers at temperature 0.1, so the same question can get a different answer on another
-run. To measure how much this moves the results, every question was answered twice more for each
-of the four set-ups compared in Section~\ref{sec:results} (the fixed app, the annotators'
-evidence, and the two leading retrieval set-ups), with answer-model seeds 1 and 2, and judged as
-before; the original runs count as seed 0. Retrieval was not repeated: it is deterministic, and
-the saved chunks were reused. Ollama with parallel requests is not bit-for-bit repeatable even at
-a fixed seed (a rerun at seed 0 did not reproduce the original answers), so the seeds stand for
-independent runs rather than a controlled source of randomness. To separate the judge's own
-variation, the seed-0 answers of the fixed app were also judged a second time with judge seed 1.
-For each set-up we report each run's correct rate, the share of questions whose verdict is the
-same in all three runs, and the paired difference between runs of the same set-up, which is the
-noise floor for differences between set-ups.
+Because the app answers at temperature 0.1, the same question can get a different answer in
+another run. To measure how much this changes the results, we answered every question twice more
+for each of the four set-ups compared in Section~\ref{sec:results} (the fixed app, the
+annotators' evidence and the two leading retrieval set-ups). These runs used answer-model seeds 1
+and 2 and were judged as before, and the original runs count as seed 0. Retrieval is
+deterministic, so it was not repeated and the saved chunks were reused. Ollama with parallel
+requests is not exactly repeatable even at a fixed seed (a rerun at seed 0 did not reproduce the
+original answers), so the seeds should be read as independent runs rather than a controlled
+source of randomness. To separate the judge's own variation, we also judged the seed-0 answers of
+the fixed app a second time with judge seed 1. For each set-up we report the correct rate of each
+run, the share of questions with the same verdict in all three runs, and the paired difference
+between runs of the same set-up. This last figure shows how large a difference between set-ups
+has to be before it can be told apart from run-to-run variation.
 
 \subsection{Citation check}
 \label{sec:eval-citations}
 
-The app asks the model to cite the pages it used, and the context labels each chunk with its page
-(``[p.~4]''). Each answer of the fixed app was split into sentences that carry a citation; a
-sentence ending in a colon takes the list that follows it. For every citation we record whether
-the cited page was among the pages of the four chunks the model was given. One cited statement
-per answer whose pages were all in the context was then drawn at random (seed 0), and the judge
-model was asked whether the passages from the cited pages support it (supported, partially
-supported or not supported; prompt in the SI). Fifty of the drawn statements were labelled by
-the author, blind to the judge, on a page that showed the question, the statement and
-the cited passages exactly as the model saw them.
+The app asks the model to cite the pages it used, and in the context each chunk is labelled with
+its page (``[p.~4]''). We split each answer of the fixed app into the sentences that carry a
+citation, where a sentence ending in a colon takes the list that follows it. For every citation,
+we recorded whether the cited page was among the pages of the four chunks the model was given.
+We then drew one cited statement at random (seed 0) from each answer whose cited pages were all
+in the context, and asked the judge model whether the passages from the cited pages support it
+(supported, partially supported or not supported; prompt in the SI). We labelled fifty of these
+statements ourselves, without seeing the judge's verdicts, on a page that showed the question,
+the statement and the cited passages exactly as the model saw them.
 
 \subsection{Changes beyond retrieval settings}
 \label{sec:eval-changes}
 
-Three further changes were each tested against the app's set-up on the same questions, with the
-same model, prompt and judge. \emph{Section-aware chunking} splits the PDF text at section
-headings, found from the lines themselves (numbered, Roman-numeral and the usual unnumbered
-names such as ``Related Work''), so that no chunk spans two sections, and starts each chunk with
-its section title; on the \PapersDownloaded{} development PDFs it found \SectionsCoverage{} of QASPER's
-section names (\SectionsCoverageK{} of \SectionsCoverageN{}, leaving out run-in paragraph headings). It was compared at the app's settings (1,000 characters, top four) and at 500
-characters with the top eight, first on retrieval and then on answers. \emph{Retry on a miss}
-first shows the model the four retrieved chunks and asks whether they hold the answer; if the
-model says no, it writes a search query, the paper is searched again, and the top four chunks of
-the new search replace the first ones, so the prompt length does not change. \emph{Balanced
-context for comparisons} was tested on comparison questions built from QASPER, which has none: a
-question asked of several papers (``What datasets are used?'') gives, for any two of them, a
-comparison question with an annotated answer for each paper. Questions on baselines, datasets,
-evaluation metrics and English-only results gave \ComparePairs{} pairs (30 per topic, drawn with
-seed 0). The app's rule for several files (top four, then the best chunk of a missing file) was
-compared with the top two chunks of each paper, which is no longer. Each comparison answer was
-judged once per paper against that paper's references, and counts as correct only if both
-judgements are.
+We tested three further changes against the app's set-up, on the same questions and with the same
+model, prompt and judge.
+
+\emph{Section-aware chunking} splits the PDF text at section headings so that no chunk spans two
+sections, and starts each chunk with its section title. The headings are found from the lines of
+text themselves, including numbered and Roman-numeral headings and the usual unnumbered names such
+as ``Related Work''. On the \PapersDownloaded{} development PDFs, it found \SectionsCoverage{} of
+QASPER's section names (\SectionsCoverageK{} of \SectionsCoverageN{}, leaving out run-in
+paragraph headings). We compared it with the app's chunking at the app's settings (1,000
+characters, top four) and at 500 characters with the top eight, first on retrieval and then on
+answers.
+
+\emph{Retry on a miss} first shows the model the four retrieved chunks and asks whether they hold
+the answer. If the model says no, it writes a search query, the paper is searched again, and the
+top four chunks of the new search replace the first ones. The prompt length therefore stays the
+same.
+
+\emph{Balanced context for comparisons} needed comparison questions, which QASPER does not have.
+We built them from questions that were asked of several papers, such as ``What datasets are
+used?''. For any two such papers, this gives a comparison question with an annotated answer for
+each paper. Questions on baselines, datasets, evaluation metrics and English-only results gave
+\ComparePairs{} pairs (30 per topic, drawn with seed 0). We compared the app's rule for several
+files (the top four, then the best chunk of a missing file) with taking the top two chunks of each
+paper, which gives a context of the same length. Each comparison answer was judged once for each
+paper against that paper's references, and it counts as correct only if both judgements are
+correct.
 
 \subsection{Statistics}
 
 Rates are given with Wilson 95\% intervals~\cite{wilson1927}. Conditions answered on the same
-questions are compared with exact two-sided McNemar tests~\cite{mcnemar1947} on the discordant
-pairs, reported as questions gained and lost. Within the retrieval sweep, the \SweepComparisons{} comparisons
-with the app's set-up are Holm-corrected~\cite{holm1979}. The sweep
-and the several-papers experiment are exploratory: they were designed after the first runs, to
-explain them.
+questions are compared with exact two-sided McNemar tests~\cite{mcnemar1947} on the questions
+whose outcome differs, which we report as questions gained and lost. Within the retrieval sweep,
+the \SweepComparisons{} comparisons with the app's set-up are Holm-corrected~\cite{holm1979}.
+The sweep and the several-papers experiment are exploratory, as we designed them after the first
+runs to explain what we had seen.

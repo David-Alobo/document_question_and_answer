@@ -1,24 +1,20 @@
 \begin{abstract}
-Retrieval-augmented question answering over PDFs is a common small project, but such apps are
-seldom evaluated end to end. We evaluated CitePage, an open-source app we developed for asking
-questions about research papers, with its own code on the \BaselineQuestions{} questions of the
-QASPER development set (\BaselinePapers{} arXiv papers), using Llama~3.1~8B to answer and
-Qwen3-32B as a judge. As shipped, a misplaced loop sent the first question of each conversation
-without the question or the document, and all \ShippedEmpty{} first answers were empty. After the
-fix, \FixedCorrect{} of answers were judged correct, against \OracleCorrect{} when the model was
-given the annotators' evidence paragraphs; the retrieved chunks held gold evidence for
-\HitFour{} of questions. A human labeller credited \JudgeCheckHumanCorrect{} of
-\JudgeCheckN{} sampled answers where the judge credited \JudgeCheckJudgeCorrect{}, so judged
-rates are upper bounds. At a fixed prompt length, smaller chunks with reranking raised evidence
-retrieval from \SweepBaseBudget{} to \SweepSmallRerankBudget{} but did not detectably change
-correctness. Loading nine unrelated papers alongside the target lowered evidence retrieval from
-\MultidocZeroSingle{} to \MultidocNineMulti{}; restricting the search to one paper restored it.
-Across three runs, \RepeatFixedChanged{} of the app's verdicts changed between correct and not
-correct, while two runs of one set-up differed by at most \RepeatWidestPoints{} points; the gap to
-the evidence paragraphs held in every run, and the retrieval set-ups' gains stayed within that
-range. Of the pages answers cited, \CitePagesInContextPct{} were in the model's context, and a
-person found \CiteLabellerSupported{} of \CiteHandN{} sampled cited statements supported by them,
-but the judge did not find the unsupported ones. Retrieval rates were a poor guide to answer quality, so settings for such
-apps should be chosen on judged, and preferably hand-checked, answers. Code, prompts and
-per-question outputs are released.
+Many people build small apps that answer questions about PDFs with retrieval-augmented
+generation, but few test them properly. We tested our own app, CitePage, by running its code on
+the \BaselineQuestions{} questions of the QASPER development set, with Llama~3.1~8B answering
+and Qwen3-32B grading the answers. The first thing we found was a bug. A loop in the wrong place
+meant that the first question of every conversation reached the model without the question or
+the document, and all \ShippedEmpty{} of those answers came back empty. Once the bug was fixed,
+the judge marked \FixedCorrectRate{} of the answers correct. When the model was given the
+annotators' evidence paragraphs instead of the retrieved text, this rose to \OracleCorrectRate{},
+so retrieval costs the app about fifteen points. Smaller chunks, other embedding models and a
+reranker all put the evidence in front of the model more often, but none of them measurably
+improved the answers. Loading other papers next to the one being asked about pushed its evidence
+out of the context; letting the user choose the paper fixed this. When we graded a sample of
+answers ourselves, the judge turned out to be generous, so its rates are upper bounds. Asking
+every question three times changed about a quarter of the individual verdicts but moved the
+overall rates by no more than \RepeatWidestPoints{} points. Almost all cited pages were pages the
+model had actually been given. For anyone building such an app, our advice is to judge changes
+by the answers, checked by hand where possible, and not by retrieval scores. The code, prompts
+and every output are released.
 \end{abstract}

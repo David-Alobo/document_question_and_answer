@@ -1,72 +1,82 @@
 \section{Discussion}
 \label{sec:discussion}
 
-\paragraph{A bug that a demo does not show.} The misplaced loop produced no error and a valid
-request; the only symptom was a poor or empty first answer, easily put down to the model. Unit
-tests of the message builder would have caught it, and so would a benchmark run, which turns
-``the first answer is sometimes odd'' into a rate.
+\paragraph{The bug in the shipped app.} The misplaced loop did not raise an error, and the
+request it sent was valid. The only sign of it was a poor or empty first answer, which is easy to
+blame on the model. A unit test of the message builder would have caught it, and so would a
+benchmark run like ours, which turned ``the first answer is sometimes odd'' into a measured rate.
 
-\paragraph{Where answers are lost.} Given the annotators' evidence, the same model and prompt
-were judged correct for \OracleCorrect{} of questions, against \FixedCorrect{} with the app's
-retrieval, so a gap of about fifteen points lies between what the app retrieves and what it
-could use. Retrieval settings that put evidence in the context more often closed little of it:
-the best set-up at equal prompt length raised evidence retrieval by about sixteen points in the
-sweep, yet neither leading set-up changed correctness detectably, and reranking, which added
-evidence over smaller chunks alone, changed nothing. Section-aware chunking and a retry when the
-model judged its context insufficient did not change answers either; the model's own check
-accepted \RetryMissedKeptRate{} of contexts that lacked the evidence. We see three possible reasons, which these
-experiments do not separate. First, the oracle context holds only the evidence, while
-retrieved context holds evidence among other passages; the model may need the evidence alone,
-or whole, more than it needs it present. Second, a 500-character chunk can match a long evidence
-paragraph while holding only part of it, so the retrieval gain may be partly an artefact of the
-matching rule, as noted in Section~\ref{sec:res-sweep}. Third, correctness depends on more than
-evidence: \CorrectWhenMiss{} of the app's answers were judged correct without matched evidence
-in the context, through nearby text or by saying correctly that the paper does not answer.
-Retrieval rates are therefore a poor stand-in for answers here, and settings should be chosen
-on answers.
+\paragraph{Where answers are lost.} When the model was given the annotators' evidence, it was
+judged correct for \OracleCorrect{} of the questions, compared with \FixedCorrect{} with the app's
+retrieval. There is therefore a gap of about fifteen points between what the app retrieves and
+what the model could do with the right evidence. However, the retrieval settings that put
+evidence in the context more often closed very little of this gap. In the sweep, the best set-up
+at the same prompt length retrieved evidence for about sixteen more questions in a hundred, but
+neither of the leading set-ups changed the answers measurably. Reranking added evidence on top of
+the smaller chunks, and still the answers did not change. Section-aware chunking and retrying
+when the model judged its context insufficient did not change the answers either, partly because
+the model accepted \RetryMissedKeptRate{} of the contexts that lacked the evidence.
 
-\paragraph{Chunk size is a prompt-length choice.} Comparisons of chunk size at a fixed number
-of chunks change two things at once. Held at the same prompt length, smaller chunks retrieved
-evidence more often in this app, and a cross-encoder reranker added more, but on answers the
-gain was at most a few points and not distinguishable from none. Long contexts are not free
-for the model either~\cite{liu2024lost}, which is a reason to keep the budget fixed rather than
-raise it.
+We can think of three reasons for this, and our experiments cannot tell them apart. First, the
+oracle context contains only the evidence, while a retrieved context contains the evidence
+among other passages, so the model may need the evidence on its own, or in full, and not just
+somewhere in the prompt. Second, a 500-character chunk can match a long evidence paragraph while
+holding only part of it, so some of the retrieval gain may come from our matching rule
+(Section~\ref{sec:res-sweep}). Third, a correct answer does not always need the matched
+evidence. \CorrectWhenMiss{} of the app's answers were judged correct without it, either from
+nearby text or because the answer said, rightly, that the paper does not answer the question.
+For these reasons, retrieval rates were a poor guide to answer quality in our app, and we
+recommend choosing retrieval settings on judged answers.
 
-\paragraph{Several documents.} Searching all loaded papers together is what a comparison
-question needs and what a question about one paper does not. A user-facing control that scopes
-the search is a simple remedy; routing a question to the paper it names would remove the need
-for it, and is untested here. The app's rule of one chunk per file gives comparisons thin
-evidence for all but the best-matching paper; we saw a comparison answer mix up the two papers'
-test sets for this reason (SI, Section~S7). Two chunks per paper made comparison answers
-correct for both papers in \CompareBalancedBothCorrect{} of pairs against \CompareAppBothCorrect{}, a
-difference that may be chance ($p =$ \CompareP{}); the app now offers this as a compare mode.
+\paragraph{Chunk size and prompt length.} When chunk sizes are compared with the same number of
+chunks, two things change at once, the chunk size and the length of the prompt. At the same
+prompt length, smaller chunks retrieved evidence more often in our app, and a cross-encoder
+reranker added more. On answers, though, the gain was at most a few points and could not be told
+apart from no gain. Long contexts also have a cost for the model~\cite{liu2024lost}, which is
+why we kept the prompt length fixed rather than increase it.
 
-\paragraph{Reliability.} Verdicts on single questions changed between runs far more than overall
-rates did: \RepeatFixedChanged{} of the app's verdicts changed across three runs while its correct
-rate stayed between \RepeatFixedLow{} and \RepeatFixedHigh{}. A single run therefore supports
-claims about rates, not about individual answers, and a difference between set-ups of a few points
-needs more than one run even when a paired test gives a small $p$-value: two runs of one set-up
-differed by \RepeatWidestPoints{} points with $p =$ \RepeatWidestP{}. Most of the variation came
-from the answers, not the judge. Citations mostly pointed to pages the model saw, and a person
-found most cited statements supported by those pages, so an answer can be checked against its
-cited pages; the app now shows those passages under each answer. The check needs a person: the
-judge called supported every statement the labeller marked unsupported.
+\paragraph{Several papers.} A comparison question needs the search to cover all loaded papers,
+but a question about one paper does not. Letting the user choose which paper to search is a
+simple fix, and it is what the app now does. Sending a question automatically to the paper it
+names would make this choice unnecessary, but we have not tested it. The app's rule of one chunk
+per file gives a comparison question little evidence from every paper except the best-matching
+one, and we saw one comparison answer mix up the test sets of the two papers for this reason
+(SI, Section~S7). With two chunks per paper, comparison answers were correct for both papers in
+\CompareBalancedBothCorrect{} of pairs, compared with \CompareAppBothCorrect{}. This difference
+may be due to chance ($p =$ \CompareP{}), but the change costs nothing in prompt length, so the
+app now offers it as a compare mode.
 
-\paragraph{How far to trust the judge.} The judge was more generous than a person grading
-against the same references, mostly towards answers that hedge or give part of what was asked.
-For a user of the app, the human-graded rate on the sample (\JudgeCheckHumanCorrect{} or
-\JudgeCheckHumanRuleCorrect{} of \JudgeCheckN{}) means an answer is a pointer to the cited pages
-rather than a result. For the paper, the absolute
-rates are upper bounds. The comparisons between set-ups are paired and graded by the same judge,
-so they are affected less if its leniency is similar across set-ups; the hand labels cover only
-the app's set-up and do not test that. A second human labeller on the same answers would show
-how much of the gap is the judge and how much the labeller.
+\paragraph{How reliable the results are.} Individual verdicts changed between runs much more
+than the overall rates did. \RepeatFixedChanged{} of the app's verdicts changed across the three
+runs, while its correct rate stayed between \RepeatFixedLow{} and \RepeatFixedHigh{}. A single
+run can therefore support a claim about a rate, but not about any one answer. It also means that
+a difference of a few points between set-ups needs more than one run, even when a paired test
+gives a small $p$-value, as two runs of the same set-up differed by \RepeatWidestPoints{} points
+with $p =$ \RepeatWidestP{}. Most of this variation came from the answering model, not the judge.
 
-\paragraph{Scope.} Every result here comes from one benchmark of NLP papers, PDFs that may
-differ from the versions the questions were written on, one answering model in a 4-bit
-quantization, questions asked without conversation, and a judge model checked against one human labeller on
-\JudgeCheckN{} answers. The evidence matching is approximate, and its bias towards small chunks is the reason
-the leading retrieval set-ups were tested on answers. The retrieval sweep and the
-several-papers experiment were exploratory. Neither experiment says how the app compares with
-systems such as PaperQA2~\cite{skarlinski2024paperqa2}, which spend many model calls per
-question; running them on the same questions is future work.
+For the citations, almost all cited pages were pages the model had been given, and we found most
+of the cited statements supported by those pages. This means that a user can check an answer
+against the pages it cites, and the app now shows those passages under each answer. The check
+itself has to be done by a person, because the judge marked as supported every statement that
+we marked unsupported.
+
+\paragraph{How far to trust the judge.} The judge was more generous than we were when grading
+against the same references, mostly for answers that hedged or gave only part of what was asked.
+For someone using the app, our own rate on the sample (\JudgeCheckHumanCorrect{}, or
+\JudgeCheckHumanRuleCorrect{} with the rule check, of \JudgeCheckN{}) means that an answer should
+be treated as a pointer to the cited pages and not as a final result. For this paper, it means
+that the absolute rates are upper bounds. The comparisons between set-ups are paired and graded by
+the same judge, so they are less affected if the judge is equally lenient across set-ups.
+However, our labels cover only the app's set-up and do not test this. A second labeller on the
+same answers would show how much of the gap comes from the judge and how much from our own
+grading.
+
+\paragraph{Limitations.} All our results come from one benchmark of NLP papers, with PDFs that
+may differ from the versions the questions were written on. We used one answering model in a
+4-bit quantization, asked each question without a conversation, and checked the judge against
+our own labels on \JudgeCheckN{} answers. The evidence matching is approximate, and its bias
+towards small chunks is the reason we tested the leading retrieval set-ups on answers. The
+retrieval sweep and the several-papers experiment were exploratory. Finally, our experiments do
+not show how the app compares with systems such as PaperQA2~\cite{skarlinski2024paperqa2}, which
+use many model calls per question. Running such systems on the same questions is left for
+future work.
