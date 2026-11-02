@@ -14,7 +14,7 @@
   (`console.log`). The first launch was stopped part-way; a second launch judged the remaining
   781. `support_judgments.jsonl` has 925 records for 915 statements: 10 were judged in both
   launches, and the last record per statement counts.
-- Hand labels: 50 of the drawn statements (`to_label_by_hand.csv`), labelled by one of us, blind
+- Hand labels: 50 of the drawn statements (`to_label_by_hand.csv`), labelled by us, blind
   to the judge, on `labelling_page.html`, which shows the question, the statement and the passages
   as the model saw them.
 - `summarize --labels labels_human.csv` writes `summary.json`.
