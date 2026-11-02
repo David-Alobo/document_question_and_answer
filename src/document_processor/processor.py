@@ -12,9 +12,17 @@ EXAMPLE_QUESTIONS = [
 COMPARE_QUESTION = ("⚖️", "Compare these documents: how do their aims, methods and findings differ?")
 
 ALL_DOCUMENTS = "All documents"
+COMPARE = "Compare all documents"
 MAX_DOCUMENTS = 10
 TOP_K = 4            # chunks retrieved by similarity alone
 MAX_CONTEXT = 8      # with several files: up to this many chunks, at least one per file
+COMPARE_EACH = 2     # when comparing: this many chunks from every file
+
+CHECK_NOTE = (
+    "Answers can be wrong: on a hand-checked sample of questions about research papers, fewer "
+    "than half of Llama 3.1 8B's answers were fully correct. Check each point against the cited "
+    "passage before relying on it."
+)
 
 FOOTNOTE = """
 ---
@@ -97,15 +105,33 @@ class DocumentProcessor:
         return [(cache[k]["name"], cache[k]["error"]) for k in keys if "error" in cache[k]]
 
     @staticmethod
-    def _show_sources(sources):
+    def _show_sources(answer, sources, latest=False):
         """
-        Show the passages an answer was based on, with their files and pages.
+        Show the passages an answer cites, then every passage it was based on.
+
+        The cited passages are shown in full, so each point of the answer can be checked
+        against the text it claims to come from. Pages the answer cites but no passage
+        came from are flagged: the model never saw them.
 
         Args:
+            answer (str): The model's answer.
             sources (list): LangChain Document objects retrieved for the question.
+            latest (bool): Open the cited passages, as for the newest answer.
         """
         several = len({doc.metadata.get("source") for doc in sources}) > 1
-        with st.expander(f"📚 Sources ({len(sources)} passages)"):
+        cited, unmatched = Utils.match_citations(answer, sources)
+        if cited:
+            with st.expander(f"🔎 Check the cited passages ({len(cited)})", expanded=latest):
+                for doc in cited:
+                    label = Utils.source_label(doc, several).replace("p. ", "page ")
+                    st.markdown(f"**{label[0].upper()}{label[1:]}**")
+                    st.text(doc.page_content)
+        else:
+            st.caption("This answer cites no pages; check it against the passages below.")
+        if unmatched:
+            st.warning(f"⚠️ Cited but not among the passages the model read: {', '.join(unmatched)}. "
+                       "Treat those points with caution.")
+        with st.expander(f"📚 All passages used ({len(sources)})"):
             for doc in sources:
                 text = doc.page_content
                 label = Utils.source_label(doc, several).replace("p. ", "page ")
@@ -119,10 +145,13 @@ class DocumentProcessor:
         Args:
             question (str): The user's question.
             groq_client: Initialized Groq API client
-            scope (str): A file name to search only that file, or None for all files.
+            scope (str): A file name to search only that file, COMPARE to take the same
+                number of passages from every file, or None for all files.
         """
         store = st.session_state.vector_store
-        if scope is not None:
+        if scope == COMPARE:
+            sources = store.similarity_search(question, each=COMPARE_EACH)
+        elif scope is not None:
             sources = store.similarity_search(question, k=TOP_K, sources=[scope])
         else:
             several = len(store.sources) > 1
@@ -202,11 +231,16 @@ class DocumentProcessor:
         if len(counts) > 1:
             choice = st.selectbox(
                 "Ask about:",
-                [ALL_DOCUMENTS, *counts],
+                [ALL_DOCUMENTS, COMPARE, *counts],
                 key="scope",
-                help="Pick one file when your question is about it; other files' passages can crowd it out.",
+                help=(
+                    "Pick one file when your question is about it: other files' passages can crowd it out. "
+                    f"'{COMPARE}' gives every file an equal share of the passages."
+                ),
             )
             scope = None if choice == ALL_DOCUMENTS else choice
+            if scope is None:
+                st.caption("💡 Asking about one paper? Choose it above, so the search finds its passages.")
 
         # Example questions to help users get started
         examples = EXAMPLE_QUESTIONS + ([COMPARE_QUESTION] if len(counts) > 1 else [])
@@ -214,6 +248,8 @@ class DocumentProcessor:
         for i, (icon, text) in enumerate(examples):
             if cols[i % 2].button(f"{icon} {text}", key=f"example_{i}"):
                 st.session_state.pending_question = text
+                # The comparison example is searched as a comparison, whatever the scope
+                st.session_state.pending_scope = COMPARE if (icon, text) == COMPARE_QUESTION else scope
 
         if st.session_state.conversation_history and st.button("🗑️ Clear Conversation History"):
             st.session_state.conversation_history = []
@@ -222,16 +258,22 @@ class DocumentProcessor:
 
         question = st.chat_input("Ask anything about the documents..." if len(counts) > 1 else
                                  "Ask anything about the document...")
-        question = question or st.session_state.pop("pending_question", None)
+        pending_scope = st.session_state.pop("pending_scope", scope)
+        if not question:
+            question = st.session_state.pop("pending_question", None)
+            scope = pending_scope
         if question:
             self._answer(question, groq_client, scope)
 
         exchanges = zip(st.session_state.conversation_history, st.session_state.conversation_sources, strict=True)
-        for (q, a), sources in exchanges:
+        last = len(st.session_state.conversation_history) - 1
+        for n, ((q, a), sources) in enumerate(exchanges):
             with st.chat_message("user"):
                 st.write(q)
             with st.chat_message("assistant"):
                 st.write(a)
-                self._show_sources(sources)
+                self._show_sources(a, sources, latest=n == last)
+        if st.session_state.conversation_history:
+            st.caption(CHECK_NOTE)
 
         st.markdown(FOOTNOTE, unsafe_allow_html=True)
