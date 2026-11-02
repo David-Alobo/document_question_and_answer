@@ -126,6 +126,8 @@ class DocumentProcessor:
                     label = Utils.source_label(doc, several).replace("p. ", "page ")
                     st.markdown(f"**{label[0].upper()}{label[1:]}**")
                     st.text(doc.page_content)
+        elif Utils.cited_files(answer):
+            st.caption("This answer names files but no pages; check it against the passages below.")
         else:
             st.caption("This answer cites no pages; check it against the passages below.")
         if unmatched:

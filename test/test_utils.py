@@ -236,3 +236,18 @@ def test_match_citations_pairs_pages_with_passages():
     assert [d.page_content for d in cited] == ["beta", "gamma", "alpha"]
     assert unmatched == ["p. 12"]
     assert Utils.match_citations("No citations.", sources) == ([], [])
+
+
+def test_cited_pages_reads_page_references_in_prose():
+    """
+    The model often cites in the text itself; those references count, in order of position.
+    """
+    answer = "Table III on page 5 lists them [p. 2]; see also pages 7 and 9, and 1912.01214.pdf, page 4."
+    assert Utils.cited_pages(answer) == [(None, 5), (None, 2), (None, 7), (None, 9), ("1912.01214.pdf", 4)]
+
+
+def test_cited_files_finds_files_named_without_pages():
+    """
+    "[a.pdf]" names a file but no page.
+    """
+    assert Utils.cited_files("In [a.pdf] and [b.pdf], unlike [a.pdf, p. 3] or [a.pdf].") == ["a.pdf", "b.pdf"]
