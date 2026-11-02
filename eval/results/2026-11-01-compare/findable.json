@@ -1,0 +1,14 @@
+{
+ "papers": 119,
+ "papers_findable": 105,
+ "pairs": 120,
+ "pairs_findable_in_both": 83,
+ "app_paper_slots_with_evidence": {
+  "k": 47,
+  "n": 240
+ },
+ "balanced_paper_slots_with_evidence": {
+  "k": 43,
+  "n": 240
+ }
+}

@@ -123,8 +123,8 @@ Three further changes were each tested against the app's set-up on the same ques
 same model, prompt and judge. \emph{Section-aware chunking} splits the PDF text at section
 headings, found from the lines themselves (numbered, Roman-numeral and the usual unnumbered
 names such as ``Related Work''), so that no chunk spans two sections, and starts each chunk with
-its section title; on the \PapersDownloaded{} development PDFs it found \result{78\%} of QASPER's
-section names. It was compared at the app's settings (1,000 characters, top four) and at 500
+its section title; on the \PapersDownloaded{} development PDFs it found \SectionsCoverage{} of QASPER's
+section names (\SectionsCoverageK{} of \SectionsCoverageN{}, leaving out run-in paragraph headings). It was compared at the app's settings (1,000 characters, top four) and at 500
 characters with the top eight, first on retrieval and then on answers. \emph{Retry on a miss}
 first shows the model the four retrieved chunks and asks whether they hold the answer; if the
 model says no, it writes a search query, the paper is searched again, and the top four chunks of
@@ -132,7 +132,7 @@ the new search replace the first ones, so the prompt length does not change. \em
 context for comparisons} was tested on comparison questions built from QASPER, which has none: a
 question asked of several papers (``What datasets are used?'') gives, for any two of them, a
 comparison question with an annotated answer for each paper. Questions on baselines, datasets,
-evaluation metrics and English-only results gave \result{120} pairs (30 per topic, drawn with
+evaluation metrics and English-only results gave \ComparePairs{} pairs (30 per topic, drawn with
 seed 0). The app's rule for several files (top four, then the best chunk of a missing file) was
 compared with the top two chunks of each paper, which is no longer. Each comparison answer was
 judged once per paper against that paper's references, and counts as correct only if both

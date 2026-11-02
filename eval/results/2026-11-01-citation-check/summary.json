@@ -1,0 +1,254 @@
+{
+  "answers": 1002,
+  "answers_citing": {
+    "k": 935,
+    "n": 1002,
+    "pct": 93.3,
+    "ci95": [
+      91.6,
+      94.7
+    ]
+  },
+  "citations_in_context": {
+    "k": 1528,
+    "n": 1588,
+    "pct": 96.2,
+    "ci95": [
+      95.2,
+      97.1
+    ]
+  },
+  "judged_statements": 915,
+  "support": {
+    "supported": {
+      "k": 717,
+      "n": 915,
+      "pct": 78.4,
+      "ci95": [
+        75.6,
+        80.9
+      ]
+    },
+    "partially_supported": {
+      "k": 137,
+      "n": 915,
+      "pct": 15.0,
+      "ci95": [
+        12.8,
+        17.4
+      ]
+    },
+    "not_supported": {
+      "k": 61,
+      "n": 915,
+      "pct": 6.7,
+      "ci95": [
+        5.2,
+        8.5
+      ]
+    }
+  },
+  "support_by_answer_verdict": {
+    "correct": {
+      "supported": {
+        "k": 399,
+        "n": 490,
+        "pct": 81.4,
+        "ci95": [
+          77.7,
+          84.6
+        ]
+      },
+      "partially_supported": {
+        "k": 58,
+        "n": 490,
+        "pct": 11.8,
+        "ci95": [
+          9.3,
+          15.0
+        ]
+      },
+      "not_supported": {
+        "k": 33,
+        "n": 490,
+        "pct": 6.7,
+        "ci95": [
+          4.8,
+          9.3
+        ]
+      }
+    },
+    "partially_correct": {
+      "supported": {
+        "k": 129,
+        "n": 173,
+        "pct": 74.6,
+        "ci95": [
+          67.6,
+          80.5
+        ]
+      },
+      "partially_supported": {
+        "k": 34,
+        "n": 173,
+        "pct": 19.7,
+        "ci95": [
+          14.4,
+          26.2
+        ]
+      },
+      "not_supported": {
+        "k": 10,
+        "n": 173,
+        "pct": 5.8,
+        "ci95": [
+          3.2,
+          10.3
+        ]
+      }
+    },
+    "incorrect": {
+      "supported": {
+        "k": 189,
+        "n": 252,
+        "pct": 75.0,
+        "ci95": [
+          69.3,
+          79.9
+        ]
+      },
+      "partially_supported": {
+        "k": 45,
+        "n": 252,
+        "pct": 17.9,
+        "ci95": [
+          13.6,
+          23.1
+        ]
+      },
+      "not_supported": {
+        "k": 18,
+        "n": 252,
+        "pct": 7.1,
+        "ci95": [
+          4.6,
+          11.0
+        ]
+      }
+    }
+  },
+  "hand_labels": {
+    "file": "labels_human.csv",
+    "n": 50,
+    "exact_agreement": 39,
+    "kappa": 0.077,
+    "supported_vs_not_agreement": 39,
+    "kappa_supported_vs_not": 0.035,
+    "labeller": {
+      "supported": 42,
+      "partially_supported": 2,
+      "not_supported": 6
+    },
+    "judge": {
+      "supported": 45,
+      "partially_supported": 4,
+      "not_supported": 1
+    },
+    "confusion_rows_labeller_cols_judge": {
+      "supported": {
+        "supported": 38,
+        "partially_supported": 3,
+        "not_supported": 1
+      },
+      "partially_supported": {
+        "supported": 1,
+        "partially_supported": 1,
+        "not_supported": 0
+      },
+      "not_supported": {
+        "supported": 6,
+        "partially_supported": 0,
+        "not_supported": 0
+      }
+    },
+    "disagreements": [
+      {
+        "question_id": "6bfba3ddca5101ed15256fca75fcdc95a53cece7",
+        "labeller": "partially_supported",
+        "judge": "supported",
+        "labeller_note": "",
+        "judge_explanation": "The passages mention the existence of an inventory of 18 propagandist techniques but do not explicitly list them in the provided snippets, aligning with the statement."
+      },
+      {
+        "question_id": "932b39fd6c47c6a880621a62e6a978491d881d60",
+        "labeller": "supported",
+        "judge": "partially_supported",
+        "labeller_note": "",
+        "judge_explanation": "The passages mention the max-margin criterion but do not explicitly list the probabilistic methods from Bordes et al., 2013 and Socher et al., 2013 as baselines for comparison."
+      },
+      {
+        "question_id": "ee2ad0ab64579cffb60853db6a8c0f971d7cf0ff",
+        "labeller": "supported",
+        "judge": "not_supported",
+        "labeller_note": "",
+        "judge_explanation": "The passages mention that the DeepMine database includes phone-level transcription but do not specify who performed the transcription."
+      },
+      {
+        "question_id": "277a7e916e65dfefd44d2d05774f95257ac946ae",
+        "labeller": "supported",
+        "judge": "partially_supported",
+        "labeller_note": "",
+        "judge_explanation": "The passage mentions BiLSTM-CRF, MTL, and BioBERT as methods compared but does not explicitly state that these were introduced as baselines by the paper."
+      },
+      {
+        "question_id": "d915b401bb96c9f104a0353bef9254672e6f5a47",
+        "labeller": "not_supported",
+        "judge": "supported",
+        "labeller_note": "",
+        "judge_explanation": "The first cited passage from p. 12 explicitly states that constraining the model on the data structure to prevent inaccurate or contradictory descriptions is a future improvement, directly matching the statement."
+      },
+      {
+        "question_id": "1cb100182508cf55b3509283c0e2bbcd527d625e",
+        "labeller": "not_supported",
+        "judge": "supported",
+        "labeller_note": "",
+        "judge_explanation": "The cited passage explicitly states that the raw corpus was compiled semi-automatically, directly supporting the statement."
+      },
+      {
+        "question_id": "9bb7ae50bff91571a945c1af025ed2e67714a788",
+        "labeller": "not_supported",
+        "judge": "supported",
+        "labeller_note": "",
+        "judge_explanation": "The passage explicitly identifies Chandrasekaran et al. (2015) as the chosen baseline over other prior works, supporting its status as the previous state-of-the-art model for the task."
+      },
+      {
+        "question_id": "cb196725edc9cdb2c54b72364f3bbf7c76471490",
+        "labeller": "supported",
+        "judge": "partially_supported",
+        "labeller_note": "",
+        "judge_explanation": "The passages confirm the inclusion of Freebase and WordNet datasets but do not explicitly state whether these datasets include non-English data, making the claim about non-English handling an inference beyond the provided text."
+      },
+      {
+        "question_id": "e79a5b6b6680bd2f63e9f4adbaae1d7795d81e38",
+        "labeller": "not_supported",
+        "judge": "supported",
+        "labeller_note": "",
+        "judge_explanation": "The passages explicitly state the relative improvements for Dutch (37.13%), Turkish (30.53%), Spanish (15.82%), and Russian (7.55%), confirming Dutch had the highest performance among non-English languages."
+      },
+      {
+        "question_id": "d2a0142150cc3788475572f82458ef88087bd7ac",
+        "labeller": "not_supported",
+        "judge": "supported",
+        "labeller_note": "",
+        "judge_explanation": "The passages confirm the existence of an ensemble of three discriminative models but do not explicitly name them, aligning with the statement's claim."
+      },
+      {
+        "question_id": "1dc2da5078a7e5ea82ccd1c90d81999a922bc9bf",
+        "labeller": "not_supported",
+        "judge": "supported",
+        "labeller_note": "",
+        "judge_explanation": "The cited passages mention a report 'in preparation' but do not provide any information about experiments conducted by the authors, directly supporting the statement."
+      }
+    ]
+  }
+}

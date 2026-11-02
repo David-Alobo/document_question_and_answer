@@ -12,6 +12,15 @@ The test split is reserved for the final comparison.
   second human labeller on the same 50.
 - Done: retrieval candidates on answers (500-character chunks, top 8, with and without
   reranking). Neither beat the app's settings after correction, so the defaults are unchanged.
+- Done: B and C (2026-11-02). Repeat runs: a quarter of verdicts change between runs, two runs
+  of one set-up differ by up to 3.5 points, the oracle gap holds in every run and the candidates'
+  gains stay within that range. Citations: 96.2% of cited pages were in context; the judge did
+  not find the statements a person marked unsupported. Section chunking and retry on a miss did
+  not change answers; two chunks per paper on comparisons (28.7% against 21.2%, p = 0.16) is now
+  the app's compare mode. Results in `eval/results/2026-11-01-repeats`, `-citation-check`,
+  `-compare`, `-qasper-dev-retry` and `-qasper-dev-sections`.
+- Next: D (chemistry questions, then the test split); a bigger answering model (Llama 3.3 70B)
+  after the paper.
 
 ## The paper
 

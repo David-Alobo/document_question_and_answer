@@ -1,0 +1,337 @@
+== retry generate 2026-11-01T23:15:50+00:00
+/mnt/STORAGE3/alobo/docqa-eval/rep/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py:1794: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+1912.01214 4 questions, 0 retried
+1810.08699 3 questions, 2 retried
+1609.00425 2 questions, 0 retried
+1801.05147 2 questions, 0 retried
+1811.00383 3 questions, 1 retried
+1909.09067 2 questions, 0 retried
+1704.06194 4 questions, 0 retried
+1909.00512 2 questions, 2 retried
+2003.03106 4 questions, 0 retried
+1708.01464 4 questions, 0 retried
+2002.03407 5 questions, 1 retried
+1909.11687 2 questions, 0 retried
+1605.06083 4 questions, 0 retried
+1804.05918 2 questions, 0 retried
+1809.04267 1 questions, 0 retried
+1901.05287 1 questions, 0 retried
+1612.06685 3 questions, 0 retried
+1912.04961 3 questions, 1 retried
+1910.10781 2 questions, 0 retried
+1603.09631 2 questions, 0 retried
+1911.06964 4 questions, 1 retried
+2001.02284 3 questions, 1 retried
+2002.01664 3 questions, 0 retried
+1808.09111 3 questions, 0 retried
+1906.08593 3 questions, 1 retried
+1809.00540 3 questions, 1 retried
+2004.03354 2 questions, 0 retried
+1611.04798 4 questions, 2 retried
+1912.13337 5 questions, 0 retried
+1809.01541 7 questions, 0 retried
+1809.09194 3 questions, 0 retried
+1604.05372 1 questions, 0 retried
+2002.08795 3 questions, 1 retried
+1802.06024 6 questions, 1 retried
+1809.00530 4 questions, 0 retried
+1710.07960 2 questions, 1 retried
+1912.03804 5 questions, 0 retried
+1912.08960 4 questions, 0 retried
+2002.11910 3 questions, 0 retried
+1909.09587 4 questions, 1 retried
+1802.07862 5 questions, 1 retried
+2004.01853 2 questions, 0 retried
+1710.03348 3 questions, 0 retried
+1612.03226 4 questions, 3 retried
+1809.02286 1 questions, 0 retried
+1809.01202 2 questions, 1 retried
+1909.02027 4 questions, 0 retried
+1911.02855 4 questions, 1 retried
+1906.01081 3 questions, 0 retried
+1812.10479 1 questions, 0 retried
+1611.01576 3 questions, 0 retried
+1904.09535 3 questions, 1 retried
+1911.03059 2 questions, 0 retried
+1706.08198 2 questions, 0 retried
+1909.08089 2 questions, 0 retried
+1910.09982 3 questions, 0 retried
+1609.00559 3 questions, 0 retried
+1604.00727 2 questions, 1 retried
+1612.02482 2 questions, 1 retried
+1608.01084 1 questions, 0 retried
+1904.10503 3 questions, 2 retried
+1912.01772 2 questions, 0 retried
+1603.01987 1 questions, 1 retried
+1908.06941 4 questions, 0 retried
+1702.03856 3 questions, 0 retried
+1904.01548 2 questions, 0 retried
+1606.03676 2 questions, 0 retried
+1802.00396 3 questions, 0 retried
+1909.04002 1 questions, 0 retried
+1911.03343 1 questions, 0 retried
+1712.00991 7 questions, 0 retried
+1805.08241 1 questions, 0 retried
+1907.04433 1 questions, 1 retried
+2003.04642 4 questions, 0 retried
+2001.09215 2 questions, 0 retried
+1909.07575 2 questions, 0 retried
+1701.04056 1 questions, 0 retried
+1904.07904 4 questions, 1 retried
+2003.11645 4 questions, 0 retried
+1909.02304 2 questions, 0 retried
+1604.03114 2 questions, 0 retried
+1608.06757 2 questions, 0 retried
+2001.03131 3 questions, 1 retried
+1606.02891 1 questions, 0 retried
+1803.09123 2 questions, 0 retried
+1910.01863 1 questions, 0 retried
+1701.08229 4 questions, 1 retried
+1912.06262 2 questions, 1 retried
+1709.07814 3 questions, 0 retried
+1806.00738 4 questions, 1 retried
+1811.00147 2 questions, 1 retried
+1806.04330 1 questions, 1 retried
+1610.09225 3 questions, 1 retried
+2003.08380 1 questions, 0 retried
+1811.05711 1 questions, 0 retried
+1805.04508 2 questions, 0 retried
+1904.03288 2 questions, 0 retried
+1909.13714 2 questions, 1 retried
+1910.05603 4 questions, 1 retried
+1909.03405 3 questions, 1 retried
+1801.07887 2 questions, 1 retried
+1907.03060 1 questions, 0 retried
+2002.04095 1 questions, 0 retried
+1710.04203 1 questions, 0 retried
+1804.00720 1 questions, 0 retried
+1911.10049 2 questions, 0 retried
+1812.06864 1 questions, 0 retried
+1911.01371 2 questions, 0 retried
+1811.12254 1 questions, 0 retried
+1909.09551 1 questions, 0 retried
+1701.02962 1 questions, 0 retried
+1806.05504 1 questions, 0 retried
+1908.05828 12 questions, 2 retried
+1909.13104 8 questions, 0 retried
+2002.02070 7 questions, 1 retried
+1611.03599 6 questions, 1 retried
+1908.10084 6 questions, 1 retried
+1707.06806 6 questions, 1 retried
+1806.04511 6 questions, 1 retried
+1904.04358 6 questions, 4 retried
+1912.00667 6 questions, 1 retried
+1912.08904 6 questions, 1 retried
+1703.10344 6 questions, 0 retried
+2003.13032 6 questions, 0 retried
+1910.06592 11 questions, 1 retried
+1706.01678 5 questions, 0 retried
+1902.09666 10 questions, 2 retried
+1604.00400 5 questions, 1 retried
+1905.12801 5 questions, 0 retried
+1810.12196 5 questions, 1 retried
+1707.05236 5 questions, 1 retried
+1810.04428 5 questions, 1 retried
+2004.02192 5 questions, 1 retried
+1909.06200 5 questions, 0 retried
+1706.06894 5 questions, 0 retried
+1908.11047 5 questions, 2 retried
+1908.09246 5 questions, 0 retried
+1612.08205 5 questions, 1 retried
+1907.09369 5 questions, 0 retried
+1911.07555 9 questions, 3 retried
+1503.00841 4 questions, 0 retried
+1804.11346 4 questions, 2 retried
+1611.08661 4 questions, 1 retried
+1910.07601 4 questions, 0 retried
+1909.00175 4 questions, 0 retried
+1910.06036 4 questions, 0 retried
+2002.01984 4 questions, 0 retried
+1909.00326 4 questions, 0 retried
+1910.14599 4 questions, 2 retried
+1906.00790 4 questions, 0 retried
+1903.03530 4 questions, 0 retried
+1712.05608 4 questions, 1 retried
+1809.03449 4 questions, 1 retried
+1806.05513 4 questions, 2 retried
+1903.09722 4 questions, 1 retried
+1806.11432 4 questions, 2 retried
+1910.14537 4 questions, 0 retried
+1808.10245 4 questions, 1 retried
+1910.12574 8 questions, 1 retried
+1702.03342 4 questions, 2 retried
+1805.03710 4 questions, 1 retried
+1807.07279 4 questions, 0 retried
+1706.09673 4 questions, 2 retried
+1906.07662 4 questions, 1 retried
+2002.12612 4 questions, 0 retried
+1908.05441 4 questions, 2 retried
+1811.08603 4 questions, 0 retried
+1909.03135 4 questions, 1 retried
+1804.07789 4 questions, 0 retried
+1905.11268 7 questions, 2 retried
+1603.01514 7 questions, 1 retried
+1908.04042 6 questions, 0 retried
+1610.00956 3 questions, 0 retried
+1601.02403 6 questions, 0 retried
+1912.03627 6 questions, 2 retried
+1810.12085 3 questions, 1 retried
+1610.07809 3 questions, 0 retried
+2003.03044 3 questions, 1 retried
+1610.08815 3 questions, 0 retried
+1909.00015 3 questions, 1 retried
+2001.01269 6 questions, 0 retried
+1708.06185 3 questions, 0 retried
+1705.01214 3 questions, 1 retried
+1908.07195 3 questions, 1 retried
+2001.07786 3 questions, 0 retried
+1912.00903 3 questions, 0 retried
+1903.11437 6 questions, 1 retried
+1703.04001 3 questions, 2 retried
+1909.10012 3 questions, 0 retried
+1907.06292 3 questions, 0 retried
+1703.07090 3 questions, 0 retried
+1810.04635 3 questions, 0 retried
+1707.03569 3 questions, 0 retried
+1903.07406 3 questions, 2 retried
+1912.10011 3 questions, 0 retried
+2003.11563 3 questions, 0 retried
+1909.09534 3 questions, 0 retried
+1909.00105 6 questions, 1 retried
+2001.02885 6 questions, 4 retried
+1801.10293 3 questions, 1 retried
+1809.06537 6 questions, 0 retried
+2003.03014 3 questions, 1 retried
+1908.08345 3 questions, 0 retried
+1611.02988 3 questions, 0 retried
+1604.08504 3 questions, 0 retried
+1802.08636 3 questions, 0 retried
+2001.07820 3 questions, 0 retried
+2002.01320 8 questions, 3 retried
+1605.07333 5 questions, 0 retried
+2003.08385 5 questions, 1 retried
+1901.10133 5 questions, 3 retried
+1911.00841 5 questions, 2 retried
+1605.03481 5 questions, 2 retried
+1908.07245 5 questions, 2 retried
+1901.01010 9 questions, 5 retried
+1809.02279 4 questions, 0 retried
+2002.01207 4 questions, 0 retried
+1803.05223 4 questions, 0 retried
+1909.06162 6 questions, 0 retried
+1905.10851 4 questions, 1 retried
+1906.07701 2 questions, 2 retried
+2002.07306 6 questions, 1 retried
+1810.12091 2 questions, 0 retried
+1810.05241 6 questions, 2 retried
+1805.01445 2 questions, 1 retried
+1706.01875 4 questions, 2 retried
+1909.01362 2 questions, 0 retried
+2004.01862 2 questions, 0 retried
+1908.01294 2 questions, 0 retried
+1906.01040 2 questions, 0 retried
+1909.01383 4 questions, 0 retried
+1705.05437 2 questions, 0 retried
+2003.02249 2 questions, 2 retried
+1910.03634 6 questions, 1 retried
+2001.08868 4 questions, 1 retried
+1910.12795 2 questions, 0 retried
+1805.10824 6 questions, 0 retried
+2003.04866 2 questions, 0 retried
+1704.04452 6 questions, 2 retried
+2003.11562 2 questions, 0 retried
+1608.08188 2 questions, 1 retried
+1906.06849 2 questions, 0 retried
+1901.08079 2 questions, 0 retried
+1805.06966 2 questions, 0 retried
+1806.03125 2 questions, 0 retried
+1910.14076 4 questions, 0 retried
+1911.06118 2 questions, 1 retried
+1908.08717 6 questions, 1 retried
+1907.03187 2 questions, 0 retried
+1608.01884 4 questions, 2 retried
+1705.01265 4 questions, 2 retried
+1906.10225 4 questions, 0 retried
+1712.05999 6 questions, 1 retried
+2001.05865 2 questions, 0 retried
+1808.03738 2 questions, 0 retried
+1910.08293 4 questions, 0 retried
+1909.01296 4 questions, 2 retried
+1902.09243 4 questions, 1 retried
+1801.02073 4 questions, 1 retried
+1801.06482 2 questions, 0 retried
+1909.05359 2 questions, 1 retried
+1603.08594 2 questions, 0 retried
+1703.07476 2 questions, 0 retried
+1906.00346 2 questions, 1 retried
+1909.08970 2 questions, 0 retried
+1805.07133 4 questions, 2 retried
+1903.11283 4 questions, 1 retried
+1709.05036 2 questions, 0 retried
+1706.00139 2 questions, 0 retried
+1705.04153 2 questions, 1 retried
+1912.01852 2 questions, 1 retried
+1808.09029 2 questions, 0 retried
+2004.04721 7 questions, 3 retried
+1905.07791 5 questions, 2 retried
+2002.04181 5 questions, 1 retried
+1908.06264 5 questions, 0 retried
+1709.10367 5 questions, 1 retried
+1909.03582 5 questions, 2 retried
+1908.06267 5 questions, 0 retried
+1701.05574 5 questions, 0 retried
+1907.01468 5 questions, 2 retried
+== judge 2026-11-02T00:31:21+00:00
+judge fixed 50 / 1005
+judge fixed 100 / 1005
+judge fixed 150 / 1005
+judge fixed 200 / 1005
+judge fixed 250 / 1005
+judge fixed 300 / 1005
+judge fixed 350 / 1005
+judge fixed 400 / 1005
+judge fixed 450 / 1005
+judge fixed 500 / 1005
+judge fixed 550 / 1005
+judge fixed 600 / 1005
+judge fixed 650 / 1005
+judge fixed 700 / 1005
+judge fixed 750 / 1005
+judge fixed 800 / 1005
+judge fixed 850 / 1005
+judge fixed 900 / 1005
+judge fixed 950 / 1005
+judge fixed 1000 / 1005
+judge fixed done
+== judge --retry-errors 2026-11-02T03:21:55+00:00
+judge fixed done
+== summarize 2026-11-02T03:36:56+00:00
+# QASPER dev: 1005 questions, 281 papers (280 PDFs downloaded)
+
+## Retrieval (questions with text evidence)
+
+Evidence present in the PDF's chunks: 91.5% [89.5, 93.1] (815/891)
+
+| k | Evidence in top k (of findable) |
+|---|---|
+| 1 | 19.8% [17.2, 22.6] (161/815) |
+| 2 | 31.8% [28.7, 35.1] (259/815) |
+| 3 | 42.1% [38.7, 45.5] (343/815) |
+| 4 | 49.2% [45.8, 52.6] (401/815) |
+| 5 | 54.6% [51.2, 58.0] (445/815) |
+| 6 | 59.1% [55.7, 62.5] (482/815) |
+| 7 | 63.2% [59.8, 66.4] (515/815) |
+| 8 | 66.7% [63.4, 69.9] (544/815) |
+| 9 | 69.1% [65.8, 72.2] (563/815) |
+| 10 | 70.9% [67.7, 73.9] (578/815) |
+
+## Answers (judged)
+
+| Condition | Questions | Correct | Correct or partial | Answer F1 (official) |
+|---|---|---|---|---|
+| fixed | 1002 | 54.8% [51.7, 57.8] (549/1002) | 73.6% [70.7, 76.2] (737/1002) | 11.7 |
+
+Fixed app, correct when the top 4 chunks held evidence: 66.3% [61.6, 70.8] (266/401); when they did not: 43.3% [38.9, 47.7] (212/490)
+
+== finished 2026-11-02T03:36:57+00:00

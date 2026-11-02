@@ -1,0 +1,7 @@
+{
+  "chunk_size": 1000,
+  "chunk_overlap": 200,
+  "k": 4,
+  "rerank": false,
+  "chunking": "sections"
+}
