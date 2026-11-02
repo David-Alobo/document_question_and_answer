@@ -1,56 +1,60 @@
 \section{The app}
 \label{sec:app}
 
-\App{} is a Streamlit web application written in Python. A user uploads a PDF and asks questions
-in a chat. The PDF is read page by page with pypdf through LangChain's \texttt{PyPDFLoader} and
-split by LangChain's recursive character splitter into chunks of at most 1,000 characters with
-200 characters of overlap. Each chunk is embedded locally with all-MiniLM-L6-v2 and stored in a
-flat FAISS index. For each question the four nearest chunks are retrieved and sent, with a
-system prompt and the recent conversation, to a model on the Groq API; Llama~3.1~8B is the
-default. Only the retrieved chunks and the conversation leave the user's machine
-(Fig.~\ref{fig:system}a).
+\App{} is a Streamlit web application written in Python. The user uploads a PDF and asks
+questions about it in a chat. The PDF is read page by page with pypdf, through LangChain's
+\texttt{PyPDFLoader}, and LangChain's recursive character splitter cuts the text into chunks of at
+most 1,000 characters with 200 characters of overlap. Each chunk is embedded locally with
+all-MiniLM-L6-v2 and stored in a flat FAISS index. For each question, the four nearest chunks are
+retrieved and sent to a model on the Groq API, together with a system prompt and the recent
+conversation. The default model is Llama~3.1~8B. Only the retrieved chunks and the conversation
+leave the user's machine (Fig.~\ref{fig:system}a).
 
 \input{figures/system}
 
 \subsection{Defects found}
 \label{sec:defects}
 
-Reading the code and running the app found four defects in the version on the main branch
-(commit \texttt{5a48041}).
+While reading the code and running the app, we found four defects in the version on the main
+branch (commit \texttt{5a48041}).
 
 \begin{enumerate}
   \item \textbf{The current question was built inside the loop over past exchanges.} The code
-  that appends the retrieved chunks and the question to the messages was indented one level too
-  deep, inside the loop that adds previous exchanges. With no previous exchange, the loop body
-  never ran and the model received the system prompt alone, with neither the question nor the
-  document. With $h$ previous exchanges (up to five) it received the question and its context
-  $h$ times, interleaved with the history (Fig.~\ref{fig:system}b).
-  \item \textbf{History trimming returned one exchange, not a list.} Once the history held more
-  than ten exchanges, the function meant to keep the last ten returned the tenth from last as a
-  single (question, answer) pair. Iterating over it then failed, so from the twelfth question of
-  a conversation every question ended in an error message.
+  that adds the retrieved chunks and the question to the messages was indented one level too
+  deep, so it sat inside the loop that adds the previous exchanges. When there was no previous
+  exchange, the loop body never ran, and the model received the system prompt alone, without
+  the question or the document. With $h$ previous exchanges (up to five), it received the
+  question and its context $h$ times, mixed in with the history (Fig.~\ref{fig:system}b).
+  \item \textbf{History trimming returned one exchange instead of a list.} Once the history held
+  more than ten exchanges, the function that should keep the last ten returned only the tenth
+  from last, as a single (question, answer) pair. The next step failed when it tried to loop
+  over it, so from the twelfth question of a conversation onwards every question ended in an
+  error message.
   \item \textbf{An unreadable PDF was treated as text.} The loader returned the error message as
   a string where a list of chunks was expected, and the next step failed on it.
-  \item \textbf{Streamlit reruns repeated work and questions.} The script reruns on every
-  interaction. The PDF was embedded again for each question, and because the question box kept
-  its text, any later click (for instance on ``clear history'') asked the last question again
-  and added it to the history once more.
+  \item \textbf{Streamlit reruns repeated work and questions.} Streamlit reruns the script on
+  every interaction. The PDF was therefore embedded again for each question. Also, because the
+  question box kept its text, any later click (for example on ``clear history'') asked the last
+  question again and added it to the history a second time.
 \end{enumerate}
 
-None of these raised an error on the first question, which is the only one most people try. The
-first defect also does not show as an error: the model receives a valid request and replies, in
-our runs with an empty answer (Section~\ref{sec:res-shipped}).
+None of these defects raised an error on the first question, which is often the only one people
+try. The first defect does not show as an error at all, since the model receives a valid request
+and replies. In our runs, the reply was empty (Section~\ref{sec:res-shipped}).
 
 \subsection{Changes}
 \label{sec:changes}
 
-We fixed the four defects, each with a regression test, and made three changes that the
-evaluation in this paper motivated or measured. Every answer now lists the passages it was
-given, with their pages, and the prompt asks the model to cite pages. Several PDFs can be
-loaded at once; each is embedded once and cached, and passages are labelled with their file.
-With several files, retrieval takes the top four chunks and then the best chunk of each file not
-yet represented, up to eight, so that a question comparing the papers sees all of them; an
-``Ask about'' control restricts the search to one file (Section~\ref{sec:res-multidoc}).
-The retrieval defaults (1,000-character chunks, top four) are unchanged: the set-ups that
-retrieved evidence more often did not answer detectably better
-(Section~\ref{sec:res-candidates}).
+We fixed the four defects, each with a regression test, and made further changes based on the
+evaluation in this paper. Each answer now shows the passages it was based on, with their pages,
+and the prompt asks the model to cite the pages it used. The passages from the pages an answer
+cites are shown in full under the answer, so that each point can be checked, and a warning is
+shown when an answer cites a page the model was not given (Section~\ref{sec:res-citations}).
+Several PDFs can now be loaded at once. Each one is embedded once and cached, and its passages
+are labelled with the file name. With several files, retrieval takes the top four chunks and
+then the best chunk of each file that is not yet represented, up to eight, so that a question
+comparing the papers sees all of them. An ``Ask about'' control lets the user restrict the search
+to one file (Section~\ref{sec:res-multidoc}), and a compare mode takes the top two chunks of every
+file (Section~\ref{sec:res-changes}). We did not change the retrieval defaults (1,000-character
+chunks and the top four), because the set-ups that retrieved evidence more often did not give
+measurably better answers (Section~\ref{sec:res-candidates}).

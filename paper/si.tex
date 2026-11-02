@@ -46,7 +46,7 @@ Folder in \texttt{eval/results/} & What it measures & Code and models \\
 no language model \\
 \texttt{2026-11-01-ui-check}, \texttt{...-multidoc} & The app in a browser & as listed in each
 README \\
-\texttt{2026-11-01-judge-validation} & The judge against Claude's and the author's labels & no
+\texttt{2026-11-01-judge-validation} & The judge against Claude's labels and ours & no
 language model \\
 \texttt{2026-11-01-repeats} & Answers with seeds 1 and 2; seed-0 answers judged again &
 \texttt{3c084b3}; as above \\
@@ -181,11 +181,11 @@ last verdict for each question is used, as in the main results.
 
 \paragraph{Labellers.} Claude (Anthropic) graded the answers first, with the judge's rules and
 before reading any of its verdicts on them; those labels were committed before the comparison
-was run. The author then graded the same answers blind to both the judge and Claude, on
+was run. We then graded the same answers blind to both the judge and Claude, on
 a web page that showed the question, every annotator's reference answer and the app's answer,
-with three buttons and an optional note. Neither labeller read the papers.
+with three buttons and an optional note. Neither Claude nor we read the papers.
 
-\paragraph{Instructions shown to the human labeller.} Judge the app's answer against the
+\paragraph{Labelling instructions.} Judge the app's answer against the
 reference answers; one matching reference is enough. Correct: gives the reference's content;
 extra detail is fine if it does not contradict it. Partially correct: part of the reference, or
 the right content mixed with something wrong. Incorrect: wrong, or misses the point. An answer
@@ -193,7 +193,7 @@ saying the paper does not give this is correct only when an annotator marked the
 unanswerable. Grade the content only, not the page citations. Three questions from the sample
 (1, 3 and 5 below) were explained as examples before labelling.
 
-\paragraph{Rule check.} In four answers (marked $\dagger$) the human label contradicts the
+\paragraph{Rule check.} In four answers (marked $\dagger$) our label contradicts the
 instructions where they leave no room for judgement: an annotator's reference matches the answer.
 Counting them as correct is the exploratory sensitivity check reported in the main text; it was
 made after the judge's verdicts had been seen.
@@ -202,15 +202,15 @@ made after the judge's verdicts had been seen.
 \setlength{\tabcolsep}{4pt}
 \begin{longtable}{rp{10.5cm}ccc}
 \caption{Every label in the judge check. C, P, I: correct, partially correct, incorrect.
-$\dagger$: contradicts the instructions (see Rule check). Full answers, references, the human's
+$\dagger$: contradicts the instructions (see Rule check). Full answers, references, our
 notes and the judge's reasoning for every disagreement are in
 \texttt{eval/results/2026-11-01-judge-validation/}.}\\
 \toprule
-\# & Question & Human & Claude & Judge \\
+\# & Question & Ours & Claude & Judge \\
 \midrule
 \endfirsthead
 \toprule
-\# & Question & Human & Claude & Judge \\
+\# & Question & Ours & Claude & Judge \\
 \midrule
 \endhead
 \rows{generated/judge_rows}

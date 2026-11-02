@@ -4,10 +4,10 @@
 \subsection{The app as shipped}
 \label{sec:res-shipped}
 
-Given the system prompt alone, Llama~3.1~8B returned an empty answer for all \ShippedEmpty{}
-questions (Table~\ref{tab:answers}). In the app, this is what the first question of every
-conversation received: a blank reply, with nothing to show that the question and the document
-had not been sent.
+When the model was given the system prompt alone, Llama~3.1~8B returned an empty answer for all
+\ShippedEmpty{} questions (Table~\ref{tab:answers}). This is what the first question of every
+conversation received in the app before the fix. The user saw a blank reply, and nothing on the
+screen showed that the question and the document had never been sent.
 
 \begin{table}[t]
 \centering
@@ -31,48 +31,55 @@ Condition & Questions & Correct (\%) & Correct or partial (\%) & Answer F1 \\
 \subsection{Retrieval limits the fixed app}
 \label{sec:res-fixed}
 
-With the bug fixed, \FixedCorrect{} of the \FixedN{} answers were judged correct (probably an
-upper bound, Section~\ref{sec:res-judge}) and
-\FixedPartial{} correct or partially correct. Official Answer F1 was \FixedFOne{}; it is low for
-every condition because the app answers in full sentences and the metric counts the words that
-are not in a short reference answer, so we use it only alongside the judged rates.
+With the bug fixed, the judge marked \FixedCorrect{} of the \FixedN{} answers correct and
+\FixedPartial{} correct or partially correct. As we show in Section~\ref{sec:res-judge}, the
+judge is generous, so these rates are probably upper bounds. The official Answer F1 was
+\FixedFOne{}. It was low for every condition, because the app answers in full sentences and the
+metric penalises every word that is not in the short reference answer. We therefore report F1
+but base our conclusions on the judged rates.
 
-Replacing the retrieved chunks with the annotators' evidence paragraphs, on the \PairedOracleN{}
-questions that have text evidence and were answered in both conditions, raised the rate from
-\PairedFixedOnOracleQuestions{} to \OracleCorrect{} (\PairedOracleGained{} questions gained,
-\PairedOracleLost{} lost; exact McNemar $p =$ \PairedOracleP{}). The model and prompt were the
-same, so the difference is due to what the context held.
+To find out how much of the error comes from retrieval, we replaced the retrieved chunks with the
+annotators' evidence paragraphs and kept the model and prompt the same. On the \PairedOracleN{}
+questions that have text evidence and were answered in both conditions, the correct rate rose
+from \PairedFixedOnOracleQuestions{} to \OracleCorrect{}. \PairedOracleGained{} questions became
+correct and \PairedOracleLost{} became incorrect (exact McNemar $p =$ \PairedOracleP{}). Since
+only the context changed, this gap is due to what the app retrieves.
 
-Two things limit the retrieved context. A chunk of the downloaded PDF held the gold evidence for
-\Findable{} of the \TextEvidenceQuestions{} questions with text evidence; the rest were lost to
-PDF extraction or to differences between the arXiv version and the text QASPER was built on.
-Of the \FindableK{} findable questions, the four retrieved chunks held evidence for \HitFour{},
-and the top ten for \HitTen{}. The fixed app was judged correct for \CorrectWhenHit{} of the
-\CorrectWhenHitN{} questions whose four chunks held evidence and for \CorrectWhenMiss{} of the
-\CorrectWhenMissN{} whose chunks did not. That second figure is not small: some questions can
-be answered from text near the evidence, and some answers were judged correct for saying the
-paper did not answer the question. The comparison is observational, since questions whose
-evidence is easy to retrieve may also be easier to answer; the oracle comparison above is the
-controlled one.
+Retrieval loses evidence in two places. First, the evidence has to be in the PDF text at all. A
+chunk of the downloaded PDF held the gold evidence for \Findable{} of the \TextEvidenceQuestions{}
+questions with text evidence. The rest was lost in PDF extraction or because the arXiv version
+differs from the text QASPER was built on. Second, the evidence has to be among the chunks that
+are retrieved. Of the \FindableK{} questions with findable evidence, the top four chunks held it
+for \HitFour{} and the top ten for \HitTen{}.
+
+Answers were better when the evidence was retrieved. The app was judged correct for
+\CorrectWhenHit{} of the \CorrectWhenHitN{} questions whose four chunks held evidence, and for
+\CorrectWhenMiss{} of the \CorrectWhenMissN{} questions whose chunks did not. The second figure is
+higher than we expected. Some questions can be answered from text near the evidence, and some
+answers were judged correct because they said, rightly, that the paper does not answer the
+question. This comparison is observational, as questions with easy-to-find evidence may also be
+easier to answer, so we rely on the oracle comparison above for the size of the effect.
 
 \subsection{Retrieval settings at equal prompt length}
 \label{sec:res-sweep}
 
-With the prompt held at about 4,000 characters, the app's set-up (1,000-character chunks, top 4,
-MiniLM) put a gold evidence passage in the context for \SweepBaseBudget{} of the
-\SweepQuestions{} questions (Fig.~\ref{fig:sweep}; every set-up is listed in the SI, Table~S1). Halving the chunk size and taking twice as many
-chunks, with the same encoder, raised this to \SweepSmallBudget{} (\SweepSmallGained{} questions
-gained, \SweepSmallLost{} lost; Holm $p =$ \SweepSmallP{}). Reranking the top 20 of those
-500-character chunks with the cross-encoder raised it to \SweepSmallRerankBudget{}
-(\SweepSmallRerankGained{} gained, \SweepSmallRerankLost{} lost against the app's set-up; Holm
-$p =$ \SweepSmallRerankP{}). The best of the \SweepSetups{} set-ups, \SweepBestName{}, reached
-\SweepBestBudget{}, inside the interval of the simpler reranked set-up; with reranking, the
-choice of encoder and the addition of BM25 changed little. BM25 alone was the worst retriever at
-every chunk size.
+We next compared retrieval settings with the prompt held at about 4,000 characters
+(Fig.~\ref{fig:sweep}; all set-ups are listed in the SI, Table~S1). With the app's set-up
+(1,000-character chunks, top four, MiniLM), the context held gold evidence for
+\SweepBaseBudget{} of the \SweepQuestions{} questions. Using 500-character chunks and taking
+eight of them, with the same encoder, raised this to \SweepSmallBudget{} (\SweepSmallGained{}
+questions gained and \SweepSmallLost{} lost; Holm $p =$ \SweepSmallP{}). Reranking the top 20 of
+these chunks with the cross-encoder raised it further to \SweepSmallRerankBudget{}
+(\SweepSmallRerankGained{} gained and \SweepSmallRerankLost{} lost against the app's set-up;
+Holm $p =$ \SweepSmallRerankP{}). The best of all \SweepSetups{} set-ups was \SweepBestName{},
+at \SweepBestBudget{}, which is within the interval of the simpler reranked set-up. Once
+reranking was used, changing the encoder or adding BM25 made little difference. BM25 on its own
+was the weakest retriever at every chunk size.
 
-These are rates of evidence reaching the model, and the matching rule may favour small chunks
-(a 500-character chunk inside a long evidence paragraph can pass the overlap test while holding
-only part of it). We therefore tested the two leading set-ups on answers.
+These rates only tell us how often evidence reaches the model. Our matching rule may also favour
+small chunks, because a 500-character chunk inside a long evidence paragraph can pass the overlap
+test while holding only part of the paragraph. For these reasons, we tested the two leading
+set-ups on answers as well.
 
 \begin{figure}[t]
 \centering
@@ -88,30 +95,30 @@ set-ups fuse a dense ranking with BM25. The app's set-up is marked.}
 \subsection{The leading set-ups on answers}
 \label{sec:res-candidates}
 
-Both set-ups were run end to end on all questions, with the same model, prompt and judge
-(Fig.~\ref{fig:answers} and Table~\ref{tab:candidates}). With 500-character chunks and the top eight, \SmallCorrect{} of
-answers were judged correct, against \FixedCorrect{} for the app's set-up (\SmallGained{}
-questions gained, \SmallLost{} lost; Holm $p =$ \SmallHolmP{} over the \CandidateComparisons{}
-candidates). With reranking added, \SmallRerankCorrect{} were correct (\SmallRerankGained{}
-gained, \SmallRerankLost{} lost; Holm $p =$ \SmallRerankHolmP{}). Neither difference is
-distinguishable from no effect at the 0.05 level, and both point estimates are about three
-points.
+Both set-ups were run on all questions with the same model, prompt and judge
+(Fig.~\ref{fig:answers} and Table~\ref{tab:candidates}). With 500-character chunks and the top
+eight, \SmallCorrect{} of the answers were judged correct, compared with \FixedCorrect{} for the
+app's set-up (\SmallGained{} questions gained and \SmallLost{} lost; Holm $p =$ \SmallHolmP{}
+over the \CandidateComparisons{} comparisons). With reranking added, \SmallRerankCorrect{} were
+correct (\SmallRerankGained{} gained and \SmallRerankLost{} lost; Holm $p =$
+\SmallRerankHolmP{}). Both set-ups were about three points ahead, but neither difference could be
+told apart from no effect. Both made the prompt only slightly longer, with a mean of
+\SmallPromptTokens{} and \SmallRerankPromptTokens{} prompt tokens against \BasePromptTokens{}.
 
-Reranking changed retrieval but not answers. Of the questions whose evidence was findable in
-500-character chunks, the top eight held evidence for \SmallRerankHitEight{} with reranking and
-\SmallHitEight{} without; on answers, the reranked set-up gained \RerankVsSmallGained{}
-questions and lost \RerankVsSmallLost{} against the unreranked one ($p =$ \RerankVsSmallP{}).
-Where the evidence moved, answers followed it in part. On the \RerankAddedN{} questions for
-which reranking brought evidence into the top eight, \RerankAddedCorrectBefore{} answers were
-judged correct without reranking and \RerankAddedCorrectAfter{} with it; on the
-\RerankRemovedN{} for which it pushed evidence out, \RerankRemovedCorrectBefore{} and
-\RerankRemovedCorrectAfter{}. These gains were offset on the \RerankSameN{} questions whose
-evidence status did not change, where reranking altered the other passages in the context and
-answers changed in both directions (\RerankSameGained{} gained, \RerankSameLost{} lost). Many questions were answered correctly without
-evidence in either set-up, so the added evidence often reached questions that did not need
-it. Both set-ups lengthened the prompt
-only slightly (a mean of \SmallPromptTokens{} and \SmallRerankPromptTokens{} prompt tokens,
-against \BasePromptTokens{}).
+Reranking improved retrieval but not the answers. Of the questions whose evidence was findable
+in 500-character chunks, the top eight held it for \SmallRerankHitEight{} with reranking and for
+\SmallHitEight{} without. On answers, however, the reranked set-up gained \RerankVsSmallGained{}
+questions and lost \RerankVsSmallLost{} ($p =$ \RerankVsSmallP{}). To see why, we split the
+questions by what reranking did to the evidence. On the \RerankAddedN{} questions where
+reranking brought the evidence into the top eight, \RerankAddedCorrectBefore{} answers were
+correct before and \RerankAddedCorrectAfter{} after. On the \RerankRemovedN{} questions where it
+pushed the evidence out, the numbers were \RerankRemovedCorrectBefore{} and
+\RerankRemovedCorrectAfter{}. So the answers did follow the evidence to some extent. These gains
+were cancelled out on the \RerankSameN{} questions whose evidence did not move, where reranking
+only changed the other passages in the context and answers changed in both directions
+(\RerankSameGained{} gained and \RerankSameLost{} lost). Many questions were also answered
+correctly without evidence in either set-up, which suggests that the extra evidence often went
+to questions that did not need it.
 
 \begin{figure}[t]
 \centering
@@ -146,16 +153,16 @@ Chunks / $k$ & Questions & Correct (\%) & \shortstack{Correct or\\partial (\%)} 
 \subsection{Several papers}
 \label{sec:res-multidoc}
 
-Other papers crowded out the one a question was about (Fig.~\ref{fig:multidoc} and
-Table~\ref{tab:multidoc}). For the
-\MultidocQuestions{} questions with findable evidence, the top four chunks held evidence for
-\MultidocZeroSingle{} with the paper alone. With nine other papers loaded, only
-\MultidocNineSingleOwn{} of the four chunks came from the right paper on average, and the rate
-fell to \MultidocNineSingle{} (\MultidocNineSingleLost{} questions lost, none gained). The rule
-the app uses for several files, which adds one chunk from each unrepresented file, recovered
-part of this mainly by widening the context to eight chunks (\MultidocNineMulti{}).
-Restricting the search to the question's paper restored the single-paper rate exactly, as it
-must, since it searches the same chunks with the same embeddings.
+When other papers were loaded, they crowded out the paper a question was about
+(Fig.~\ref{fig:multidoc} and Table~\ref{tab:multidoc}). For the \MultidocQuestions{} questions
+with findable evidence, the top four chunks held the evidence for \MultidocZeroSingle{} when the
+paper was loaded alone. With nine other papers loaded, only \MultidocNineSingleOwn{} of the four
+chunks came from the right paper on average, and the rate fell to \MultidocNineSingle{}
+(\MultidocNineSingleLost{} questions lost and none gained). The app's rule for several files,
+which adds the best chunk of each file that is not yet represented, recovered part of this loss,
+mainly because it widens the context to eight chunks (\MultidocNineMulti{}). Searching only the
+question's own paper gave back the single-paper rate exactly. This is expected, since it searches
+the same chunks with the same embeddings.
 
 \begin{figure}[t]
 \centering
@@ -185,36 +192,39 @@ $N$ & Rule & Evidence in context (\%) & Chunks & From right paper & Lost / gaine
 \end{tabular}
 \end{table}
 
-\subsection{Agreement of the judge with hand labels}
+\subsection{Agreement of the judge with our labels}
 \label{sec:res-judge}
 
-The judge called \JudgeCheckJudgeCorrect{} of the \JudgeCheckN{} sampled answers correct
-(\JudgeCheckJudgeRate{}, in line with its rate over all questions). The human labeller called
-\JudgeCheckHumanCorrect{} correct (\JudgeCheckHumanRate{}). The two agreed exactly on
-\JudgeCheckHumanExact{} answers (Cohen's $\kappa =$ \JudgeCheckHumanKappa{}) and on correct
-versus not correct on \JudgeCheckHumanBinary{} ($\kappa =$ \JudgeCheckHumanKappaBinary{}). The
-disagreements ran mostly one way: \JudgeCheckHumanJudgeOnly{} answers were correct for the judge
-only and \JudgeCheckHumanHumanOnly{} for the human only. Most of the judge's extra credit went to
-answers that hedged or gave part of the reference.
+On the \JudgeCheckN{} sampled answers, the judge marked \JudgeCheckJudgeCorrect{} as correct
+(\JudgeCheckJudgeRate{}), which is close to its rate over all questions. We marked
+\JudgeCheckHumanCorrect{} as correct (\JudgeCheckHumanRate{}). We gave the same grade as the judge
+for \JudgeCheckHumanExact{} answers (Cohen's $\kappa =$ \JudgeCheckHumanKappa{}) and the same
+correct or not-correct call for \JudgeCheckHumanBinary{} ($\kappa =$
+\JudgeCheckHumanKappaBinary{}). Most disagreements went the same way. \JudgeCheckHumanJudgeOnly{}
+answers were correct for the judge but not for us, and only \JudgeCheckHumanHumanOnly{} the other
+way round. Most of the judge's extra credit went to answers that hedged or gave only part of the
+reference.
 
-Four of the human labels contradict the instructions where they are mechanical: one annotator's
-reference matched the answer, as in a question whose references were ``yes'' and
-``unanswerable'' and whose answer was that the paper does not say. Counting those four as
-correct, an exploratory check made after the judge's verdicts had been seen, gives
-\JudgeCheckHumanRuleCorrect{} correct (\JudgeCheckHumanRuleRate{}), exact agreement on
-\JudgeCheckHumanRuleExact{} ($\kappa =$ \JudgeCheckHumanRuleKappa{}), correct versus not on
-\JudgeCheckHumanRuleBinary{} ($\kappa =$ \JudgeCheckHumanRuleKappaBinary{}), and still
-\JudgeCheckHumanRuleJudgeOnly{} answers correct for the judge only against
-\JudgeCheckHumanRuleHumanOnly{}.
+When we checked our own labels afterwards, four of them went against the instructions in cases
+where the instructions leave no choice, because one annotator's reference matched the answer.
+In one example the references were ``yes'' and ``unanswerable'' and the app answered that the
+paper does not say. If those four are counted as correct, which is an exploratory check made
+after we had seen the judge's verdicts, we have \JudgeCheckHumanRuleCorrect{} correct
+(\JudgeCheckHumanRuleRate{}), exact agreement on \JudgeCheckHumanRuleExact{} ($\kappa =$
+\JudgeCheckHumanRuleKappa{}) and the same correct or not-correct call on
+\JudgeCheckHumanRuleBinary{} ($\kappa =$ \JudgeCheckHumanRuleKappaBinary{}). The judge still
+credited \JudgeCheckHumanRuleJudgeOnly{} answers that we did not, against
+\JudgeCheckHumanRuleHumanOnly{} the other way.
 
-Claude's labels, made earlier on the same answers, fell between the two: \JudgeCheckClaudeCorrect{}
-correct, exact agreement with the judge on \JudgeCheckExact{} ($\kappa =$ \JudgeCheckKappa{}) and
-with the human on \JudgeCheckHumanClaudeExact{}. Where Claude and the judge disagreed, errors ran
-both ways; in two clear cases the judge credited an answer that did not answer (``the paper does
-not say'' accepted as ``no'', and a hedge accepted as ``yes''). Every disagreement is listed in the
-SI. With one human labeller and \JudgeCheckN{} answers the size of the judge's leniency is
-uncertain, but its direction is consistent, so the judged correct rates in this paper are best
-read as upper bounds.
+Claude had labelled the same answers before us, and its labels fell between ours and the judge's.
+It marked \JudgeCheckClaudeCorrect{} as correct and agreed exactly with the judge on
+\JudgeCheckExact{} answers ($\kappa =$ \JudgeCheckKappa{}) and with us on
+\JudgeCheckHumanClaudeExact{}. Where Claude and the judge disagreed, the errors went both ways.
+In two clear cases, the judge credited an answer that did not answer the question: ``the paper
+does not say'' was accepted as ``no'', and a hedge was accepted as ``yes''. All disagreements are
+listed in the SI. With one set of human labels on \JudgeCheckN{} answers, we cannot say exactly
+how lenient the judge is, but it was lenient in the same direction throughout. We therefore read
+the judged correct rates in this paper as upper bounds.
 
 \subsection{Run-to-run variation}
 \label{sec:res-repeats}
@@ -237,86 +247,94 @@ Set-up & Questions & Seed 0 & Seed 1 & Seed 2 & Majority & \shortstack{Every\\ru
 \end{tabular}
 \end{table}
 
-Rerunning a set-up moved its overall rate little but changed many single verdicts
+When we ran each set-up again, the overall rates hardly moved, but many individual verdicts did
 (Table~\ref{tab:repeats}). The app's set-up was judged correct for \RepeatFixedRates{} of the
-\RepeatFixedN{} questions judged in all three runs, and the oracle condition for
-\RepeatOracleRates{}. For the app's set-up, \RepeatFixedChanged{} of questions were judged
-correct in some runs and not in others; \RepeatFixedCorrectInEveryRun{} were correct in every
-run and \RepeatFixedCorrectInNoRun{} in none. Only \RepeatFixedIdenticalAnswerTextAllRuns{} of
-its answers were word for word the same in all three runs, despite a temperature of 0.1.
+\RepeatFixedN{} questions that were judged in all three runs, and the oracle condition for
+\RepeatOracleRates{}. For the app's set-up, \RepeatFixedChanged{} of the questions were correct
+in some runs and not in others. \RepeatFixedCorrectInEveryRun{} were correct in every run and
+\RepeatFixedCorrectInNoRun{} in none. Even at a temperature of 0.1, only
+\RepeatFixedIdenticalAnswerTextAllRuns{} of the answers were word for word the same in all three
+runs.
 
-Most of this variation comes from the answers rather than the judge. Judging the seed-0 answers
-of the app's set-up a second time gave the same verdict for \JudgeRepeatSame{} of
-\JudgeRepeatN{} answers and changed correct versus not correct for \JudgeRepeatChangedBinary{};
-the correct rate moved by \JudgeRepeatDiff{} points ($p =$ \JudgeRepeatP{}).
+To see how much of this comes from the judge, we judged the seed-0 answers of the app's set-up a
+second time. The judge gave the same verdict for \JudgeRepeatSame{} of the \JudgeRepeatN{}
+answers and changed the correct or not-correct call for \JudgeRepeatChangedBinary{} of them. The
+correct rate moved by only \JudgeRepeatDiff{} points ($p =$ \JudgeRepeatP{}). This shows that
+most of the variation comes from the answers rather than the judge.
 
-The runs give a noise floor for differences between set-ups. Two runs of the same set-up
-differed by up to \RepeatWidestPoints{} points (\RepeatWidestSetup{}: \RepeatWidestGained{}
-questions one way and \RepeatWidestLost{} the other, $p =$ \RepeatWidestP{}), so a
-single-run difference of that size can arise from rerunning alone, even with a small paired
-$p$-value. Against this floor, the oracle gap held in every run (\RepeatOracleVsFixedDiffs{}
-points; $p \le$ \RepeatOracleVsFixedMaxP{}). The two leading retrieval set-ups of
-Section~\ref{sec:res-candidates} were ahead of the app's set-up in each run, but by amounts
-within the floor: \RepeatSmallVsFixedDiffs{} points with 500-character chunks
-($p =$ \RepeatSmallVsFixedPs{}) and \RepeatSmallRerankVsFixedDiffs{} with reranking
-($p =$ \RepeatSmallRerankVsFixedPs{}; unadjusted). These set-ups may add a few points, but these
-runs cannot show it.
+The repeat runs also tell us how large a difference between set-ups has to be before we can
+trust it. Two runs of the same set-up differed by as much as \RepeatWidestPoints{} points
+(\RepeatWidestSetup{}, with \RepeatWidestGained{} questions changing one way and
+\RepeatWidestLost{} the other; $p =$ \RepeatWidestP{}). A difference of this size in a single run
+can therefore come from rerunning alone, even when the paired test gives a small $p$-value. The
+oracle gap was well above this in every run (\RepeatOracleVsFixedDiffs{} points; $p \le$
+\RepeatOracleVsFixedMaxP{}). The two leading retrieval set-ups from
+Section~\ref{sec:res-candidates} were ahead of the app's set-up in all three runs, but always by
+less than this: \RepeatSmallVsFixedDiffs{} points with 500-character chunks ($p =$
+\RepeatSmallVsFixedPs{}) and \RepeatSmallRerankVsFixedDiffs{} with reranking ($p =$
+\RepeatSmallRerankVsFixedPs{}; not adjusted). It is possible that these set-ups add a few points,
+but more runs or more questions would be needed to show it.
 
 \subsection{Do cited pages hold the claims?}
 \label{sec:res-citations}
 
-Of the \CiteAnswers{} fixed-app answers, \CiteAnswersCiting{} (\CiteAnswersCitingRate{}) cite at
-least one page. Of their \CitePages{} page citations, \CitePagesInContext{}
-(\CitePagesInContextRate{}) point to a page that was in the model's context; the other
-\CitePagesOutside{} cite pages the model never saw.
+Of the \CiteAnswers{} answers of the fixed app, \CiteAnswersCiting{} (\CiteAnswersCitingRate{})
+cited at least one page. These answers contained \CitePages{} page citations, and
+\CitePagesInContext{} of them (\CitePagesInContextRate{}) pointed to a page that was in the
+model's context. The other \CitePagesOutside{} cited pages that the model had not been given.
 
-On the \CiteHandN{} hand-labelled statements, the human labeller found \CiteLabellerSupported{}
-supported, \CiteLabellerPartial{} partially supported and \CiteLabellerNot{} not supported; the
-judge found \CiteJudgeSupported{}, \CiteJudgePartial{} and \CiteJudgeNot{}. Both put support at
-\CiteLabellerRate{} to \CiteJudgeRate{}, but they agreed on which statements fail no better than
-chance (\CiteHandExact{} of \CiteHandN{} identical, Cohen's $\kappa =$ \CiteHandKappa{}): the judge
-called supported all \CiteNotJudgedSupported{} statements the labeller marked not supported. Two
-of those six, and one of the two marked partially supported, are fragments the sentence splitter
-cut from a table caption or a citation rather than claims, and in two more the passage states the
-claim almost word for word, so some of the disagreement is labelling error. Over all
-\CiteJudged{} checked statements the judge called \CiteAllSupported{} supported,
-\CiteAllPartial{} partially supported and \CiteAllNot{} not supported. With this sample we cannot
-tell how often the judge misses an unsupported citation, so we do not read its verdicts on the
-\CiteUnlabelled{} unlabelled statements as a failure rate.
+On the \CiteHandN{} statements we labelled by hand, we found \CiteLabellerSupported{} supported by
+the cited passages, \CiteLabellerPartial{} partially supported and \CiteLabellerNot{} not
+supported. The judge found \CiteJudgeSupported{}, \CiteJudgePartial{} and \CiteJudgeNot{}. So we
+and the judge gave similar support rates (\CiteLabellerRate{} and \CiteJudgeRate{}), but we did
+not agree on which statements were the problem. We gave the same label for \CiteHandExact{} of
+the \CiteHandN{} statements (Cohen's $\kappa =$ \CiteHandKappa{}, no better than chance), and the
+judge marked as supported all \CiteNotJudgedSupported{} statements that we had marked not
+supported. Part of this disagreement is our own labelling error. Two of those six statements,
+and one of the two we marked partially supported, were not claims but fragments that the
+sentence splitter had cut from a table caption or a reference. In two more, the passage states
+the claim almost word for word. Over all \CiteJudged{} checked statements, the judge marked
+\CiteAllSupported{} as supported, \CiteAllPartial{} as partially supported and \CiteAllNot{} as
+not supported. However, since the judge did not find the unsupported statements in our sample,
+we do not use its verdicts on the other \CiteUnlabelled{} statements as an estimate of how often
+citations fail.
 
 \subsection{Changes beyond retrieval settings}
 \label{sec:res-changes}
 
 \paragraph{Section-aware chunking.} Of the \SectionsHitN{} questions with text evidence, the top
-four chunks held evidence for \SectionsHitAfter{} with section-aware chunking and
-\SectionsHitBefore{} with the app's chunking (\SectionsHitGained{} gained, \SectionsHitLost{}
-lost; $p =$ \SectionsHitP{}); with 500-character chunks and the top eight, for
-\SectionsSmallHitAfter{} and \SectionsSmallHitBefore{} (\SectionsSmallHitGained{} gained,
-\SectionsSmallHitLost{} lost; $p =$ \SectionsSmallHitP{}). On answers at the app's settings,
-\SectionsAnswersAfter{} were judged correct against \SectionsAnswersBefore{}
-(\SectionsAnswersGained{} gained, \SectionsAnswersLost{} lost; $p =$ \SectionsAnswersP{}), a
-turnover of the size seen between two runs of one set-up.
+four chunks held the evidence for \SectionsHitAfter{} with section-aware chunking and for
+\SectionsHitBefore{} with the app's chunking (\SectionsHitGained{} gained and \SectionsHitLost{}
+lost; $p =$ \SectionsHitP{}). With 500-character chunks and the top eight, the rates were
+\SectionsSmallHitAfter{} and \SectionsSmallHitBefore{} (\SectionsSmallHitGained{} gained and
+\SectionsSmallHitLost{} lost; $p =$ \SectionsSmallHitP{}). We then ran it on answers at the app's
+settings. \SectionsAnswersAfter{} of the answers were judged correct, compared with
+\SectionsAnswersBefore{} for the app (\SectionsAnswersGained{} gained and \SectionsAnswersLost{}
+lost; $p =$ \SectionsAnswersP{}). This amount of change is about what we saw between two runs of
+the same set-up.
 
-\paragraph{Retry on a miss.} The model asked for a new search for \RetryN{} of \RetryChecked{}
-questions (\RetryRate{}). Its check missed most misses: of the \RetryMissed{} questions whose top
-four chunks held no evidence, it said the chunks held the answer for \RetryMissedKept{}
-(\RetryMissedKeptRate{}), and of the \RetryHeld{} whose chunks did hold evidence, it asked for a
-new search for \RetryHeldRetried{}. Evidence in the top four barely changed (\RetryHitAfter{}
-against \RetryHitBefore{}; \RetryHitGained{} gained, \RetryHitLost{} lost; $p =$ \RetryHitP{}),
-and neither did answers (\RetryAnswersAfter{} judged correct against \RetryAnswersBefore{};
-\RetryAnswersGained{} gained, \RetryAnswersLost{} lost; $p =$ \RetryAnswersP{}). Of the
-\RetryN{} retried questions, \RetryRetriedBefore{} were answered correctly without the retry
-and \RetryRetriedAfter{} with it.
+\paragraph{Retry on a miss.} The model asked for a new search for \RetryN{} of the
+\RetryChecked{} questions (\RetryRate{}). Its check was not reliable. Of the \RetryMissed{}
+questions whose top four chunks held no evidence, the model said the chunks contained the answer
+for \RetryMissedKept{} (\RetryMissedKeptRate{}). Of the \RetryHeld{} questions whose chunks did
+hold the evidence, it still asked for a new search for \RetryHeldRetried{}. As a result, evidence
+in the top four hardly changed (\RetryHitAfter{} with the retry and \RetryHitBefore{} without;
+\RetryHitGained{} gained and \RetryHitLost{} lost; $p =$ \RetryHitP{}), and neither did the
+answers (\RetryAnswersAfter{} judged correct against \RetryAnswersBefore{}; \RetryAnswersGained{}
+gained and \RetryAnswersLost{} lost; $p =$ \RetryAnswersP{}). Of the \RetryN{} questions that
+were retried, \RetryRetriedBefore{} were answered correctly without the retry and
+\RetryRetriedAfter{} with it.
 
-\paragraph{Comparison questions.} With the top two chunks of each paper, answers were correct
-for both papers in \CompareBalancedBothCorrect{} of pairs, against \CompareAppBothCorrect{}
-under the app's rule (\CompareGained{} pairs gained, \CompareLost{} lost of the \CompareN{}
-judged under both rules; $p =$ \CompareP{}). Evidence from both papers was rarely in the context
-under either rule (\CompareAppBothEvidence{} and \CompareBalancedBothEvidence{} of
-\ComparePairs{} pairs). The matching was not the cause: each paper's evidence was found in its
-chunks for \ComparePapersFindable{} of \ComparePapers{} papers, and for both papers in
-\CompareFindableBoth{} pairs. Rather, the comparison question, worded for both papers, seldom
+\paragraph{Comparison questions.} When the context held the top two chunks of each paper, the
+answers were correct for both papers in \CompareBalancedBothCorrect{} of pairs. With the app's
+rule, this was \CompareAppBothCorrect{} (\CompareGained{} pairs gained and \CompareLost{} lost of
+the \CompareN{} pairs judged under both rules; $p =$ \CompareP{}). Evidence from both papers was
+rarely in the context under either rule (\CompareAppBothEvidence{} and
+\CompareBalancedBothEvidence{} of the \ComparePairs{} pairs). We first suspected the evidence
+matching, but each paper's evidence could be found in its chunks for \ComparePapersFindable{} of
+the \ComparePapers{} papers, and for both papers in \CompareFindableBoth{} pairs. The problem was
+instead the comparison question itself. Because it is worded for both papers, it seldom
 retrieved the passages that answer each paper's own question (\CompareAppSlots{} and
-\CompareBalancedSlots{} of \CompareAppSlotsN{} paper slots). Read this way, any gain from two
-chunks per paper comes from giving the model more of each paper's text on the topic, not from
-the annotated evidence.
+\CompareBalancedSlots{} of the \CompareAppSlotsN{} paper slots). This suggests that if two chunks
+per paper do help, it is because they give the model more of each paper's text on the topic,
+and not because they bring in the annotated evidence.
