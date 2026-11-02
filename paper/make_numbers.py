@@ -25,6 +25,12 @@ CANDIDATES = {
     "small": RESULTS / "2026-11-01-qasper-dev-c500-k8",
     "small rerank": RESULTS / "2026-11-01-qasper-dev-c500-k8-rerank",
 }
+REPEATS = RESULTS / "2026-11-01-repeats"
+CITATIONS = RESULTS / "2026-11-01-citation-check"
+SECTIONS = RESULTS / "2026-11-01-qasper-dev-sections"
+SECTIONS_SMALL = RESULTS / "2026-11-01-qasper-dev-sections-c500-k8"
+RETRY = RESULTS / "2026-11-01-qasper-dev-retry"
+COMPARE = RESULTS / "2026-11-01-compare"
 
 
 def wilson(k, n, z=1.96):
@@ -460,6 +466,220 @@ def judge_check(macros, tables):
     tables["judge_rows.tex"] = "\n".join(rows) + "\n"
 
 
+def repeats(macros, tables):
+    """Macros and the table for the repeat runs (seeds 0, 1 and 2 of four set-ups).
+
+    The figures come from eval/results/2026-11-01-repeats/summary.json, written by
+    eval/qasper/repeats.py.
+
+    Args:
+        macros (dict): Name to LaTeX text, filled in place.
+        tables (dict): File name to LaTeX text, filled in place.
+    """
+    s = json.loads((REPEATS / "summary.json").read_text())
+    labels = {"fixed": "1,000 / top 4 (app)", "oracle": "Oracle evidence", "c500-k8": "500 / top 8",
+              "c500-k8-rerank": "500 / top 8, reranked"}
+    names = {"fixed": "fixed", "oracle": "oracle", "c500-k8": "small", "c500-k8-rerank": "small rerank"}
+    rows, widest = [], None
+    for setup, label in labels.items():
+        e = s["setups"][setup]
+        rates = [e["correct_by_seed"][seed]["pct"] for seed in "012"]
+        name = f"repeat {names[setup]}"
+        macros[f"{name} n"] = f"{e['questions_judged_in_all_runs']:,}"
+        macros[f"{name} rates"] = ", ".join(f"{r:.1f}" for r in rates[:-1]) + f" and {rates[-1]:.1f}\\%"
+        macros[f"{name} low"] = pct(min(rates))
+        macros[f"{name} high"] = pct(max(rates))
+        for key in ("correct_in_every_run", "correct_in_no_run", "same_correct_vs_not_all_runs",
+                    "identical_answer_text_all_runs"):
+            macros[f"{name} {key.replace('_', ' ')}"] = pct(e[key]["pct"])
+        macros[f"{name} changed"] = pct(100 - e["same_correct_vs_not_all_runs"]["pct"])
+        for d in e["between_runs"].values():
+            if widest is None or abs(d["difference_points"]) > abs(widest[1]["difference_points"]):
+                widest = (setup, d)
+        cells = [label, f"{e['questions_judged_in_all_runs']:,}", *[f"{r:.1f}" for r in rates],
+                 f"{e['correct_by_majority']['pct']:.1f}", f"{e['correct_in_every_run']['pct']:.1f}",
+                 f"{e['correct_in_no_run']['pct']:.1f}", f"{e['same_correct_vs_not_all_runs']['pct']:.1f}"]
+        rows.append(" & ".join(cells) + " \\\\")
+    tables["repeats_rows.tex"] = "\n".join(rows) + "\n"
+
+    # The largest difference between two runs of one set-up: the noise floor
+    setup, d = widest
+    macros["repeat widest setup"] = labels[setup].replace(" (app)", "")
+    macros["repeat widest points"] = f"{abs(d['difference_points']):.1f}"
+    macros["repeat widest gained"] = str(max(d["gained"], d["lost"]))
+    macros["repeat widest lost"] = str(min(d["gained"], d["lost"]))
+    macros["repeat widest p"] = pval(d["p"])
+
+    for setup in ("c500-k8", "c500-k8-rerank", "oracle"):
+        by_seed = s["comparisons"][f"{setup} vs fixed"]["by_seed"]
+        name = f"repeat {names[setup]} vs fixed"
+        diffs = [by_seed[seed]["difference_points"] for seed in "012"]
+        macros[f"{name} diffs"] = ", ".join(f"{x:+.1f}" for x in diffs[:-1]) + f" and {diffs[-1]:+.1f}"
+        macros[f"{name} ps"] = (", ".join(pval(by_seed[seed]["p"]) for seed in "01")
+                                + f" and {pval(by_seed['2']['p'])}")
+        macros[f"{name} significant runs"] = str(sum(by_seed[seed]["p"] < 0.05 for seed in "012"))
+        macros[f"{name} max p"] = pval(max(by_seed[seed]["p"] for seed in "012"))
+
+    j = s["judge_repeat"]
+    macros["judge repeat n"] = f"{j['n']:,}"
+    macros["judge repeat same"] = ci([j["same_verdict"]["pct"], *j["same_verdict"]["ci95"]])
+    macros["judge repeat same k"] = str(j["same_verdict"]["k"])
+    macros["judge repeat same binary"] = pct(j["same_correct_vs_not"]["pct"])
+    macros["judge repeat changed binary"] = str(j["same_correct_vs_not"]["n"] - j["same_correct_vs_not"]["k"])
+    macros["judge repeat diff"] = f"{abs(j['between']['difference_points']):.1f}"
+    macros["judge repeat p"] = pval(j["between"]["p"])
+
+
+def citations(macros):
+    """Macros for the citation check: cited pages in context, and support of cited statements.
+
+    Args:
+        macros (dict): Name to LaTeX text, filled in place.
+    """
+    s = json.loads((CITATIONS / "summary.json").read_text())
+    c = json.loads((CITATIONS / "counts.json").read_text())
+    macros["cite answers"] = f"{s['answers']:,}"
+    macros["cite answers citing"] = f"{s['answers_citing']['k']:,}"
+    macros["cite answers citing rate"] = pct(s["answers_citing"]["pct"])
+    e = s["citations_in_context"]
+    macros["cite pages"] = f"{e['n']:,}"
+    macros["cite pages in context"] = f"{e['k']:,}"
+    macros["cite pages in context rate"] = ci([e["pct"], *e["ci95"]])
+    macros["cite pages in context pct"] = pct(e["pct"])
+    macros["cite pages outside"] = str(e["n"] - e["k"])
+    macros["cite statements"] = f"{c['statements']:,}"
+    macros["cite judged"] = str(s["judged_statements"])
+    grades = (("supported", "supported"), ("partially_supported", "partial"), ("not_supported", "not"))
+    for key, name in grades:
+        v = s["support"][key]
+        macros[f"cite all {name}"] = ci([v["pct"], *v["ci95"]])
+    h = s["hand_labels"]
+    macros["cite hand n"] = str(h["n"])
+    macros["cite unlabelled"] = str(s["judged_statements"] - h["n"])
+    for who in ("labeller", "judge"):
+        for key, name in grades:
+            macros[f"cite {who} {name}"] = str(h[who][key])
+        macros[f"cite {who} rate"] = pct(100 * h[who]["supported"] / h["n"])
+    macros["cite hand exact"] = str(h["exact_agreement"])
+    macros["cite hand kappa"] = f"{h['kappa']:.2f}"
+    macros["cite not judged supported"] = str(h["confusion_rows_labeller_cols_judge"]["not_supported"]["supported"])
+
+
+def retrieval_hits(folder, k):
+    """Whether the top k chunks held evidence, per question with text evidence.
+
+    Args:
+        folder (Path): A results folder with retrieval.jsonl.gz.
+        k (int): Chunks counted.
+
+    Returns:
+        dict: question id to True or False.
+    """
+    out = {}
+    with gzip.open(folder / "retrieval.jsonl.gz", "rt", encoding="utf-8") as f:
+        for line in f:
+            r = json.loads(line)
+            if not r["error"] and r["n_evidence"]:
+                out[r["question_id"]] = any(c["evidence"] for c in r["retrieved"][:k])
+    return out
+
+
+def paired(macros, name, before, after):
+    """Macros for a paired comparison of two sets of per-question outcomes.
+
+    Args:
+        macros (dict): Name to LaTeX text, filled in place.
+        name (str): Macro prefix.
+        before (dict): question id to True or False.
+        after (dict): question id to True or False, on the same questions.
+    """
+    both = [q for q in before if q in after]
+    gained = sum(after[q] and not before[q] for q in both)
+    lost = sum(before[q] and not after[q] for q in both)
+    k_before, k_after = sum(before[q] for q in both), sum(after[q] for q in both)
+    macros[f"{name} n"] = f"{len(both):,}"
+    macros[f"{name} before"] = ci(wilson(k_before, len(both)))
+    macros[f"{name} after"] = ci(wilson(k_after, len(both)))
+    macros[f"{name} before rate"] = pct(100 * k_before / len(both))
+    macros[f"{name} after rate"] = pct(100 * k_after / len(both))
+    macros[f"{name} gained"] = str(gained)
+    macros[f"{name} lost"] = str(lost)
+    macros[f"{name} p"] = pval(mcnemar_exact(gained, lost))
+
+
+def correct(folder):
+    """Whether each scored question of a run was judged correct (a missing verdict is not).
+
+    Args:
+        folder (Path): A results folder with answers_fixed.jsonl and judgments_fixed.jsonl.
+
+    Returns:
+        dict: question id to True or False.
+    """
+    answers = latest(folder / "answers_fixed.jsonl")
+    verdicts = latest(folder / "judgments_fixed.jsonl")
+    return {q: verdicts.get(q, {}).get("verdict") == "correct" for q, a in answers.items() if not a.get("skipped")}
+
+
+def changes(macros):
+    """Macros for section-aware chunking, retry on a miss and comparison questions.
+
+    Args:
+        macros (dict): Name to LaTeX text, filled in place.
+    """
+    coverage = json.loads((SECTIONS / "section_coverage.json").read_text())["section_names_found"]
+    macros["sections coverage"] = pct(coverage["pct"])
+    macros["sections coverage k"] = f"{coverage['k']:,}"
+    macros["sections coverage n"] = f"{coverage['n']:,}"
+    paired(macros, "sections hit", retrieval_hits(BASELINE, 4), retrieval_hits(SECTIONS, 4))
+    paired(macros, "sections small hit", retrieval_hits(CANDIDATES["small"], 8), retrieval_hits(SECTIONS_SMALL, 8))
+    base_ok = correct(BASELINE)
+    paired(macros, "sections answers", base_ok, correct(SECTIONS))
+
+    checks = latest(RETRY / "retry.jsonl")
+    retried = {q for q, c in checks.items() if c["query"]}
+    before, after = retrieval_hits(BASELINE, 4), retrieval_hits(RETRY, 4)
+    macros["retry checked"] = f"{len(checks):,}"
+    macros["retry n"] = str(len(retried))
+    macros["retry rate"] = pct(100 * len(retried) / len(checks))
+    missed = [q for q in before if not before[q] and q in checks]
+    held = [q for q in before if before[q] and q in checks]
+    kept = sum(q not in retried for q in missed)
+    macros["retry missed"] = str(len(missed))
+    macros["retry missed kept"] = str(kept)
+    macros["retry missed kept rate"] = pct(100 * kept / len(missed))
+    macros["retry held"] = str(len(held))
+    macros["retry held retried"] = str(sum(q in retried for q in held))
+    paired(macros, "retry hit", before, after)
+    retry_ok = correct(RETRY)
+    paired(macros, "retry answers", base_ok, retry_ok)
+    on = [q for q in retried if q in base_ok and q in retry_ok]
+    macros["retry retried before"] = str(sum(base_ok[q] for q in on))
+    macros["retry retried after"] = str(sum(retry_ok[q] for q in on))
+
+    s = json.loads((COMPARE / "summary.json").read_text())
+    f = json.loads((COMPARE / "findable.json").read_text())
+    macros["compare pairs"] = str(s["pairs"])
+    macros["compare findable both"] = str(f["pairs_findable_in_both"])
+    macros["compare papers"] = str(f["papers"])
+    macros["compare papers findable"] = str(f["papers_findable"])
+    for rule in ("app", "balanced"):
+        r = s["rules"][rule]
+        both = r["correct_for_both_papers"]
+        macros[f"compare {rule} both evidence"] = str(r["evidence_from_both_papers"]["k"])
+        macros[f"compare {rule} both correct"] = ci([both["pct"], *both["ci95"]])
+        macros[f"compare {rule} both correct n"] = str(both["n"])
+        macros[f"compare {rule} papers correct"] = pct(r["papers_answered_correctly"]["pct"])
+        slots = f[f"{rule}_paper_slots_with_evidence"]
+        macros[f"compare {rule} slots"] = str(slots["k"])
+        macros[f"compare {rule} slots n"] = str(slots["n"])
+    t = s["balanced_vs_app_correct"]
+    macros["compare n"] = str(t["n"])
+    macros["compare gained"] = str(t["gained"])
+    macros["compare lost"] = str(t["lost"])
+    macros["compare p"] = pval(t["p"])
+
+
 def latex_escape(text):
     """Escape the characters LaTeX treats as special.
 
@@ -509,6 +729,9 @@ def main():
     candidates(macros, tables)
     matching(macros)
     judge_check(macros, tables)
+    repeats(macros, tables)
+    citations(macros)
+    changes(macros)
     prompts(tables)
     lines = ["% Generated by make_numbers.py from eval/results/. Do not edit."]
     lines += [f"\\newcommand{{\\{macro_name(k)}}}{{{v}}}" for k, v in sorted(macros.items())]

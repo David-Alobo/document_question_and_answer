@@ -1,0 +1,215 @@
+{
+  "split": "dev",
+  "papers": 281,
+  "papers_with_pdf": 280,
+  "questions": 1005,
+  "questions_with_retrieval": 1002,
+  "embedding_model": "all-MiniLM-L6-v2",
+  "chunk_size": 1000,
+  "chunk_overlap": 200,
+  "k_app": 4,
+  "rerank": false,
+  "reranker_model": null,
+  "retrieval": {
+    "questions_with_text_evidence": 891,
+    "evidence_found_in_pdf_chunks": {
+      "k": 815,
+      "n": 891,
+      "pct": 91.5,
+      "ci95": [
+        89.5,
+        93.1
+      ]
+    },
+    "hit_at_k": {
+      "1": {
+        "k": 161,
+        "n": 815,
+        "pct": 19.8,
+        "ci95": [
+          17.2,
+          22.6
+        ]
+      },
+      "2": {
+        "k": 259,
+        "n": 815,
+        "pct": 31.8,
+        "ci95": [
+          28.7,
+          35.1
+        ]
+      },
+      "3": {
+        "k": 343,
+        "n": 815,
+        "pct": 42.1,
+        "ci95": [
+          38.7,
+          45.5
+        ]
+      },
+      "4": {
+        "k": 401,
+        "n": 815,
+        "pct": 49.2,
+        "ci95": [
+          45.8,
+          52.6
+        ]
+      },
+      "5": {
+        "k": 445,
+        "n": 815,
+        "pct": 54.6,
+        "ci95": [
+          51.2,
+          58.0
+        ]
+      },
+      "6": {
+        "k": 482,
+        "n": 815,
+        "pct": 59.1,
+        "ci95": [
+          55.7,
+          62.5
+        ]
+      },
+      "7": {
+        "k": 515,
+        "n": 815,
+        "pct": 63.2,
+        "ci95": [
+          59.8,
+          66.4
+        ]
+      },
+      "8": {
+        "k": 544,
+        "n": 815,
+        "pct": 66.7,
+        "ci95": [
+          63.4,
+          69.9
+        ]
+      },
+      "9": {
+        "k": 563,
+        "n": 815,
+        "pct": 69.1,
+        "ci95": [
+          65.8,
+          72.2
+        ]
+      },
+      "10": {
+        "k": 578,
+        "n": 815,
+        "pct": 70.9,
+        "ci95": [
+          67.7,
+          73.9
+        ]
+      }
+    }
+  },
+  "conditions": {
+    "fixed": {
+      "questions": 1002,
+      "skipped": 3,
+      "generation_errors": 0,
+      "correct": {
+        "k": 549,
+        "n": 1002,
+        "pct": 54.8,
+        "ci95": [
+          51.7,
+          57.8
+        ]
+      },
+      "correct_or_partial": {
+        "k": 737,
+        "n": 1002,
+        "pct": 73.6,
+        "ci95": [
+          70.7,
+          76.2
+        ]
+      },
+      "incorrect": {
+        "k": 264,
+        "n": 1002,
+        "pct": 26.3,
+        "ci95": [
+          23.7,
+          29.2
+        ]
+      },
+      "not_judged": 1,
+      "answer_f1_official": 11.7,
+      "answer_f1_by_type": {
+        "extractive": 14.5,
+        "abstractive": 14.2,
+        "boolean": 0.5,
+        "none": 0.0
+      },
+      "correct_when_evidence_retrieved": {
+        "k": 266,
+        "n": 401,
+        "pct": 66.3,
+        "ci95": [
+          61.6,
+          70.8
+        ]
+      },
+      "correct_when_evidence_missed": {
+        "k": 212,
+        "n": 490,
+        "pct": 43.3,
+        "ci95": [
+          38.9,
+          47.7
+        ]
+      },
+      "correct_by_first_annotator_type": {
+        "abstractive": {
+          "k": 114,
+          "n": 264,
+          "pct": 43.2,
+          "ci95": [
+            37.3,
+            49.2
+          ]
+        },
+        "boolean": {
+          "k": 76,
+          "n": 115,
+          "pct": 66.1,
+          "ci95": [
+            57.0,
+            74.1
+          ]
+        },
+        "extractive": {
+          "k": 285,
+          "n": 529,
+          "pct": 53.9,
+          "ci95": [
+            49.6,
+            58.1
+          ]
+        },
+        "none": {
+          "k": 74,
+          "n": 94,
+          "pct": 78.7,
+          "ci95": [
+            69.4,
+            85.8
+          ]
+        }
+      }
+    }
+  }
+}

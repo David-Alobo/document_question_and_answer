@@ -13,9 +13,12 @@ rates are upper bounds. At a fixed prompt length, smaller chunks with reranking 
 retrieval from \SweepBaseBudget{} to \SweepSmallRerankBudget{} but did not detectably change
 correctness. Loading nine unrelated papers alongside the target lowered evidence retrieval from
 \MultidocZeroSingle{} to \MultidocNineMulti{}; restricting the search to one paper restored it.
-\result{Repeat runs: share of verdicts that change between runs against the change in overall
-rates. Citations: share of cited pages that were in the context and share of cited statements
-the pages support.} Retrieval rates were a poor guide to answer quality, so settings for such
+Across three runs, \RepeatFixedChanged{} of the app's verdicts changed between correct and not
+correct, while two runs of one set-up differed by at most \RepeatWidestPoints{} points; the gap to
+the evidence paragraphs held in every run, and the retrieval set-ups' gains stayed within that
+range. Of the pages answers cited, \CitePagesInContextPct{} were in the model's context, and a
+person found \CiteLabellerSupported{} of \CiteHandN{} sampled cited statements supported by them,
+but the judge did not find the unsupported ones. Retrieval rates were a poor guide to answer quality, so settings for such
 apps should be chosen on judged, and preferably hand-checked, answers. Code, prompts and
 per-question outputs are released.
 \end{abstract}

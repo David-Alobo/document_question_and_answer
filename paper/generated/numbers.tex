@@ -5,6 +5,52 @@
 \newcommand{\BaselinePdfs}{280}
 \newcommand{\BaselineQuestions}{1,005}
 \newcommand{\CandidateComparisons}{2}
+\newcommand{\CiteAllNot}{6.7\% [5.2, 8.5]}
+\newcommand{\CiteAllPartial}{15.0\% [12.8, 17.4]}
+\newcommand{\CiteAllSupported}{78.4\% [75.6, 80.9]}
+\newcommand{\CiteAnswers}{1,002}
+\newcommand{\CiteAnswersCiting}{935}
+\newcommand{\CiteAnswersCitingRate}{93.3\%}
+\newcommand{\CiteHandExact}{39}
+\newcommand{\CiteHandKappa}{0.08}
+\newcommand{\CiteHandN}{50}
+\newcommand{\CiteJudgeNot}{1}
+\newcommand{\CiteJudgePartial}{4}
+\newcommand{\CiteJudgeRate}{90.0\%}
+\newcommand{\CiteJudgeSupported}{45}
+\newcommand{\CiteJudged}{915}
+\newcommand{\CiteLabellerNot}{6}
+\newcommand{\CiteLabellerPartial}{2}
+\newcommand{\CiteLabellerRate}{84.0\%}
+\newcommand{\CiteLabellerSupported}{42}
+\newcommand{\CiteNotJudgedSupported}{6}
+\newcommand{\CitePages}{1,588}
+\newcommand{\CitePagesInContext}{1,528}
+\newcommand{\CitePagesInContextPct}{96.2\%}
+\newcommand{\CitePagesInContextRate}{96.2\% [95.2, 97.1]}
+\newcommand{\CitePagesOutside}{60}
+\newcommand{\CiteStatements}{1,496}
+\newcommand{\CiteUnlabelled}{865}
+\newcommand{\CompareAppBothCorrect}{21.2\% [14.8, 29.4]}
+\newcommand{\CompareAppBothCorrectN}{118}
+\newcommand{\CompareAppBothEvidence}{5}
+\newcommand{\CompareAppPapersCorrect}{50.4\%}
+\newcommand{\CompareAppSlots}{47}
+\newcommand{\CompareAppSlotsN}{240}
+\newcommand{\CompareBalancedBothCorrect}{28.7\% [21.2, 37.5]}
+\newcommand{\CompareBalancedBothCorrectN}{115}
+\newcommand{\CompareBalancedBothEvidence}{3}
+\newcommand{\CompareBalancedPapersCorrect}{53.9\%}
+\newcommand{\CompareBalancedSlots}{43}
+\newcommand{\CompareBalancedSlotsN}{240}
+\newcommand{\CompareFindableBoth}{83}
+\newcommand{\CompareGained}{21}
+\newcommand{\CompareLost}{12}
+\newcommand{\CompareN}{114}
+\newcommand{\CompareP}{0.16}
+\newcommand{\ComparePairs}{120}
+\newcommand{\ComparePapers}{119}
+\newcommand{\ComparePapersFindable}{105}
 \newcommand{\CorrectWhenHit}{64.8\% [60.0, 69.4]}
 \newcommand{\CorrectWhenHitN}{398}
 \newcommand{\CorrectWhenMiss}{42.6\% [38.3, 47.0]}
@@ -48,6 +94,13 @@
 \newcommand{\JudgeCheckKappa}{0.57}
 \newcommand{\JudgeCheckKappaBinary}{0.60}
 \newcommand{\JudgeCheckN}{50}
+\newcommand{\JudgeRepeatChangedBinary}{66}
+\newcommand{\JudgeRepeatDiff}{0.6}
+\newcommand{\JudgeRepeatN}{1,002}
+\newcommand{\JudgeRepeatP}{0.54}
+\newcommand{\JudgeRepeatSame}{89.2\% [87.1, 91.0]}
+\newcommand{\JudgeRepeatSameBinary}{93.4\%}
+\newcommand{\JudgeRepeatSameK}{894}
 \newcommand{\MedianChunksFifteenHundred}{30}
 \newcommand{\MedianChunksFiveHundred}{86}
 \newcommand{\MedianChunksThousand}{44}
@@ -114,6 +167,59 @@
 \newcommand{\PapersDownloaded}{280}
 \newcommand{\PapersFailed}{1}
 \newcommand{\PapersFailedQuestions}{3}
+\newcommand{\RepeatFixedChanged}{25.7\%}
+\newcommand{\RepeatFixedCorrectInEveryRun}{40.7\%}
+\newcommand{\RepeatFixedCorrectInNoRun}{33.6\%}
+\newcommand{\RepeatFixedHigh}{54.5\%}
+\newcommand{\RepeatFixedIdenticalAnswerTextAllRuns}{1.6\%}
+\newcommand{\RepeatFixedLow}{53.2\%}
+\newcommand{\RepeatFixedN}{1,000}
+\newcommand{\RepeatFixedRates}{53.5, 53.2 and 54.5\%}
+\newcommand{\RepeatFixedSameCorrectVsNotAllRuns}{74.3\%}
+\newcommand{\RepeatOracleChanged}{23.4\%}
+\newcommand{\RepeatOracleCorrectInEveryRun}{57.5\%}
+\newcommand{\RepeatOracleCorrectInNoRun}{19.1\%}
+\newcommand{\RepeatOracleHigh}{70.9\%}
+\newcommand{\RepeatOracleIdenticalAnswerTextAllRuns}{0.2\%}
+\newcommand{\RepeatOracleLow}{68.9\%}
+\newcommand{\RepeatOracleN}{892}
+\newcommand{\RepeatOracleRates}{69.1, 70.9 and 68.9\%}
+\newcommand{\RepeatOracleSameCorrectVsNotAllRuns}{76.6\%}
+\newcommand{\RepeatOracleVsFixedDiffs}{+16.5, +19.0 and +15.5}
+\newcommand{\RepeatOracleVsFixedMaxP}{$5.8 \times 10^{-15}$}
+\newcommand{\RepeatOracleVsFixedPs}{$2.1 \times 10^{-16}$, $7.3 \times 10^{-20}$ and $5.8 \times 10^{-15}$}
+\newcommand{\RepeatOracleVsFixedSignificantRuns}{3}
+\newcommand{\RepeatSmallChanged}{22.1\%}
+\newcommand{\RepeatSmallCorrectInEveryRun}{45.7\%}
+\newcommand{\RepeatSmallCorrectInNoRun}{32.3\%}
+\newcommand{\RepeatSmallHigh}{57.1\%}
+\newcommand{\RepeatSmallIdenticalAnswerTextAllRuns}{3.3\%}
+\newcommand{\RepeatSmallLow}{55.7\%}
+\newcommand{\RepeatSmallN}{1,001}
+\newcommand{\RepeatSmallRates}{57.1, 55.7 and 56.2\%}
+\newcommand{\RepeatSmallRerankChanged}{27.5\%}
+\newcommand{\RepeatSmallRerankCorrectInEveryRun}{43.3\%}
+\newcommand{\RepeatSmallRerankCorrectInNoRun}{29.3\%}
+\newcommand{\RepeatSmallRerankHigh}{59.3\%}
+\newcommand{\RepeatSmallRerankIdenticalAnswerTextAllRuns}{2.6\%}
+\newcommand{\RepeatSmallRerankLow}{55.7\%}
+\newcommand{\RepeatSmallRerankN}{994}
+\newcommand{\RepeatSmallRerankRates}{56.6, 59.3 and 55.7\%}
+\newcommand{\RepeatSmallRerankSameCorrectVsNotAllRuns}{72.5\%}
+\newcommand{\RepeatSmallRerankVsFixedDiffs}{+3.0, +5.9 and +1.4}
+\newcommand{\RepeatSmallRerankVsFixedMaxP}{0.43}
+\newcommand{\RepeatSmallRerankVsFixedPs}{0.095, $5.9 \times 10^{-4}$ and 0.43}
+\newcommand{\RepeatSmallRerankVsFixedSignificantRuns}{1}
+\newcommand{\RepeatSmallSameCorrectVsNotAllRuns}{77.9\%}
+\newcommand{\RepeatSmallVsFixedDiffs}{+3.5, +2.5 and +1.8}
+\newcommand{\RepeatSmallVsFixedMaxP}{0.3}
+\newcommand{\RepeatSmallVsFixedPs}{0.035, 0.14 and 0.3}
+\newcommand{\RepeatSmallVsFixedSignificantRuns}{1}
+\newcommand{\RepeatWidestGained}{113}
+\newcommand{\RepeatWidestLost}{78}
+\newcommand{\RepeatWidestP}{0.014}
+\newcommand{\RepeatWidestPoints}{3.5}
+\newcommand{\RepeatWidestSetup}{500 / top 8, reranked}
 \newcommand{\RerankAddedCorrectAfter}{58}
 \newcommand{\RerankAddedCorrectBefore}{47}
 \newcommand{\RerankAddedN}{111}
@@ -126,6 +232,59 @@
 \newcommand{\RerankVsSmallGained}{114}
 \newcommand{\RerankVsSmallLost}{119}
 \newcommand{\RerankVsSmallP}{0.79}
+\newcommand{\RetryAnswersAfter}{54.8\% [51.7, 57.8]}
+\newcommand{\RetryAnswersAfterRate}{54.8\%}
+\newcommand{\RetryAnswersBefore}{53.6\% [50.5, 56.7]}
+\newcommand{\RetryAnswersBeforeRate}{53.6\%}
+\newcommand{\RetryAnswersGained}{91}
+\newcommand{\RetryAnswersLost}{79}
+\newcommand{\RetryAnswersN}{1,002}
+\newcommand{\RetryAnswersP}{0.4}
+\newcommand{\RetryChecked}{1,005}
+\newcommand{\RetryHeld}{398}
+\newcommand{\RetryHeldRetried}{29}
+\newcommand{\RetryHitAfter}{45.0\% [41.8, 48.3]}
+\newcommand{\RetryHitAfterRate}{45.0\%}
+\newcommand{\RetryHitBefore}{44.7\% [41.4, 47.9]}
+\newcommand{\RetryHitBeforeRate}{44.7\%}
+\newcommand{\RetryHitGained}{13}
+\newcommand{\RetryHitLost}{10}
+\newcommand{\RetryHitN}{891}
+\newcommand{\RetryHitP}{0.68}
+\newcommand{\RetryMissed}{493}
+\newcommand{\RetryMissedKept}{396}
+\newcommand{\RetryMissedKeptRate}{80.3\%}
+\newcommand{\RetryN}{177}
+\newcommand{\RetryRate}{17.6\%}
+\newcommand{\RetryRetriedAfter}{102}
+\newcommand{\RetryRetriedBefore}{94}
+\newcommand{\SectionsAnswersAfter}{54.5\% [51.4, 57.6]}
+\newcommand{\SectionsAnswersAfterRate}{54.5\%}
+\newcommand{\SectionsAnswersBefore}{53.6\% [50.5, 56.7]}
+\newcommand{\SectionsAnswersBeforeRate}{53.6\%}
+\newcommand{\SectionsAnswersGained}{139}
+\newcommand{\SectionsAnswersLost}{130}
+\newcommand{\SectionsAnswersN}{1,002}
+\newcommand{\SectionsAnswersP}{0.63}
+\newcommand{\SectionsCoverage}{80.6\%}
+\newcommand{\SectionsCoverageK}{2,919}
+\newcommand{\SectionsCoverageN}{3,621}
+\newcommand{\SectionsHitAfter}{47.5\% [44.2, 50.8]}
+\newcommand{\SectionsHitAfterRate}{47.5\%}
+\newcommand{\SectionsHitBefore}{44.7\% [41.4, 47.9]}
+\newcommand{\SectionsHitBeforeRate}{44.7\%}
+\newcommand{\SectionsHitGained}{117}
+\newcommand{\SectionsHitLost}{92}
+\newcommand{\SectionsHitN}{891}
+\newcommand{\SectionsHitP}{0.097}
+\newcommand{\SectionsSmallHitAfter}{55.4\% [52.2, 58.7]}
+\newcommand{\SectionsSmallHitAfterRate}{55.4\%}
+\newcommand{\SectionsSmallHitBefore}{53.8\% [50.5, 57.0]}
+\newcommand{\SectionsSmallHitBeforeRate}{53.8\%}
+\newcommand{\SectionsSmallHitGained}{94}
+\newcommand{\SectionsSmallHitLost}{79}
+\newcommand{\SectionsSmallHitN}{891}
+\newcommand{\SectionsSmallHitP}{0.29}
 \newcommand{\ShippedCorrect}{0.0\% [0.0, 0.4]}
 \newcommand{\ShippedCorrectK}{0}
 \newcommand{\ShippedCorrectRate}{0.0\%}

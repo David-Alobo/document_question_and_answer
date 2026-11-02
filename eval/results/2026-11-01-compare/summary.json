@@ -1,0 +1,75 @@
+{
+  "pairs": 120,
+  "rules": {
+    "app": {
+      "evidence_from_both_papers": {
+        "k": 5,
+        "n": 120,
+        "pct": 4.2,
+        "ci95": [
+          1.8,
+          9.4
+        ]
+      },
+      "correct_for_both_papers": {
+        "k": 25,
+        "n": 118,
+        "pct": 21.2,
+        "ci95": [
+          14.8,
+          29.4
+        ]
+      },
+      "papers_answered_correctly": {
+        "k": 119,
+        "n": 236,
+        "pct": 50.4,
+        "ci95": [
+          44.1,
+          56.7
+        ]
+      }
+    },
+    "balanced": {
+      "evidence_from_both_papers": {
+        "k": 3,
+        "n": 120,
+        "pct": 2.5,
+        "ci95": [
+          0.9,
+          7.1
+        ]
+      },
+      "correct_for_both_papers": {
+        "k": 33,
+        "n": 115,
+        "pct": 28.7,
+        "ci95": [
+          21.2,
+          37.5
+        ]
+      },
+      "papers_answered_correctly": {
+        "k": 124,
+        "n": 230,
+        "pct": 53.9,
+        "ci95": [
+          47.5,
+          60.2
+        ]
+      }
+    }
+  },
+  "balanced_vs_app_evidence": {
+    "n": 120,
+    "gained": 1,
+    "lost": 3,
+    "p": 0.625
+  },
+  "balanced_vs_app_correct": {
+    "n": 114,
+    "gained": 21,
+    "lost": 12,
+    "p": 0.16275565745308995
+  }
+}
