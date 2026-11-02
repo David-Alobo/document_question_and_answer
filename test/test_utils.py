@@ -207,3 +207,47 @@ def test_split_sections_keeps_sections_and_pages():
         assert ("method" in c.page_content) == (c.metadata["section"] == "2 Method")
     assert all(c.metadata["page"] == 1 for c in chunks if c.metadata["section"] == "2 Method")
     assert all(c.metadata["page"] == 0 for c in chunks if c.metadata["section"] == "1 Introduction")
+
+
+def test_cited_pages_reads_common_citation_forms():
+    """
+    Single pages, ranges, lists and file names are all read; implausible ranges are not.
+    """
+    answer = (
+        "It uses BERT [p. 3]. Results improve [pp. 5-6] (p. 3, p. 8). "
+        "Both agree [a.pdf, p. 2; b.pdf, p. 7] [p. 4, 9]. Overall [pp. 1-40]."
+    )
+    assert Utils.cited_pages(answer) == [
+        (None, 3), (None, 5), (None, 6), (None, 8), ("a.pdf", 2), ("b.pdf", 7), (None, 4), (None, 9)
+    ]
+    assert Utils.cited_pages("No citations here, see Table 2 [1].") == []
+
+
+def test_match_citations_pairs_pages_with_passages():
+    """
+    Cited pages are matched to the passages from them; pages no passage came from are flagged.
+    """
+    sources = [
+        Document(page_content="alpha", metadata={"source": "a.pdf", "page": 2}),
+        Document(page_content="beta", metadata={"source": "b.pdf", "page": 2}),
+        Document(page_content="gamma", metadata={"source": "a.pdf", "page": 6}),
+    ]
+    cited, unmatched = Utils.match_citations("X [b.pdf, p. 3]. Y [p. 7] [p. 3]. Z [p. 12].", sources)
+    assert [d.page_content for d in cited] == ["beta", "gamma", "alpha"]
+    assert unmatched == ["p. 12"]
+    assert Utils.match_citations("No citations.", sources) == ([], [])
+
+
+def test_cited_pages_reads_page_references_in_prose():
+    """
+    The model often cites in the text itself; those references count, in order of position.
+    """
+    answer = "Table III on page 5 lists them [p. 2]; see also pages 7 and 9, and 1912.01214.pdf, page 4."
+    assert Utils.cited_pages(answer) == [(None, 5), (None, 2), (None, 7), (None, 9), ("1912.01214.pdf", 4)]
+
+
+def test_cited_files_finds_files_named_without_pages():
+    """
+    "[a.pdf]" names a file but no page.
+    """
+    assert Utils.cited_files("In [a.pdf] and [b.pdf], unlike [a.pdf, p. 3] or [a.pdf].") == ["a.pdf", "b.pdf"]

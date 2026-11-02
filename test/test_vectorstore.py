@@ -196,3 +196,23 @@ def test_similarity_search_reranks_at_least_k():
 
 def test_similarity_search_empty_index(mock_embedding_model):
     assert LocalVectorStore(mock_embedding_model).similarity_search("Query") == []
+
+
+def test_similarity_search_each_gives_every_file_an_equal_share():
+    """
+    each takes the best chunks of every file, grouped by file, whatever the overall ranking.
+    """
+    docs = [
+        Document(page_content="Cats one", metadata={"source": "a.pdf"}),
+        Document(page_content="Cats two", metadata={"source": "a.pdf"}),
+        Document(page_content="Cats three", metadata={"source": "a.pdf"}),
+        Document(page_content="Fish one", metadata={"source": "b.pdf"}),
+        Document(page_content="Dogs one", metadata={"source": "b.pdf"}),
+    ]
+    vector_store = LocalVectorStore(OneAxisModel())
+    vector_store.add_documents(docs)
+
+    shared = vector_store.similarity_search("cats", each=2)
+    assert [d.page_content for d in shared] == ["Cats one", "Cats two", "Dogs one", "Fish one"]
+    one = vector_store.similarity_search("cats", each=1, sources=["b.pdf"])
+    assert [d.page_content for d in one] == ["Dogs one"]

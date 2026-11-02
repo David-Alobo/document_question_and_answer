@@ -120,7 +120,7 @@ class LocalVectorStore:
         self.index.add(embeddings)
         self.documents.extend(documents)
 
-    def similarity_search(self, query, k=4, per_source=0, max_total=None, sources=None):
+    def similarity_search(self, query, k=4, per_source=0, max_total=None, sources=None, each=0):
         """
         Find the most similar chunks to a query
 
@@ -129,6 +129,11 @@ class LocalVectorStore:
         per_source per file and max_total in all. A comparison question then sees every
         file, while a question about one file still gets mostly that file's chunks.
 
+        each gives every file an equal share instead: the top `each` chunks of each file,
+        file by file. On QASPER comparison questions about two papers, two chunks per paper
+        answered both papers correctly more often than per_source=1 (28.7% against 21.2%,
+        p = 0.16; eval/results/2026-11-01-compare).
+
         Args:
             query (str): User's question
             k (int): Number of most similar chunks to return
@@ -136,10 +141,13 @@ class LocalVectorStore:
             max_total (int): Upper limit on the chunks returned (default: no limit)
             sources (list): Search only chunks from these files (default: all). Other
                 files' chunks would otherwise crowd out the file a question is about.
+            each (int): Return the top `each` chunks of every file, ignoring k,
+                per_source and max_total (default 0: off)
 
         Returns:
             list: Document objects, most similar first, then the added chunks of other
-                files in order of similarity; empty if nothing has been added
+                files in order of similarity (with each: grouped by file, in the order
+                the files were added); empty if nothing has been added
         """
         if self.index is None or not self.documents:
             return []
@@ -158,6 +166,14 @@ class LocalVectorStore:
             # Stable sort: ties keep their embedding order
             order = sorted(range(len(top)), key=lambda j: -float(scores[j]))
             ranking = [top[j] for j in order] + ranking[depth:]
+
+        if each > 0:
+            by_source = {source: [] for source in self.sources}
+            for i in ranking:
+                picked = by_source[self.documents[i].metadata.get("source")]
+                if len(picked) < each:
+                    picked.append(i)
+            return [self.documents[i] for picked in by_source.values() for i in picked]
 
         chosen = ranking[:k]
         if per_source > 0:

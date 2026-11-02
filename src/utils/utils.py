@@ -1,4 +1,5 @@
 import os
+import re
 import tempfile
 
 from groq import Groq
@@ -9,6 +10,15 @@ EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
+
+# A citation in brackets or parentheses, e.g. [p. 3], [pp. 3-4], (p. 3, p. 5), [a.pdf, p. 3; b.pdf, p. 7]
+CITATION = re.compile(r"[\[(]([^\[\]()]*\b(?:pp?\.|pages?)\s*\d[^\[\]()]*)[\])]", re.IGNORECASE)
+# One page reference, with the file it names, if any: "p. 3", "pp. 3-4", "a.pdf, p. 3", "pages 4 and 6"
+PAGE_REF = re.compile(
+    r"(?:([^,;\[\]()]+?\.pdf)\s*,\s*)?\b(?:pp?\.|pages?)\s*(\d+(?:\s*(?:[-–,&]|and)\s*\d+)*)", re.IGNORECASE
+)
+# A file named in brackets without a page, e.g. [smith2020.pdf]
+FILE_REF = re.compile(r"\[\s*([^\[\]]+?\.pdf)\s*\]", re.IGNORECASE)
 
 SYSTEM_PROMPT = """You are a document analysis assistant with conversation memory. Your capabilities:
 
@@ -133,6 +143,85 @@ class Utils:
         label = f"p. {page + 1}" if isinstance(page, int) else "p. ?"
         source = doc.metadata.get("source")
         return f"{source}, {label}" if with_file and source else label
+
+    @staticmethod
+    def cited_pages(answer):
+        """
+        Find the pages an answer cites.
+
+        Both bracketed citations and page references in the prose ("Table 2 on page 5")
+        count. A file named in a citation applies to the page references after it in the
+        same citation. Ranges wider than five pages are ignored, as they are seldom real
+        citations.
+
+        Args:
+            answer (str): The model's answer, with citations such as "[p. 3]", "[pp. 3-4]",
+                "[smith2020.pdf, p. 3]" or "on page 3".
+
+        Returns:
+            list: (file, page) pairs in order of first citation, with 1-based pages and
+                file None when the citation names no file.
+        """
+        refs = []  # (position, file, numbers)
+        prose = answer
+        for match in CITATION.finditer(answer):
+            file = None
+            for ref in PAGE_REF.finditer(match.group(1)):
+                file = ref.group(1).strip() if ref.group(1) else file
+                refs.append((match.start() + ref.start(), file, ref.group(2)))
+            prose = prose[:match.start()] + " " * len(match.group(0)) + prose[match.end():]
+        for ref in PAGE_REF.finditer(prose):
+            # In prose, the file is the last word before ", page N"
+            refs.append((ref.start(), ref.group(1).split()[-1] if ref.group(1) else None, ref.group(2)))
+
+        cited = []
+        for _, file, numbers in sorted(refs, key=lambda r: r[0]):
+            for part in re.split(r"\s*(?:,|&|\band\b)\s*", numbers):
+                bounds = [int(n) for n in re.findall(r"\d+", part)]
+                if not bounds or bounds[-1] - bounds[0] > 5 or bounds[-1] < bounds[0]:
+                    continue
+                for page in range(bounds[0], bounds[-1] + 1):
+                    if (file, page) not in cited:
+                        cited.append((file, page))
+        return cited
+
+    @staticmethod
+    def cited_files(answer):
+        """
+        Find the files an answer names in brackets without a page, e.g. "[smith2020.pdf]".
+
+        Args:
+            answer (str): The model's answer.
+
+        Returns:
+            list: File names in order of first mention.
+        """
+        return list(dict.fromkeys(name.strip() for name in FILE_REF.findall(answer)))
+
+    @staticmethod
+    def match_citations(answer, sources):
+        """
+        Pair an answer's citations with the retrieved passages they point to.
+
+        Args:
+            answer (str): The model's answer.
+            sources (list): LangChain Document objects the answer was based on.
+
+        Returns:
+            tuple: (cited, unmatched). cited holds the passages from cited pages, in order
+                of first citation; unmatched holds labels such as "p. 9" for cited pages
+                that no passage came from, which the model could not have read.
+        """
+        cited, unmatched = [], []
+        for file, page in Utils.cited_pages(answer):
+            hits = [
+                doc for doc in sources
+                if doc.metadata.get("page") == page - 1 and file in (None, doc.metadata.get("source"))
+            ]
+            if not hits:
+                unmatched.append(f"{file}, p. {page}" if file else f"p. {page}")
+            cited.extend(doc for doc in hits if doc not in cited)
+        return cited, unmatched
 
     @staticmethod
     def build_messages(context, question, conversation_history):
