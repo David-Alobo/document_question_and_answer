@@ -1,24 +1,21 @@
 \begin{abstract}
-Question answering over a PDF with retrieval-augmented generation is a common small project:
-split the document into chunks, embed them, retrieve the most similar few and pass them to a
-language model. Such apps are rarely measured. We evaluated one, CitePage, an open-source
-Streamlit app for research papers written by the author, with its own code on the \BaselineQuestions{} questions of the QASPER
-development set, using the arXiv PDFs of the \BaselinePapers{} papers, Llama~3.1~8B as the
-answering model and Qwen3-32B as a judge. As shipped, a misplaced loop sent the first question of
-every conversation to the model without the question or the document; the model returned an
-empty answer to all \ShippedEmpty{}. After the fix, \FixedCorrect{} of answers were judged
-correct, against \OracleCorrect{} when the model was given the annotators' own evidence
-paragraphs, and the four retrieved chunks held a gold evidence passage for \HitFour{} of
-questions. On a random sample of \JudgeCheckN{} answers a human labeller credited
-\JudgeCheckHumanCorrect{} where the judge credited \JudgeCheckJudgeCorrect{}, so the judged rates
-are best read as upper bounds. At equal prompt length (about 4,000 characters), 500-character chunks with
-cross-encoder reranking put evidence in the context for \SweepSmallRerankBudget{} of
-\SweepQuestions{} questions, against \SweepBaseBudget{} for the app's 1,000-character chunks, but
-on answers neither smaller chunks (\SmallCorrectRate{}) nor reranking (\SmallRerankCorrectRate{})
-differed from the app's set-up after correction for two comparisons. Loading nine other papers alongside the one a
-question is about lowered evidence retrieval from \MultidocZeroSingle{} to \MultidocNineMulti{};
-letting the user restrict the search to one paper restored it. \result{Repeat runs: share of
-verdicts that change between runs against the change in overall rates. Citations: share of cited
-pages that were in the context and share of cited statements the pages support.} All code,
-per-question outputs and prompts are released.
+Retrieval-augmented question answering over PDFs is a common small project, but such apps are
+seldom evaluated end to end. We evaluated CitePage, an open-source app we developed for asking
+questions about research papers, with its own code on the \BaselineQuestions{} questions of the
+QASPER development set (\BaselinePapers{} arXiv papers), using Llama~3.1~8B to answer and
+Qwen3-32B as a judge. As shipped, a misplaced loop sent the first question of each conversation
+without the question or the document, and all \ShippedEmpty{} first answers were empty. After the
+fix, \FixedCorrect{} of answers were judged correct, against \OracleCorrect{} when the model was
+given the annotators' evidence paragraphs; the retrieved chunks held gold evidence for
+\HitFour{} of questions. A human labeller credited \JudgeCheckHumanCorrect{} of
+\JudgeCheckN{} sampled answers where the judge credited \JudgeCheckJudgeCorrect{}, so judged
+rates are upper bounds. At a fixed prompt length, smaller chunks with reranking raised evidence
+retrieval from \SweepBaseBudget{} to \SweepSmallRerankBudget{} but did not detectably change
+correctness. Loading nine unrelated papers alongside the target lowered evidence retrieval from
+\MultidocZeroSingle{} to \MultidocNineMulti{}; restricting the search to one paper restored it.
+\result{Repeat runs: share of verdicts that change between runs against the change in overall
+rates. Citations: share of cited pages that were in the context and share of cited statements
+the pages support.} Retrieval rates were a poor guide to answer quality, so settings for such
+apps should be chosen on judged, and preferably hand-checked, answers. Code, prompts and
+per-question outputs are released.
 \end{abstract}
